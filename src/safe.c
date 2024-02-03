@@ -8,8 +8,6 @@
 #include <string.h>
 #include "error.h"
 
-the_err_state_t the_err_state = (the_err_state_t) {0, NULL, NULL, NULL, NULL, NULL, NULL};
-
 void *the_safe_alloc (size_t size) {
   void *d = malloc(size);
   if (d == NULL) the_error_alloc(&the_err_state, size);

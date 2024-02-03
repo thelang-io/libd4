@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include "safe.h"
 
+the_err_state_t the_err_state = {0, NULL, NULL, NULL, NULL, NULL, NULL};
+
 void the_error_alloc (const the_err_state_t *state, size_t size) {
   wchar_t d[4096];
   size_t l = 0;
