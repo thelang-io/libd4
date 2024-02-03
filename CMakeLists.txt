@@ -13,7 +13,11 @@ option(LIBTHE_BUILD_TESTS "Build test programs" OFF)
 
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
+
+if (MSVC)
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+else ()
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
 -Wabstract-vbase-init \
 -Walloca \
 -Wanon-enum-enum-conversion \
@@ -140,6 +144,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
 -Wvariadic-macros \
 -Wvla \
 -Wzero-as-null-pointer-constant")
+endif ()
 
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
 
