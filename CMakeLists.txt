@@ -133,7 +133,6 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
 -Wthread-safety-beta \
 -Wthread-safety-negative \
 -Wthread-safety-verbose \
--Wunaligned-access \
 -Wundeclared-selector \
 -Wundef \
 -Wunreachable-code \

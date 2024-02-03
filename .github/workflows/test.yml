@@ -20,7 +20,13 @@ jobs:
           - os: windows-2022
     steps:
       - uses: actions/checkout@v4
+      - if: runner.os == 'Linux'
+        run: sudo apt-get install ninja-build valgrind
       - run: mkdir -p build
       - run: cmake . -B ./build -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON
       - run: cmake --build build
       - run: cmake --install build
+      - if: runner.os == 'Linux'
+        run: scripts/docker-entrypoint.sh
+      - if: runner.os != 'Linux'
+        run: ctest --output-on-failure --test-dir build
