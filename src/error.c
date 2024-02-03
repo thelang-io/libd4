@@ -3,7 +3,6 @@
  * Licensed under the MIT License
  */
 
-#include <the/macro.h>
 #include "error.h"
 #include <stdlib.h>
 #include "safe.h"

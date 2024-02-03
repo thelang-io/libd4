@@ -16,16 +16,22 @@
   #define THE_OS_LINUX
 #endif
 
-#if defined(__THE_OS_WINDOWS)
+#if defined(THE_OS_WINDOWS)
   #define THE_EOL L"\r\n"
 #else
   #define THE_EOL L"\n"
 #endif
 
-#if defined(__THE_OS_WINDOWS)
+#if defined(THE_OS_WINDOWS)
   #define THE_PATH_SEP L"\\"
 #else
   #define THE_PATH_SEP L"/"
+#endif
+
+#if defined(THE_OS_WINDOWS)
+  #define THE_NORETURN __declspec(noreturn)
+#else
+  #define THE_NORETURN __attribute__((noreturn))
 #endif
 
 #endif

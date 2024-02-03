@@ -8,6 +8,7 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <the/macro.h>
 #include <the/error-type.h>
 #include <the/string-type.h>
 #include <wchar.h>
@@ -19,7 +20,7 @@
 extern the_err_state_t the_err_state;
 
 /** todo */
-__attribute__((noreturn)) void the_error_alloc (const the_err_state_t *state, size_t size);
+THE_NORETURN void the_error_alloc (const the_err_state_t *state, size_t size);
 
 /** todo */
 void the_error_assign (the_err_state_t *state, int line, int col, int id, void *ctx, void (*free) (void *));
