@@ -7,6 +7,7 @@
 #include <errno.h>
 #include <inttypes.h>
 #include <float.h>
+#include <stdarg.h>
 #include <stdlib.h>
 #include "error.h"
 #include "safe.h"
