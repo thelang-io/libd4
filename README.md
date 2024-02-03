@@ -5,7 +5,7 @@ Collection of utilities for core of The programming language.
 To build with [CMake](https://cmake.org):
 ```bash
 $ mkdir -p build
-$ (cd build && cmake .. -D CMAKE_BUILD_TYPE=Debug)
+$ cmake . -B ./build -D CMAKE_BUILD_TYPE=Debug
 $ cmake --build build
 ```
 
@@ -55,9 +55,9 @@ target_link_libraries(TARGET PRIVATE the)
 ## Testing
 To test your build with [CMake](https://cmake.org):
 ```bash
-$ (cd build && cmake .. -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON)
+$ cmake . -B ./build -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON
 $ cmake --build build
-$ (cd build && ctest -T memcheck --output-on-failure)
+$ ctest -T memcheck --output-on-failure --test-dir build
 ```
 
 To test your build with [Docker](https://www.docker.com):

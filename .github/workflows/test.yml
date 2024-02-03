@@ -17,12 +17,10 @@ jobs:
           - os: macos-14
           - os: ubuntu-20.04
           - os: ubuntu-22.04
+          - os: windows-2022
     steps:
       - uses: actions/checkout@v4
-      - if: runner.os == 'macos'
-        run: |
-          brew install docker
-          colima start
-      - run: echo "DOCKER_TAG=${GITHUB_REF#refs/heads/}:$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
-      - run: docker build -t $DOCKER_TAG .
-      - run: docker run $DOCKER_TAG
+      - run: mkdir -p build
+      - run: cmake . -B ./build -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON
+      - run: cmake --build build
+      - run: cmake --install build

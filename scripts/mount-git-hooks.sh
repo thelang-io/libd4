@@ -11,10 +11,10 @@ cat > .git/hooks/pre-commit << EOF
 #!/usr/bin/env bash
 
 mkdir -p build
-(cd build && cmake .. -DCMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON)
+cmake . -B ./build -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON
 cmake --build build
 cmake --install build
-(cd build && ctest --output-on-failure)
+ctest --output-on-failure --test-dir build
 EOF
 
 chmod +x .git/hooks/pre-commit

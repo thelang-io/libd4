@@ -17,7 +17,7 @@ RUN apt-get update && \
 WORKDIR /app
 COPY . .
 RUN mkdir -p build
-RUN (cd build && cmake .. -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON)
+RUN cmake . -B ./build -D CMAKE_BUILD_TYPE=Debug -D LIBTHE_BUILD_EXAMPLES=ON -D LIBTHE_BUILD_TESTS=ON
 RUN cmake --build build
 RUN cmake --install build
 
