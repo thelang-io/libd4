@@ -5,7 +5,6 @@
 
 #include "char.h"
 #include <ctype.h>
-#include <stddef.h>
 #include "safe.h"
 #include "string.h"
 

@@ -29,32 +29,24 @@ else ()
 -Wdouble-promotion \
 -Wduplicate-decl-specifier \
 -Wexpansion-to-defined \
--Wextra-semi \
 -Wfloat-equal \
 -Wformat=2 \
 -Wimplicit-fallthrough \
 -Wmain \
 -Wmissing-noreturn \
 -Wmissing-prototypes \
--Wnon-virtual-dtor \
--Wold-style-cast \
 -Wpacked \
 -Wpedantic \
 -Wpointer-arith \
 -Wpragmas \
--Wselector \
 -Wstrict-prototypes \
--Wstrict-selector-match \
--Wsuggest-override \
 -Wswitch-default \
 -Wswitch-enum \
--Wundeclared-selector \
 -Wundef \
 -Wunreachable-code \
 -Wunused-macros \
 -Wvariadic-macros \
--Wvla \
--Wzero-as-null-pointer-constant")
+-Wvla")
 endif ()
 
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
