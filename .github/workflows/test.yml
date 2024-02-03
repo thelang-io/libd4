@@ -1,0 +1,15 @@
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  ubuntu:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "DOCKER_TAG=${GITHUB_REF#refs/heads/}:$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+      - run: docker build -t $DOCKER_TAG .
+      - run: docker run $DOCKER_TAG

@@ -1,0 +1,11 @@
+prefix=@prefix@
+exec_prefix=${prefix}
+includedir=@includedir@
+libdir=@libdir@
+
+Name: libthe
+Description: Collection of utilities for core of The programming language.
+Version: @PROJECT_VERSION@
+
+Cflags: -I${includedir}
+Libs: -L${libdir} -lthe
