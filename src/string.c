@@ -317,8 +317,9 @@ the_arr_str_t the_str_split (const the_str_t self, __attribute__((unused)) unsig
 double the_str_toFloat (the_err_state_t *state, int line, int col, const the_str_t self) {
   wchar_t *c = the_str_cstr(self);
   wchar_t *e = NULL;
+  double r;
   errno = 0;
-  double r = wcstod(c, &e);
+  r = wcstod(c, &e);
   if (errno == ERANGE || r < -DBL_MAX || DBL_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -332,8 +333,9 @@ double the_str_toFloat (the_err_state_t *state, int line, int col, const the_str
 float the_str_toF32 (the_err_state_t *state, int line, int col, const the_str_t self) {
   wchar_t *c = the_str_cstr(self);
   wchar_t *e = NULL;
+  float r;
   errno = 0;
-  float r = wcstof(c, &e);
+  r = wcstof(c, &e);
   if (errno == ERANGE || r < -FLT_MAX || FLT_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -347,8 +349,9 @@ float the_str_toF32 (the_err_state_t *state, int line, int col, const the_str_t 
 double the_str_toF64 (the_err_state_t *state, int line, int col, const the_str_t self) {
   wchar_t *c = the_str_cstr(self);
   wchar_t *e = NULL;
+  double r;
   errno = 0;
-  double r = wcstod(c, &e);
+  r = wcstod(c, &e);
   if (errno == ERANGE || r < -DBL_MAX || DBL_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -360,14 +363,17 @@ double the_str_toF64 (the_err_state_t *state, int line, int col, const the_str_t
 }
 
 ptrdiff_t the_str_toIsize (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  long long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  long long r = wcstoll(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoll(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || r < PTRDIFF_MIN || PTRDIFF_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -379,14 +385,17 @@ ptrdiff_t the_str_toIsize (the_err_state_t *state, int line, int col, const the_
 }
 
 int8_t the_str_toI8 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  long r = wcstol(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstol(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || r < INT8_MIN || INT8_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -398,14 +407,17 @@ int8_t the_str_toI8 (the_err_state_t *state, int line, int col, const the_str_t 
 }
 
 int16_t the_str_toI16 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  long r = wcstol(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstol(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || r < INT16_MIN || INT16_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -417,14 +429,17 @@ int16_t the_str_toI16 (the_err_state_t *state, int line, int col, const the_str_
 }
 
 int32_t the_str_toI32 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  long r = wcstol(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstol(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || r < INT32_MIN || INT32_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -436,14 +451,17 @@ int32_t the_str_toI32 (the_err_state_t *state, int line, int col, const the_str_
 }
 
 int64_t the_str_toI64 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  long long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  long long r = wcstoll(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoll(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || r < INT64_MIN || INT64_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0) {
@@ -455,14 +473,17 @@ int64_t the_str_toI64 (the_err_state_t *state, int line, int col, const the_str_
 }
 
 size_t the_str_toUsize (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  unsigned long long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  unsigned long long r = wcstoull(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoull(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || SIZE_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0 || self.d[0] == L'-') {
@@ -474,14 +495,17 @@ size_t the_str_toUsize (the_err_state_t *state, int line, int col, const the_str
 }
 
 uint8_t the_str_toU8 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  unsigned long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  unsigned long r = wcstoul(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoul(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || UINT8_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0 || self.d[0] == L'-') {
@@ -493,14 +517,17 @@ uint8_t the_str_toU8 (the_err_state_t *state, int line, int col, const the_str_t
 }
 
 uint16_t the_str_toU16 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  unsigned long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  unsigned long r = wcstoul(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoul(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || UINT16_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0 || self.d[0] == L'-') {
@@ -512,14 +539,17 @@ uint16_t the_str_toU16 (the_err_state_t *state, int line, int col, const the_str
 }
 
 uint32_t the_str_toU32 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  unsigned long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  unsigned long r = wcstoul(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoul(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || UINT32_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0 || self.d[0] == L'-') {
@@ -531,14 +561,17 @@ uint32_t the_str_toU32 (the_err_state_t *state, int line, int col, const the_str
 }
 
 uint64_t the_str_toU64 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+  wchar_t *c;
+  wchar_t *e;
+  unsigned long long r;
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
     longjmp(state->buf_last->buf, state->id);
   }
-  wchar_t *c = the_str_cstr(self);
-  wchar_t *e = NULL;
+  c = the_str_cstr(self);
+  e = NULL;
   errno = 0;
-  unsigned long long r = wcstoull(c, &e, o1 == 0 ? 10 : radix);
+  r = wcstoull(c, &e, o1 == 0 ? 10 : radix);
   if (errno == ERANGE || UINT64_MAX < r) {
     the_error_assign_builtin(state, line, col, the_str_alloc(L"value `%ls` out of range", c));
   } else if (errno != 0 || e == c || *e != 0 || self.d[0] == L'-') {
@@ -550,22 +583,23 @@ uint64_t the_str_toU64 (the_err_state_t *state, int line, int col, const the_str
 }
 
 the_str_t the_str_trim (const the_str_t self) {
-  if (self.l == 0) return self;
   size_t i = 0;
   size_t j = self.l;
+  size_t l;
+  if (self.l == 0) return self;
   while (i < self.l && isspace(self.d[i])) i++;
   while (isspace(self.d[j - 1])) {
     j--;
     if (j == 0) break;
   }
   if (i >= j) return the_str_alloc(L"");
-  size_t l = j - i;
+  l = j - i;
   return the_str_calloc(&self.d[i], l);
 }
 
 the_str_t the_str_trimEnd (const the_str_t self) {
-  if (self.l == 0) return self;
   size_t l = self.l;
+  if (self.l == 0) return self;
   while (isspace(self.d[l - 1])) {
     l--;
     if (l == 0) return the_str_alloc(L"");
@@ -574,11 +608,12 @@ the_str_t the_str_trimEnd (const the_str_t self) {
 }
 
 the_str_t the_str_trimStart (const the_str_t self) {
-  if (self.l == 0) return self;
   size_t i = 0;
+  size_t l;
+  if (self.l == 0) return self;
   while (i < self.l && isspace(self.d[i])) i++;
   if (i >= self.l) return the_str_alloc(L"");
-  size_t l = self.l - i;
+  l = self.l - i;
   return the_str_calloc(&self.d[i], l);
 }
 
