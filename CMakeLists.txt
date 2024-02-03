@@ -143,16 +143,9 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
 -Wunnamed-type-template-args \
 -Wunreachable-code-aggressive \
 -Wunsupported-dll-base-class-template \
--Wunused-exception-parameter \
 -Wunused-macros \
--Wunused-member-function \
--Wunused-template \
--Wused-but-marked-unused \
 -Wvariadic-macros \
--Wvector-conversion \
 -Wvla \
--Wweak-template-vtables \
--Wweak-vtables \
 -Wzero-as-null-pointer-constant")
 
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
