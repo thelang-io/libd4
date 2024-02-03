@@ -136,13 +136,7 @@ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
 -Wunaligned-access \
 -Wundeclared-selector \
 -Wundef \
--Wundef-prefix \
--Wundefined-func-template \
--Wundefined-reinterpret-cast \
--Wunguarded-availability \
--Wunnamed-type-template-args \
--Wunreachable-code-aggressive \
--Wunsupported-dll-base-class-template \
+-Wunreachable-code \
 -Wunused-macros \
 -Wvariadic-macros \
 -Wvla \

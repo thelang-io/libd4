@@ -20,7 +20,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - if: runner.os == 'macos'
-        run: brew install docker
+        run: |
+          brew install docker
+          colima start
       - run: echo "DOCKER_TAG=${GITHUB_REF#refs/heads/}:$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
       - run: docker build -t $DOCKER_TAG .
       - run: docker run $DOCKER_TAG
