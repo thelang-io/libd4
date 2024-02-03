@@ -13,9 +13,12 @@ option(LIBTHE_BUILD_TESTS "Build test programs" OFF)
 
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 99)
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wconversion -Werror -Wextra -Wshadow -Wundef -Wunreachable-code -pedantic-errors")
 
-set(sources src/common.c)
+set(CMAKE_C_FLAGS_PART1 "-Wall -Werror -Wextra -pedantic-errors")
+set(CMAKE_C_FLAGS_PART2 "-Weverything -Wno-padded -Wno-unsafe-buffer-usage")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${CMAKE_C_FLAGS_PART1} ${CMAKE_C_FLAGS_PART2}")
+
+set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
 
 include_directories(include)
 
