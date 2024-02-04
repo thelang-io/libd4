@@ -34,4 +34,10 @@
   #define THE_NORETURN __attribute__((noreturn))
 #endif
 
+#if defined(THE_OS_WINDOWS)
+  #define THE_UNUSED
+#else
+  #define THE_UNUSED __attribute__((unused))
+#endif
+
 #endif

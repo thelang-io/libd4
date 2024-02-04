@@ -207,7 +207,7 @@ bool the_str_not (const the_str_t self) {
   return self.l == 0;
 }
 
-the_str_t the_str_replace (const the_str_t self, const the_str_t search, const the_str_t replacement, __attribute__((unused)) unsigned char o3, int32_t count) {
+the_str_t the_str_replace (const the_str_t self, const the_str_t search, const the_str_t replacement, THE_UNUSED unsigned char o3, int32_t count) {
   size_t l = 0;
   wchar_t *d = NULL;
   int32_t k = 0;
@@ -287,7 +287,7 @@ the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, 
   return the_str_calloc(&self.d[i], l);
 }
 
-the_arr_str_t the_str_split (const the_str_t self, __attribute__((unused)) unsigned char o1, const the_str_t delimiter) {
+the_arr_str_t the_str_split (const the_str_t self, THE_UNUSED unsigned char o1, const the_str_t delimiter) {
   the_str_t *r = NULL;
   size_t l = 0;
   if (self.l > 0 && delimiter.l == 0) {
