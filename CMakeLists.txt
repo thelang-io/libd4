@@ -6,6 +6,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(libthe VERSION 0.1.0 LANGUAGES C)
 
+include(CTest)
 include(GNUInstallDirs)
 
 option(LIBTHE_BUILD_EXAMPLES "Build example programs" OFF)
@@ -68,4 +69,11 @@ if (MINGW OR UNIX)
   install(FILES LICENSE DESTINATION "${CMAKE_INSTALL_DOCDIR}")
   install(FILES "${PROJECT_BINARY_DIR}/libthe.pc" "${PROJECT_BINARY_DIR}/libthe-static.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
   install(TARGETS the the_a LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+endif ()
+
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBDUC_BUILD_TESTS)
+  set(CTEST_MEMORYCHECK_COMMAND valgrind)
+  set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=255 --errors-for-leak-kinds=all --leak-check=full --show-leak-kinds=all --tool=memcheck --track-origins=yes")
+
+  include(CTest)
 endif ()
