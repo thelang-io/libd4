@@ -26,8 +26,8 @@ ExternalProject_Add(
   GIT_TAG openssl-3.2.1
   BUILD_BYPRODUCTS
     "${OpenSSL_INSTALL_DIR}/lib/libcrypto${CMAKE_SHARED_LIBRARY_SUFFIX}"
-    "${OpenSSL_INSTALL_DIR}/lib/libssl${CMAKE_SHARED_LIBRARY_SUFFIX}"
     "${OpenSSL_INSTALL_DIR}/lib/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}"
+    "${OpenSSL_INSTALL_DIR}/lib/libssl${CMAKE_SHARED_LIBRARY_SUFFIX}"
     "${OpenSSL_INSTALL_DIR}/lib/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}"
   CONFIGURE_COMMAND perl "${OpenSSL_SOURCE_DIR}/Configure" no-docs no-tests --libdir=lib "--prefix=${OpenSSL_INSTALL_DIR}" "--openssldir=${OpenSSL_INSTALL_DIR}"
   BUILD_COMMAND ${OpenSSL_MAKE_PROGRAM}
@@ -37,6 +37,11 @@ ExternalProject_Add(
 )
 
 file(MAKE_DIRECTORY "${OpenSSL_INCLUDE_DIR}")
+
+message("${OpenSSL_INSTALL_DIR}/lib/libcrypto${CMAKE_SHARED_LIBRARY_SUFFIX}")
+message("${OpenSSL_INSTALL_DIR}/lib/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}")
+message("${OpenSSL_INSTALL_DIR}/lib/libssl${CMAKE_SHARED_LIBRARY_SUFFIX}")
+message("${OpenSSL_INSTALL_DIR}/lib/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}")
 
 add_library(OpenSSL::Crypto SHARED IMPORTED GLOBAL)
 set_property(TARGET OpenSSL::Crypto PROPERTY IMPORTED_LOCATION "${OpenSSL_INSTALL_DIR}/lib/libcrypto${CMAKE_SHARED_LIBRARY_SUFFIX}")
