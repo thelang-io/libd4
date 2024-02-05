@@ -12,6 +12,12 @@ set(OpenSSL_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/openssl-src")
 set(OpenSSL_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/openssl")
 set(OpenSSL_INCLUDE_DIR "${OpenSSL_INSTALL_DIR}/include")
 
+if (WIN32)
+  set(OpenSSL_MAKE_PROGRAM nmake)
+else ()
+  set(OpenSSL_MAKE_PROGRAM make)
+endif ()
+
 ExternalProject_Add(
   OpenSSL
   SOURCE_DIR "${OpenSSL_SOURCE_DIR}"
@@ -23,9 +29,9 @@ ExternalProject_Add(
     "${OpenSSL_INSTALL_DIR}/lib/libssl.3${CMAKE_SHARED_LIBRARY_SUFFIX}"
     "${OpenSSL_INSTALL_DIR}/lib/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}"
     "${OpenSSL_INSTALL_DIR}/lib/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}"
-  CONFIGURE_COMMAND "${OpenSSL_SOURCE_DIR}/config" no-docs no-tests "--prefix=${OpenSSL_INSTALL_DIR}" "--openssldir=${OpenSSL_INSTALL_DIR}"
-  BUILD_COMMAND make -j${N}
-  INSTALL_COMMAND make -j${N} install_sw
+  CONFIGURE_COMMAND perl "${OpenSSL_SOURCE_DIR}/Configure" no-docs no-tests --libdir=lib "--prefix=${OpenSSL_INSTALL_DIR}" "--openssldir=${OpenSSL_INSTALL_DIR}"
+  BUILD_COMMAND "${OpenSSL_MAKE_PROGRAM}" -j${N}
+  INSTALL_COMMAND "${OpenSSL_MAKE_PROGRAM}" install_sw
   TEST_COMMAND ""
   UPDATE_COMMAND ""
 )
