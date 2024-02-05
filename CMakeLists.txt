@@ -6,7 +6,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(libthe VERSION 0.1.0 LANGUAGES C)
 
-include(CTest)
+include(cmake/OpenSSL.cmake)
 include(GNUInstallDirs)
 
 option(LIBTHE_BUILD_EXAMPLES "Build example programs" OFF)
@@ -18,6 +18,7 @@ set(CMAKE_C_STANDARD 99)
 if (MSVC)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
 else ()
+  # todo find optimal flags, right now it seems too many flags
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
 -Walloca \
 -Wbad-function-cast \
@@ -55,7 +56,10 @@ set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c sr
 include_directories(include)
 
 add_library(the SHARED ${sources})
+target_link_libraries(the PRIVATE OpenSSL::Crypto OpenSSL::SSL)
+
 add_library(the_a STATIC ${sources})
+target_link_libraries(the_a PRIVATE OpenSSL::Crypto_a OpenSSL::SSL_a)
 
 if (MINGW OR UNIX)
   set(includedir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
