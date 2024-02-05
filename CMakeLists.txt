@@ -75,7 +75,7 @@ if (MINGW OR UNIX)
   install(TARGETS the the_a LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 endif ()
 
-if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBDUC_BUILD_TESTS)
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
   set(CTEST_MEMORYCHECK_COMMAND valgrind)
   set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=255 --errors-for-leak-kinds=all --leak-check=full --show-leak-kinds=all --tool=memcheck --track-origins=yes")
 
