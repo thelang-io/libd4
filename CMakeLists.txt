@@ -21,40 +21,33 @@ option(LIBTHE_BUILD_TESTS "Build test programs" OFF)
 set(CMAKE_C_STANDARD_REQUIRED ON)
 set(CMAKE_C_STANDARD 99)
 
+list(APPEND THE_CMAKE_FLAGS "-Walloca")
+list(APPEND THE_CMAKE_FLAGS "-Wbad-function-cast")
+list(APPEND THE_CMAKE_FLAGS "-Wcast-align")
+list(APPEND THE_CMAKE_FLAGS "-Wcast-qual")
+list(APPEND THE_CMAKE_FLAGS "-Wdate-time")
+list(APPEND THE_CMAKE_FLAGS "-Wdeclaration-after-statement")
+list(APPEND THE_CMAKE_FLAGS "-Wdeprecated")
+list(APPEND THE_CMAKE_FLAGS "-Wdouble-promotion")
+list(APPEND THE_CMAKE_FLAGS "-Wfloat-equal")
+list(APPEND THE_CMAKE_FLAGS "-Wformat=2")
+list(APPEND THE_CMAKE_FLAGS "-Wmissing-noreturn")
+list(APPEND THE_CMAKE_FLAGS "-Wmissing-prototypes")
+list(APPEND THE_CMAKE_FLAGS "-Wpacked")
+list(APPEND THE_CMAKE_FLAGS "-Wpragmas")
+list(APPEND THE_CMAKE_FLAGS "-Wstrict-prototypes")
+list(APPEND THE_CMAKE_FLAGS "-Wswitch-default")
+list(APPEND THE_CMAKE_FLAGS "-Wswitch-enum")
+list(APPEND THE_CMAKE_FLAGS "-Wundef")
+list(APPEND THE_CMAKE_FLAGS "-Wunreachable-code")
+list(APPEND THE_CMAKE_FLAGS "-Wunused-macros")
+list(APPEND THE_CMAKE_FLAGS "-Wvla")
+list(JOIN THE_CMAKE_FLAGS " " THE_CMAKE_FLAGS)
+
 if (MSVC)
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
 else ()
-  # todo find optimal flags, right now it seems too many flags
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra \
--Walloca \
--Wbad-function-cast \
--Wcast-align \
--Wcast-function-type \
--Wcast-qual \
--Wdate-time \
--Wdeclaration-after-statement \
--Wdeprecated \
--Wdouble-promotion \
--Wduplicate-decl-specifier \
--Wexpansion-to-defined \
--Wfloat-equal \
--Wformat=2 \
--Wimplicit-fallthrough \
--Wmain \
--Wmissing-noreturn \
--Wmissing-prototypes \
--Wpacked \
--Wpedantic \
--Wpointer-arith \
--Wpragmas \
--Wstrict-prototypes \
--Wswitch-default \
--Wswitch-enum \
--Wundef \
--Wunreachable-code \
--Wunused-macros \
--Wvariadic-macros \
--Wvla")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra -pedantic-errors ${THE_CMAKE_FLAGS}")
 endif ()
 
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
