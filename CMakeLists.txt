@@ -12,7 +12,7 @@ project(
   DESCRIPTION "Collection of utilities for core of The programming language"
 )
 
-include(cmake/OpenSSL.cmake)
+include(cmake/openssl.cmake)
 include(GNUInstallDirs)
 
 option(LIBTHE_BUILD_EXAMPLES "Build example programs" OFF)
