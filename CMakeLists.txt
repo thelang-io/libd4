@@ -4,7 +4,13 @@
 #
 
 cmake_minimum_required(VERSION 3.5)
-project(libthe VERSION 0.1.0 LANGUAGES C)
+
+project(
+  libthe
+  VERSION 0.1.0
+  LANGUAGES C
+  DESCRIPTION "Collection of utilities for core of The programming language"
+)
 
 include(cmake/OpenSSL.cmake)
 include(GNUInstallDirs)
@@ -55,26 +61,23 @@ set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c sr
 
 include_directories(include)
 
-add_library(the OBJECT ${sources})
+add_library(${PROJECT_NAME}_object OBJECT ${sources})
+set_property(TARGET ${PROJECT_NAME}_object PROPERTY POSITION_INDEPENDENT_CODE 1)
 
-add_library(the_shared SHARED)
-target_link_libraries(the_shared PRIVATE the OpenSSL::Crypto OpenSSL::SSL)
+add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}_object>)
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::Crypto OpenSSL::SSL)
 
-add_library(the_static STATIC)
-target_link_libraries(the_static PRIVATE the OpenSSL::Crypto_a OpenSSL::SSL_a)
+add_library(${PROJECT_NAME}_static STATIC $<TARGET_OBJECTS:${PROJECT_NAME}_object>)
+target_link_libraries(${PROJECT_NAME}_static PRIVATE OpenSSL::Crypto_a OpenSSL::SSL_a)
 
 if (MINGW OR UNIX)
-  set(includedir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
-  set(libdir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_LIBDIR}")
-  set(prefix "${CMAKE_INSTALL_PREFIX}")
-
-  configure_file(libthe.pc.in libthe.pc @ONLY)
-  configure_file(libthe-static.pc.in libthe-static.pc @ONLY)
+  configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
+  configure_file(${PROJECT_NAME}-static.pc.in ${PROJECT_NAME}-static.pc @ONLY)
 
   install(DIRECTORY include/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
   install(FILES LICENSE DESTINATION "${CMAKE_INSTALL_DOCDIR}")
-  install(FILES "${PROJECT_BINARY_DIR}/libthe.pc" "${PROJECT_BINARY_DIR}/libthe-static.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
-  install(TARGETS the_shared the_static LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+  install(FILES "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.pc" "${PROJECT_BINARY_DIR}/${PROJECT_NAME}-static.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
+  install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_static LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 endif ()
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)

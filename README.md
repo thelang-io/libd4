@@ -1,5 +1,6 @@
 # libthe
 Collection of utilities for core of The programming language.
+TODO test all examples from this file, along with pkg-config.
 
 ## Building and installing
 To build with [CMake](https://cmake.org):
@@ -27,10 +28,10 @@ You can import specific utility with:
 
 With [CMake](https://cmake.org):
 ```cmake
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.5)
 
-find_path(LIBTHE_INCLUDE_DIR the.h)
-find_library(LIBTHE_LIBRARY the)
+find_path(LIBTHE_INCLUDE_DIR the/macro.h)
+find_library(LIBTHE_LIBRARY libthe)
 
 # ...
 
@@ -49,7 +50,7 @@ FetchContent_MakeAvailable(libthe)
 # ...
 
 target_include_directories(TARGET PRIVATE "${libthe_SOURCE_DIR}/include")
-target_link_libraries(TARGET PRIVATE the)
+target_link_libraries(TARGET PRIVATE libthe)
 ```
 
 ## Testing

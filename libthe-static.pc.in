@@ -1,11 +1,10 @@
-prefix=@prefix@
+prefix=@CMAKE_INSTALL_PREFIX@
 exec_prefix=${prefix}
-includedir=@includedir@
-libdir=@libdir@
+includedir=${prefix}/@CMAKE_INSTALL_INCLUDEDIR@
+libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
 
-Name: libthe-static
-Description: Collection of utilities for core of The programming language.
+Name: @PROJECT_NAME@-static
+Description: @CMAKE_PROJECT_DESCRIPTION@
 Version: @PROJECT_VERSION@
-
 Cflags: -I${includedir}
-Libs: -L${libdir} -lthe_static
+Libs: -L${libdir} -l@libthe_static@
