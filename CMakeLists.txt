@@ -55,11 +55,13 @@ set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c sr
 
 include_directories(include)
 
-add_library(the SHARED ${sources})
-target_link_libraries(the PRIVATE OpenSSL::Crypto OpenSSL::SSL)
+add_library(the OBJECT ${sources})
 
-add_library(the_a STATIC ${sources})
-target_link_libraries(the_a PRIVATE OpenSSL::Crypto_a OpenSSL::SSL_a)
+add_library(the_shared SHARED)
+target_link_libraries(the_shared PRIVATE the OpenSSL::Crypto OpenSSL::SSL)
+
+add_library(the_static STATIC)
+target_link_libraries(the_static PRIVATE the OpenSSL::Crypto_a OpenSSL::SSL_a)
 
 if (MINGW OR UNIX)
   set(includedir "${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_INCLUDEDIR}")
@@ -72,7 +74,7 @@ if (MINGW OR UNIX)
   install(DIRECTORY include/ DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
   install(FILES LICENSE DESTINATION "${CMAKE_INSTALL_DOCDIR}")
   install(FILES "${PROJECT_BINARY_DIR}/libthe.pc" "${PROJECT_BINARY_DIR}/libthe-static.pc" DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
-  install(TARGETS the the_a LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+  install(TARGETS the_shared the_static LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 endif ()
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)

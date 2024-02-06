@@ -8,4 +8,4 @@ Description: Collection of utilities for core of The programming language.
 Version: @PROJECT_VERSION@
 
 Cflags: -I${includedir}
-Libs: -L${libdir} -lthe_a
+Libs: -L${libdir} -lthe_static
