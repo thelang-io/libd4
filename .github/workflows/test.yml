@@ -37,8 +37,11 @@ jobs:
         uses: ilammy/setup-nasm@v1
       - uses: actions/cache@v4
         with:
-          path: [build/openssl, build/openssl-prefix, build/openssl-src]
-          key: cmake-openssl-${{ hashFiles('cmake/openssl.cmake') }}
+          path: |
+            build/openssl
+            build/openssl-prefix
+            build/openssl-src
+          key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/openssl.cmake') }}
       - run: mkdir -p build
       - run: cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
       - run: cmake --build build
