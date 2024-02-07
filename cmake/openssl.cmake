@@ -30,7 +30,7 @@ ExternalProject_Add(
   CONFIGURE_COMMAND perl "${openssl_SOURCE_DIR}/Configure" no-tests --libdir=lib "--prefix=${openssl_INSTALL_DIR}" "--openssldir=${openssl_INSTALL_DIR}"
   BUILD_COMMAND ${openssl_MAKE_PROGRAM}
   INSTALL_COMMAND ${openssl_MAKE_PROGRAM} install_sw
-  TEST_COMMAND ls "${openssl_INSTALL_DIR}/lib" "${openssl_INSTALL_DIR}/bin"
+  TEST_COMMAND ""
   UPDATE_COMMAND ""
 )
 
