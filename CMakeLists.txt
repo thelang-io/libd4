@@ -53,8 +53,7 @@ endif ()
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
 
 add_library(${PROJECT_NAME}_object OBJECT ${sources})
-#todo not needed?
-#set_property(TARGET ${PROJECT_NAME}_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+set_property(TARGET ${PROJECT_NAME}_object PROPERTY POSITION_INDEPENDENT_CODE 1)
 target_include_directories(${PROJECT_NAME}_object PUBLIC include)
 target_link_libraries(${PROJECT_NAME}_object PUBLIC OpenSSL::Crypto OpenSSL::SSL)
 
