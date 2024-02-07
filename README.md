@@ -23,7 +23,7 @@ $ docker build -t libthe .
 ## Usage
 You can import specific utility with:
 ```c
-#include <the/thread-pool.h>
+#include <the/macro.h>
 ```
 
 With [CMake](https://cmake.org):
@@ -35,8 +35,8 @@ find_library(LIBTHE_LIBRARY libthe)
 
 # ...
 
-target_include_directories(TARGET PRIVATE "${LIBTHE_INCLUDE_DIR}")
-target_link_libraries(TARGET PRIVATE "${LIBTHE_LIBRARY}")
+target_include_directories(target PUBLIC "${LIBTHE_INCLUDE_DIR}")
+target_link_libraries(target PUBLIC "${LIBTHE_LIBRARY}")
 ```
 
 With [CMake's FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
@@ -49,8 +49,8 @@ FetchContent_MakeAvailable(libthe)
 
 # ...
 
-target_include_directories(TARGET PRIVATE "${libthe_SOURCE_DIR}/include")
-target_link_libraries(TARGET PRIVATE libthe)
+target_include_directories(target PUBLIC "${libthe_SOURCE_DIR}/include")
+target_link_libraries(target PUBLIC libthe)
 ```
 
 ## Testing

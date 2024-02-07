@@ -52,16 +52,14 @@ endif ()
 
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
 
-include_directories(include)
-
 add_library(${PROJECT_NAME}_object OBJECT ${sources})
-set_property(TARGET ${PROJECT_NAME}_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+#todo not needed?
+#set_property(TARGET ${PROJECT_NAME}_object PROPERTY POSITION_INDEPENDENT_CODE 1)
+target_include_directories(${PROJECT_NAME}_object PUBLIC include)
+target_link_libraries(${PROJECT_NAME}_object PUBLIC OpenSSL::Crypto OpenSSL::SSL)
 
 add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_NAME}_object>)
-target_link_libraries(${PROJECT_NAME} PRIVATE OpenSSL::Crypto OpenSSL::SSL)
-
 add_library(${PROJECT_NAME}_static STATIC $<TARGET_OBJECTS:${PROJECT_NAME}_object>)
-target_link_libraries(${PROJECT_NAME}_static PRIVATE OpenSSL::Crypto_a OpenSSL::SSL_a)
 
 if (MINGW OR UNIX)
   configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
