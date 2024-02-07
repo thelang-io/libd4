@@ -10,49 +10,98 @@
 
 #include <the/macro.h>
 #include <the/error-type.h>
-#include <the/string-type.h>
-#include <wchar.h>
 
-/** todo */
-#define TYPE_Error 1
+/** Type id representing generic error. */
+#define TYPE_Error 0
 
-/** todo */
+/** Global error state accessible by all threads. */
 extern the_err_state_t the_err_state;
 
-/** todo */
+/**
+ * Instantly reports error and exists the application. Used internally by safe_alloc, safe_realloc functions.
+ * @param state Error state to generate stack from.
+ * @param size Size that safe function failed to allocate.
+ */
 THE_NORETURN void the_error_alloc (const the_err_state_t *state, size_t size);
 
-/** todo */
-void the_error_assign (the_err_state_t *state, int line, int col, int id, void *ctx, void (*free) (void *));
+/**
+ * Populates all required fields on error state from specified information.
+ * @param state Error state to perform action on.
+ * @param line Line where error appeared.
+ * @param col Line column where error appeared.
+ * @param id Type of the error.
+ * @param ctx Context of the error.
+ * @param free_cb Callback that is being called to deallocate the error object.
+ */
+void the_error_assign (the_err_state_t *state, int line, int col, int id, void *ctx, the_err_state_free_cb free_cb);
 
-/** todo */
-void the_error_assign_builtin (the_err_state_t *state, int line, int col, the_str_t message);
+/**
+ * Populates all required fields as generic error on error state from specified information.
+ * @param state Error state to perform action on.
+ * @param line Line where error appeared.
+ * @param col Line column where error appeared.
+ * @param message Message of the generic error.
+ */
+void the_error_assign_generic (the_err_state_t *state, int line, int col, the_str_t message);
 
-/** todo */
+/**
+ * Decreases error state buffer by one.
+ * @param state Error state to perform action on.
+ */
 void the_error_buf_decrease (the_err_state_t *state);
 
-/** todo */
+/**
+ * Increases error state buffer by one.
+ * @param state Error state to perform action on.
+ */
 the_err_buf_t *the_error_buf_increase (the_err_state_t *state);
 
-/** todo */
+/**
+ * Removes last item from error state stack.
+ * @param state Error state to perform action on.
+ */
 void the_error_stack_pop (the_err_state_t *state);
 
-/** todo */
+/**
+ * Sets position of last item of error state stack.
+ * @param state Error state to perform action on.
+ * @param line Line of the error.
+ * @param col Line column of the error.
+ */
 void the_error_stack_pos (the_err_state_t *state, int line, int col);
 
-/** todo */
+/**
+ * Inserts new item to error state stack.
+ * @param state Error state to perform action on.
+ * @param file File of the error.
+ * @param name Name of function where error happened.
+ * @param line Line of the error.
+ * @param col Line column of the error.
+ */
 void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wchar_t *name, int line, int col);
 
-/** todo */
+/**
+ * Populates stack field on the error state context from error state.
+ * @param state Error state to perform action on.
+ */
 void the_error_stack_str (the_err_state_t *state);
 
-/** todo */
+/**
+ * Unsets previously set error on the error state.
+ * @param state Error state to perform action on.
+ */
 void the_error_unset (the_err_state_t *state);
 
-/** todo */
+/**
+ * Allocates error object.
+ * @param message Message of the error object.
+ */
 the_Error_t *the_Error_alloc (the_str_t message);
 
-/** todo */
+/**
+ * Deallocates error object.
+ * @param self Pointer to an error object to deallocate.
+ */
 void the_Error_free (void *self);
 
 #endif

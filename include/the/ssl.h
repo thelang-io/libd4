@@ -7,6 +7,7 @@
 #define THE_SSL_H
 
 /* See https://github.com/thelang-io/helpers for reference. */
+// todo replace with link to openssl docs.
 
 #include <openssl/ssl.h>
 

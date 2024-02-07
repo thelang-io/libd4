@@ -8,7 +8,15 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <wchar.h>
+
 /** Structure representing string object. */
-typedef struct the_str_s the_str_t;
+typedef struct {
+  /** String object representation as wide character array. */
+  wchar_t *data;
+
+  /** Length of the string object. */
+  size_t len;
+} the_str_t;
 
 #endif

@@ -4,29 +4,34 @@ TODO test all examples from this file, along with pkg-config.
 
 ## Building and installing
 To build with [CMake](https://cmake.org):
+
 ```bash
-$ mkdir -p build
-$ cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug
-$ cmake --build build
+mkdir -p build
+cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
 ```
 
 To install with [CMake](https://cmake.org):
+
 ```bash
-$ cmake --install build
+cmake --install build
 ```
 
 To build and install with [Docker](https://www.docker.com):
+
 ```bash
-$ docker build -t libthe .
+docker build -t libthe .
 ```
 
 ## Usage
 You can import specific utility with:
+
 ```c
 #include <the/macro.h>
 ```
 
 With [CMake](https://cmake.org):
+
 ```cmake
 cmake_minimum_required(VERSION 3.5)
 
@@ -40,6 +45,7 @@ target_link_libraries(target PUBLIC "${LIBTHE_LIBRARY}")
 ```
 
 With [CMake's FetchContent](https://cmake.org/cmake/help/latest/module/FetchContent.html):
+
 ```cmake
 cmake_minimum_required(VERSION 3.14)
 include(FetchContent)
@@ -55,13 +61,20 @@ target_link_libraries(target PUBLIC libthe)
 
 ## Testing
 To test your build with [CMake](https://cmake.org):
+
 ```bash
-$ cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
-$ cmake --build build
-$ ctest -T memcheck --output-on-failure --test-dir build
+cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
+cmake --build build
+
+# Without memcheck
+ctest --output-on-failure --test-dir build
+
+# With Valgrind memcheck
+ctest -T memcheck --output-on-failure --test-dir build
 ```
 
 To test your build with [Docker](https://www.docker.com):
+
 ```bash
 $ docker run libthe
 ```

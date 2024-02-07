@@ -4,7 +4,7 @@
  */
 
 #include "enum.h"
-#include "string.h"
+#include <the/string.h>
 
 the_str_t the_enum_str (int self) {
   return the_str_alloc(L"%d", self);

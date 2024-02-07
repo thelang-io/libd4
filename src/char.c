@@ -4,9 +4,9 @@
  */
 
 #include "char.h"
+#include <the/safe.h>
+#include <the/string.h>
 #include <ctype.h>
-#include "safe.h"
-#include "string.h"
 
 unsigned char the_char_byte (char self) {
   return (unsigned char) self;

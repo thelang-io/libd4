@@ -4,7 +4,7 @@
  */
 
 #include "bool.h"
-#include "string.h"
+#include <the/string.h>
 
 the_str_t the_bool_str (bool self) {
   return the_str_alloc(self ? L"true" : L"false");

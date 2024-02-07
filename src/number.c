@@ -4,8 +4,8 @@
  */
 
 #include "number.h"
+#include <the/string.h>
 #include <inttypes.h>
-#include "string.h"
 
 the_str_t the_f32_str (float self) {
   return the_str_alloc(L"%f", (double) self);

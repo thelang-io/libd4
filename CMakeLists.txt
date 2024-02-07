@@ -70,9 +70,23 @@ if (MINGW OR UNIX)
   install(TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_static LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 endif ()
 
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_EXAMPLES)
+  set(examples any bool byte)
+
+  foreach (example ${examples})
+    add_executable(${PROJECT_NAME}-example-${example} examples/${example}.c $<TARGET_OBJECTS:${PROJECT_NAME}_object>)
+  endforeach ()
+endif ()
+
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
   set(CTEST_MEMORYCHECK_COMMAND valgrind)
   set(MEMORYCHECK_COMMAND_OPTIONS "--error-exitcode=255 --errors-for-leak-kinds=all --leak-check=full --show-leak-kinds=all --tool=memcheck --track-origins=yes")
 
   include(CTest)
+  set(tests rand)
+
+  foreach (test ${tests})
+    add_executable(${PROJECT_NAME}-test-${test} test/${test}-test.c $<TARGET_OBJECTS:${PROJECT_NAME}_object>)
+    add_test(${test} ${PROJECT_NAME}-test-${test})
+  endforeach ()
 endif ()

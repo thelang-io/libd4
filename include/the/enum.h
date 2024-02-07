@@ -10,7 +10,11 @@
 
 #include <the/string-type.h>
 
-/** todo */
+/**
+ * Generates string representation of the object.
+ * @param self Object to generate string representation for.
+ * @return String representation of the object.
+ */
 the_str_t the_enum_str (int self);
 
 #endif

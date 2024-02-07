@@ -4,29 +4,37 @@
  */
 
 #include "any.h"
-#include "string.h"
+#include <the/string.h>
 
 the_any_t the_any_copy (const the_any_t self) {
-  return self.d == NULL ? (the_any_t) {0, NULL, NULL, NULL, NULL, NULL, NULL} : self._copy(self);
+  return self.ctx == NULL ? (the_any_t) {self.type, NULL, NULL, NULL, NULL, NULL} : self.copy_cb(self.ctx);
 }
 
 bool the_any_eq (const the_any_t self, const the_any_t rhs) {
-  return self.d == NULL ? false : self._eq(self, rhs);
+  if (self.type != rhs.type || ((self.ctx == NULL || rhs.ctx == NULL) && rhs.ctx != self.ctx)) {
+    return false;
+  }
+
+  return self.eq_cb(self.ctx, rhs.ctx);
 }
 
 void the_any_free (the_any_t self) {
-  if (self.d != NULL) self._free(self);
+  if (self.ctx != NULL) self.free_cb(self.ctx);
 }
 
 bool the_any_ne (const the_any_t self, const the_any_t rhs) {
-  return self.d == NULL ? true : self._ne(self, rhs);
+  if (self.type == rhs.type || ((self.ctx == NULL || rhs.ctx == NULL) && rhs.ctx == self.ctx)) {
+    return false;
+  }
+
+  return !self.eq_cb(self.ctx, rhs.ctx);
 }
 
-the_any_t the_any_realloc (the_any_t self, const the_any_t n) {
+the_any_t the_any_realloc (the_any_t self, const the_any_t rhs) {
   the_any_free(self);
-  return the_any_copy(n);
+  return the_any_copy(rhs);
 }
 
 the_str_t the_any_str (const the_any_t self) {
-  return self.d == NULL ? the_str_alloc(L"any") : self._str(self);
+  return self.ctx == NULL ? the_str_alloc(L"any") : self.str_cb(self.ctx);
 }

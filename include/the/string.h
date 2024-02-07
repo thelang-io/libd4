@@ -9,14 +9,18 @@
 /* See https://github.com/thelang-io/helpers for reference. */
 
 #include <the/error-type.h>
-#include <the/string-type.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <wchar.h>
 
-/** Structure representing string object. */
-typedef struct the_arr_str_s the_arr_str_t;
+/** Structure representing array of string objects. */
+typedef struct {
+  /** Pointer to a first element of the array object. */
+  the_str_t *data;
+
+  /** Length of array object. */
+  size_t len;
+} the_arr_str_t;
 
 /** todo */
 the_str_t the_str_alloc (const wchar_t *fmt, ...);
@@ -35,9 +39,6 @@ bool the_str_contains (const the_str_t self, const the_str_t search);
 
 /** todo */
 the_str_t the_str_copy (const the_str_t self);
-
-/** todo */
-wchar_t *the_str_cstr (const the_str_t self);
 
 /** todo */
 bool the_str_empty (const the_str_t self);
@@ -62,9 +63,6 @@ bool the_str_gt (const the_str_t self, const the_str_t rhs);
 
 /** todo */
 bool the_str_le (const the_str_t self, const the_str_t rhs);
-
-/** todo */
-size_t the_str_len (const the_str_t self);
 
 /** todo */
 bool the_str_lt (const the_str_t self, const the_str_t rhs);

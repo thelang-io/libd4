@@ -4,7 +4,7 @@
  */
 
 #include "byte.h"
-#include "string.h"
+#include <the/string.h>
 
 the_str_t the_byte_str (unsigned char self) {
   return the_str_alloc(L"%u", self);
