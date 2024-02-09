@@ -4,14 +4,14 @@
  */
 
 #include <the/enum.h>
+#include <the/string.h>
 
 enum Color {
   Red = 10,
   Green = 20,
-  Blue = 30,
 };
 
-int main () {
+int main (void) {
   the_str_t a_str = the_enum_str(Red);
   the_str_t b_str = the_enum_str(Green);
 

@@ -4,8 +4,9 @@
  */
 
 #include <the/byte.h>
+#include <the/string.h>
 
-int main () {
+int main (void) {
   the_str_t a_str = the_byte_str(0x0);
   the_str_t b_str = the_byte_str(0xFF);
 

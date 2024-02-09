@@ -4,8 +4,12 @@
  */
 
 #include <the/char.h>
+#include <the/string.h>
 
-int main () {
+int main (void) {
+  the_str_t a_str;
+  the_str_t b_str;
+
   printf("'a' as byte = %u\n", the_char_byte('a'));
 
   if (the_char_isLetterOrDigit('a')) {
@@ -15,11 +19,11 @@ int main () {
   printf("'%c' in lower case '%c'", 'A', the_char_lower('A'));
   printf("'%c' in upper case '%c'", 'a', the_char_upper('a'));
 
-  the_str_t a_str = the_char_str('A');
+  a_str = the_char_str('A');
   printf("%ls\n", a_str.data);
   the_str_free(a_str);
 
-  the_str_t b_str = the_char_repeat('a', 10);
+  b_str = the_char_repeat('a', 10);
   printf("a repeated 10 times = %ls\n", b_str.data);
   the_str_free(b_str);
 

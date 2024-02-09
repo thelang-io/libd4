@@ -22,10 +22,11 @@ endif ()
 
 ExternalProject_Add(
   openssl
+  URL https://github.com/openssl/openssl/releases/download/openssl-3.2.1/openssl-3.2.1.tar.gz
+  URL_HASH SHA256=83c7329fe52c850677d75e5d0b0ca245309b97e8ecbcfdc1dfdc4ab9fac35b39
+  DOWNLOAD_EXTRACT_TIMESTAMP TRUE
   SOURCE_DIR "${openssl_SOURCE_DIR}"
   INSTALL_DIR "${openssl_INSTALL_DIR}"
-  GIT_REPOSITORY https://github.com/openssl/openssl.git
-  GIT_TAG openssl-3.2.1
   BUILD_BYPRODUCTS "${openssl_CRYPTO_STATIC_LIBRARY}" "${openssl_SSL_STATIC_LIBRARY}"
   CONFIGURE_COMMAND perl "${openssl_SOURCE_DIR}/Configure" no-tests --libdir=lib "--prefix=${openssl_INSTALL_DIR}" "--openssldir=${openssl_INSTALL_DIR}"
   BUILD_COMMAND ${openssl_MAKE_PROGRAM}

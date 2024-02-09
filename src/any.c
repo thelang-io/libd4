@@ -7,7 +7,9 @@
 #include <the/string.h>
 
 the_any_t the_any_copy (const the_any_t self) {
-  return self.ctx == NULL ? (the_any_t) {self.type, NULL, NULL, NULL, NULL, NULL} : self.copy_cb(self.ctx);
+  return self.ctx == NULL
+    ? (the_any_t) {self.type, NULL, NULL, NULL, NULL, NULL}
+    : (the_any_t) {self.type, self.copy_cb(self.ctx), self.copy_cb, self.eq_cb, self.free_cb, self.str_cb};
 }
 
 bool the_any_eq (const the_any_t self, const the_any_t rhs) {

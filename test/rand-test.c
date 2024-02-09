@@ -5,9 +5,9 @@
 
 #include <the/rand.h>
 
-void test_rand_int () {
+static void test_rand_int (void) {
 }
 
-int main () {
+int main (void) {
   test_rand_int();
 }

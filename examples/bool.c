@@ -4,8 +4,9 @@
  */
 
 #include <the/bool.h>
+#include <the/string.h>
 
-int main () {
+int main (void) {
   the_str_t a_str = the_bool_str(true);
   the_str_t b_str = the_bool_str(false);
 

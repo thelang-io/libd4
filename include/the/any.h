@@ -16,7 +16,7 @@
  * @param ctx Context of the object to copy.
  * @return Newly copied object.
  */
-typedef struct the_any_s (*the_any_copy_cb) (const void *);
+typedef void *(*the_any_copy_cb) (const void *);
 
 /**
  * Callback that is used as a property of the_any_t object to compare two objects.
