@@ -6,8 +6,7 @@
 #ifndef THE_RAND_H
 #define THE_RAND_H
 
-/* See https://github.com/thelang-io/helpers for reference. */
-// todo replace with link to openssl docs.
+/* See https://www.openssl.org/docs/man3.2/man3/RAND_bytes.html for reference. */
 
 #include <openssl/rand.h>
 

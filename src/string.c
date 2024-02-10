@@ -172,60 +172,39 @@ the_str_t the_str_realloc (the_str_t self, const the_str_t rhs) {
   return the_str_copy(rhs);
 }
 
-// todo always add null in the end
 the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLineBreaks) {
-  bool k;
-  the_str_t *r = NULL;
-  size_t l = 0;
-  wchar_t *d;
-  size_t i = 0;
-  wchar_t *a;
+  bool k = o1 == 0 ? false : keepLineBreaks;
+  the_str_t *result = NULL;
+  size_t len = 0;
+  size_t start = 0;
 
   if (self.len != 0) {
     return (the_arr_str_t) {NULL, 0};
   }
 
-  k = o1 == 0 ? false : keepLineBreaks;
-  d = the_safe_alloc(self.len * sizeof(wchar_t));
-
   for (size_t j = 0; j < self.len; j++) {
     wchar_t c = self.data[j];
 
     if (c == L'\r' || c == L'\n') {
-      if (k) {
-        d[i++] = c;
-      }
+      size_t beforeLineBreak = j;
 
       if (c == L'\r' && j + 1 < self.len && self.data[j + 1] == L'\n') {
         j++;
-
-        if (k) {
-          d[i++] = self.data[j];
-        }
       }
 
-      a = the_safe_alloc(i * sizeof(wchar_t));
-      wmemcpy(a, d, i);
+      result = the_safe_realloc(result, ++len * sizeof(the_str_t));
+      result[len - 1] = the_str_calloc(&self.data[start], (k ? j + 1 : beforeLineBreak) - start);
 
-      r = the_safe_realloc(r, ++l * sizeof(the_str_t));
-      r[l - 1] = (the_str_t) {a, i};
-
-      i = 0;
-    } else {
-      d[i++] = c;
+      start = j + 1;
     }
   }
 
-  if (i != 0) {
-    a = the_safe_alloc(i * sizeof(wchar_t));
-    wmemcpy(a, d, i);
-
-    r = the_safe_realloc(r, ++l * sizeof(the_str_t));
-    r[l - 1] = (the_str_t) {a, i};
+  if (start != self.len) {
+    result = the_safe_realloc(result, ++len * sizeof(the_str_t));
+    result[len - 1] = the_str_calloc(&self.data[start], self.len - start);
   }
 
-  the_safe_free(d);
-  return (the_arr_str_t) {r, l};
+  return (the_arr_str_t) {result, len};
 }
 
 the_str_t the_str_lower (const the_str_t self) {
@@ -257,7 +236,6 @@ bool the_str_not (const the_str_t self) {
   return self.len == 0;
 }
 
-// todo always add null in the end
 the_str_t the_str_replace (const the_str_t self, const the_str_t search, const the_str_t replacement, THE_UNUSED unsigned char o3, int32_t count) {
   size_t l = 0;
   wchar_t *d = NULL;
@@ -266,7 +244,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
 
   if (search.len == 0 && replacement.len > 0) {
     l = self.len + (count > 0 && (size_t) count <= self.len ? (size_t) count : self.len + 1) * replacement.len;
-    d = the_safe_alloc(l * sizeof(wchar_t));
+    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
     wmemcpy(d, replacement.data, replacement.len);
     j = replacement.len;
 
@@ -281,18 +259,22 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
   } else if (self.len == search.len && search.len > 0) {
     if (wmemcmp(self.data, search.data, search.len) != 0) {
       l = self.len;
-      d = the_safe_alloc(l * sizeof(wchar_t));
+      d = the_safe_alloc((l + 1) * sizeof(wchar_t));
       wmemcpy(d, self.data, l);
     } else if (replacement.len > 0) {
       l = replacement.len;
-      d = the_safe_alloc(l * sizeof(wchar_t));
+      d = the_safe_alloc((l + 1) * sizeof(wchar_t));
       wmemcpy(d, replacement.data, l);
     }
   } else if (self.len > search.len && search.len > 0 && replacement.len == 0) {
-    d = the_safe_alloc(self.len * sizeof(wchar_t));
+    d = the_safe_alloc((self.len + 1) * sizeof(wchar_t));
 
     for (size_t i = 0; i < self.len; i++) {
-      if (i <= self.len - search.len && wmemcmp(&self.data[i], search.data, search.len) == 0 && (count <= 0 || k++ < count)) {
+      if (
+        i <= self.len - search.len &&
+        wmemcmp(&self.data[i], search.data, search.len) == 0 &&
+        (count <= 0 || k++ < count)
+      ) {
         i += search.len - 1;
       } else {
         d[l++] = self.data[i];
@@ -303,19 +285,23 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
       the_safe_free(d);
       d = NULL;
     } else if (l != self.len) {
-      d = the_safe_realloc(d, l * sizeof(wchar_t));
+      d = the_safe_realloc(d, (l + 1) * sizeof(wchar_t));
     }
   } else if (self.len > search.len && search.len > 0 && replacement.len > 0) {
     l = self.len;
-    d = the_safe_alloc(l * sizeof(wchar_t));
+    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
 
     for (size_t i = 0; i < self.len; i++) {
-      if (i <= self.len - search.len && wmemcmp(&self.data[i], search.data, search.len) == 0 && (count <= 0 || k++ < count)) {
+      if (
+        i <= self.len - search.len &&
+        wmemcmp(&self.data[i], search.data, search.len) == 0 &&
+        (count <= 0 || k++ < count)
+      ) {
         if (search.len < replacement.len) {
           l += replacement.len - search.len;
 
           if (l > self.len) {
-            d = the_safe_realloc(d, l * sizeof(wchar_t));
+            d = the_safe_realloc(d, (l + 1) * sizeof(wchar_t));
           }
         } else if (search.len > replacement.len) {
           l -= search.len - replacement.len;
@@ -329,31 +315,38 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
       }
     }
 
-    d = the_safe_realloc(d, l * sizeof(wchar_t));
+    d = the_safe_realloc(d, (l + 1) * sizeof(wchar_t));
   } else if (self.len > 0) {
     l = self.len;
-    d = the_safe_alloc(l * sizeof(wchar_t));
+    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
     wmemcpy(d, self.data, l);
+  }
+
+  if (d != NULL) {
+    d[l] = '\0';
   }
 
   return (the_str_t) {d, l};
 }
 
-// todo code style
 the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, unsigned char o2, int32_t end) {
-  int32_t i = o1 == 0
-    ? 0
-    : (int32_t) (
-      start < 0
-      ? (
-        start < -((int32_t) self.len)
-          ? 0
-          : (size_t) start + self.len
-      )
-      : ((size_t) start > self.len ? self.len : (size_t) start)
-      );
-  int32_t j = o2 == 0 ? (int32_t) self.len : (int32_t) (end < 0 ? (end < -((int32_t) self.len) ? 0 : (size_t) end + self.len) : ((size_t) end > self.len ? self.len : (size_t) end));
+  int32_t i = 0;
+  int32_t j = 0;
   size_t l;
+
+  if (o1 != 0 && start < 0 && start >= -((int32_t) self.len)) {
+    i = (int32_t) ((size_t) start + self.len);
+  } else if (o1 != 0 && start >= 0) {
+    i = (int32_t) ((size_t) start > self.len ? self.len : (size_t) start);
+  }
+
+  if (o2 == 0 || (end >= 0 && (size_t) end > self.len)) {
+    j = (int32_t) self.len;
+  } else if (end < 0 && end >= -((int32_t) self.len)) {
+    j = (int32_t) ((size_t) end + self.len);
+  } else if (end >= 0) {
+    j = (int32_t) end;
+  }
 
   if (i >= j || (size_t) i >= self.len) {
     return the_str_alloc(L"");
@@ -363,7 +356,6 @@ the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, 
   return the_str_calloc(&self.data[i], l);
 }
 
-// todo always add null in the end
 the_arr_str_t the_str_split (const the_str_t self, THE_UNUSED unsigned char o1, const the_str_t delimiter) {
   the_str_t *r = NULL;
   size_t l = 0;
