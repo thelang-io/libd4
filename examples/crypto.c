@@ -5,6 +5,7 @@
 
 #include <the/crypto.h>
 #include <the/safe.h>
+#include <stdio.h>
 
 int main (void) {
   unsigned char *out_digest;
