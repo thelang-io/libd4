@@ -32,16 +32,16 @@ typedef struct the_err_buf_s {
 
 /** Structure representing the_err_stack_t linked list. */
 typedef struct the_err_stack_s {
-  /** todo */
+  /** Stack file path. */
   const wchar_t *file;
 
-  /** todo */
+  /** Stack function name. */
   const wchar_t *name;
 
-  /** todo */
+  /** Stack line number. */
   int line;
 
-  /** todo */
+  /** Stack line column. */
   int col;
 
   /** Next item in a chain. */
