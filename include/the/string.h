@@ -22,28 +22,68 @@ typedef struct {
   size_t len;
 } the_arr_str_t;
 
-/** todo */
+/**
+ * Allocates string with format specifiers (similar to printf).
+ * @param fmt String that contains text with format specifiers.
+ * @return Newly allocated string.
+ */
 the_str_t the_str_alloc (const wchar_t *fmt, ...);
 
-/** todo */
+/**
+ * Allocates string from C string of specified size.
+ * @param self String to copy data from.
+ * @param size Size that needs to be copied from self string.
+ * @return Newly allocated string.
+ */
 the_str_t the_str_calloc (const wchar_t *self, size_t size);
 
-/** todo */
+/**
+ * Returns a wide character at specified position in string otherwise throws error if index more than string length.
+ * @param state Error state to assign error to.
+ * @param line Source line number.
+ * @param col Source line column.
+ * @param self The string to find a character in.
+ * @param index Character position to search for.
+ * @return Found wide character in a specified string.
+ */
 wchar_t *the_str_at (the_err_state_t *state, int line, int col, const the_str_t self, int32_t index);
 
-/** todo */
+/**
+ * Concatenates two string into one.
+ * @param self First string for concatenation.
+ * @param other Second string for concatenation.
+ * @return Resulting string of concatenation.
+ */
 the_str_t the_str_concat (const the_str_t self, const the_str_t other);
 
-/** todo */
+/**
+ * Checks whether string contains search substring.
+ * @param self String to check in contains substring.
+ * @param search Substring to search for.
+ * @return Whether string contains search substring.
+ */
 bool the_str_contains (const the_str_t self, const the_str_t search);
 
-/** todo */
+/**
+ * Creates deep copy of the string.
+ * @param self String to create copy of.
+ * @return Deep copy of the string.
+ */
 the_str_t the_str_copy (const the_str_t self);
 
-/** todo */
+/**
+ * Checks whether string is empty.
+ * @param self String to check.
+ * @return Whether string is empty.
+ */
 bool the_str_empty (const the_str_t self);
 
-/** todo */
+/**
+ * Checks whether string is equal to other string.
+ * @param self String to check.
+ * @param rhs Other string to check.
+ * @return Whether string is equal to other string.
+ */
 bool the_str_eq (const the_str_t self, const the_str_t rhs);
 
 /** todo */
