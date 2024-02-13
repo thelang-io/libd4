@@ -55,7 +55,7 @@ set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c sr
 add_library(the_object OBJECT ${sources})
 set_property(TARGET the_object PROPERTY POSITION_INDEPENDENT_CODE 1)
 target_include_directories(the_object PUBLIC include)
-target_link_libraries(the_object PUBLIC OpenSSL::Crypto OpenSSL::SSL)
+target_link_libraries(the_object PUBLIC OpenSSL::Crypto OpenSSL::SSL ${CMAKE_DL_LIBS})
 
 add_library(the SHARED $<TARGET_OBJECTS:the_object>)
 
