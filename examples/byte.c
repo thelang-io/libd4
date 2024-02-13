@@ -5,6 +5,7 @@
 
 #include <the/byte.h>
 #include <the/string.h>
+#include <stdio.h>
 
 int main (void) {
   the_str_t a_str = the_byte_str(0x0);

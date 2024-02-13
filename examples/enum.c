@@ -5,6 +5,7 @@
 
 #include <the/enum.h>
 #include <the/string.h>
+#include <stdio.h>
 
 enum Color {
   Red = 10,

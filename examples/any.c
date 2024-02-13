@@ -7,6 +7,7 @@
 #include <the/number.h>
 #include <the/safe.h>
 #include <the/string.h>
+#include <stdio.h>
 
 #define TYPE_u64 1
 
