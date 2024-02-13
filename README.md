@@ -33,7 +33,7 @@ You can import specific utility with:
 With [CMake](https://cmake.org):
 
 ```cmake
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.14)
 
 find_path(LIBTHE_INCLUDE_DIR the/macro.h)
 find_library(LIBTHE_LIBRARY libthe)

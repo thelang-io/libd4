@@ -11,8 +11,8 @@ ProcessorCount(N)
 set(openssl_SOURCE_DIR "${CMAKE_CURRENT_BINARY_DIR}/openssl-src")
 set(openssl_INSTALL_DIR "${CMAKE_CURRENT_BINARY_DIR}/openssl")
 set(openssl_INCLUDE_DIR "${openssl_INSTALL_DIR}/include")
-set(openssl_CRYPTO_STATIC_LIBRARY "${openssl_INSTALL_DIR}/lib/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}")
-set(openssl_SSL_STATIC_LIBRARY "${openssl_INSTALL_DIR}/lib/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}")
+set(openssl_CRYPTO_LIBRARY_PATH "${openssl_INSTALL_DIR}/lib/libcrypto${CMAKE_STATIC_LIBRARY_SUFFIX}")
+set(openssl_SSL_LIBRARY_PATH "${openssl_INSTALL_DIR}/lib/libssl${CMAKE_STATIC_LIBRARY_SUFFIX}")
 
 if (WIN32)
   set(openssl_MAKE_PROGRAM nmake)
@@ -27,7 +27,7 @@ ExternalProject_Add(
   DOWNLOAD_EXTRACT_TIMESTAMP TRUE
   SOURCE_DIR "${openssl_SOURCE_DIR}"
   INSTALL_DIR "${openssl_INSTALL_DIR}"
-  BUILD_BYPRODUCTS "${openssl_CRYPTO_STATIC_LIBRARY}" "${openssl_SSL_STATIC_LIBRARY}"
+  BUILD_BYPRODUCTS "${openssl_CRYPTO_LIBRARY_PATH}" "${openssl_SSL_LIBRARY_PATH}"
   CONFIGURE_COMMAND perl "${openssl_SOURCE_DIR}/Configure" no-tests --libdir=lib "--prefix=${openssl_INSTALL_DIR}" "--openssldir=${openssl_INSTALL_DIR}"
   BUILD_COMMAND ${openssl_MAKE_PROGRAM}
   INSTALL_COMMAND ${openssl_MAKE_PROGRAM} install_sw
@@ -38,11 +38,11 @@ ExternalProject_Add(
 file(MAKE_DIRECTORY "${openssl_INCLUDE_DIR}")
 
 add_library(OpenSSL::Crypto STATIC IMPORTED GLOBAL)
-set_property(TARGET OpenSSL::Crypto PROPERTY IMPORTED_LOCATION "${openssl_CRYPTO_STATIC_LIBRARY}")
+set_property(TARGET OpenSSL::Crypto PROPERTY IMPORTED_LOCATION "${openssl_CRYPTO_LIBRARY_PATH}")
 set_property(TARGET OpenSSL::Crypto PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${openssl_INCLUDE_DIR}")
 add_dependencies(OpenSSL::Crypto openssl)
 
 add_library(OpenSSL::SSL STATIC IMPORTED GLOBAL)
-set_property(TARGET OpenSSL::SSL PROPERTY IMPORTED_LOCATION "${openssl_SSL_STATIC_LIBRARY}")
+set_property(TARGET OpenSSL::SSL PROPERTY IMPORTED_LOCATION "${openssl_SSL_LIBRARY_PATH}")
 set_property(TARGET OpenSSL::SSL PROPERTY INTERFACE_INCLUDE_DIRECTORIES "${openssl_INCLUDE_DIR}")
 add_dependencies(OpenSSL::SSL openssl)
