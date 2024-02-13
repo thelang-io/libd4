@@ -70,7 +70,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_EXAMPLES)
 
   foreach (example ${examples})
     add_executable(${PROJECT_NAME}-example-${example} examples/${example}.c)
-    target_link_libraries(${PROJECT_NAME}-example-${example} PUBLIC the ${CMAKE_DL_LIBS})
+    target_link_libraries(${PROJECT_NAME}-example-${example} PUBLIC the)
   endforeach ()
 endif ()
 
@@ -83,7 +83,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
 
   foreach (test ${tests})
     add_executable(${PROJECT_NAME}-test-${test} test/${test}-test.c)
-    target_link_libraries(${PROJECT_NAME}-test-${test} PUBLIC the ${CMAKE_DL_LIBS})
+    target_link_libraries(${PROJECT_NAME}-test-${test} PUBLIC the)
     add_test(${test} ${PROJECT_NAME}-test-${test})
   endforeach ()
 endif ()
