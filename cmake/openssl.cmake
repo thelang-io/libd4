@@ -28,7 +28,7 @@ ExternalProject_Add(
   SOURCE_DIR "${openssl_SOURCE_DIR}"
   INSTALL_DIR "${openssl_INSTALL_DIR}"
   BUILD_BYPRODUCTS "${openssl_CRYPTO_LIBRARY_PATH}" "${openssl_SSL_LIBRARY_PATH}"
-  CONFIGURE_COMMAND perl "${openssl_SOURCE_DIR}/Configure" -static no-dso no-shared no-tests --libdir=lib "--prefix=${openssl_INSTALL_DIR}" "--openssldir=${openssl_INSTALL_DIR}"
+  CONFIGURE_COMMAND perl "${openssl_SOURCE_DIR}/Configure" no-tests --libdir=lib "--prefix=${openssl_INSTALL_DIR}" "--openssldir=${openssl_INSTALL_DIR}"
   BUILD_COMMAND ${openssl_MAKE_PROGRAM}
   INSTALL_COMMAND ${openssl_MAKE_PROGRAM} install_sw
   TEST_COMMAND ""

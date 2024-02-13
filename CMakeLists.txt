@@ -53,8 +53,24 @@ endif ()
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
 include_directories(include)
 
+list(APPEND THE_LIBRARIES OpenSSL::Crypto)
+list(APPEND THE_LIBRARIES OpenSSL::SSL)
+
+if (WIN32)
+  list(APPEND THE_LIBRARIES ws2_32)
+  list(APPEND THE_LIBRARIES gdi32)
+  list(APPEND THE_LIBRARIES advapi32)
+  list(APPEND THE_LIBRARIES crypt32)
+  list(APPEND THE_LIBRARIES user32)
+else ()
+  find_package(Threads REQUIRED)
+
+  list(APPEND THE_LIBRARIES Threads::Threads)
+  list(APPEND THE_LIBRARIES ${CMAKE_DL_LIBS})
+endif ()
+
 add_library(the ${sources})
-target_link_libraries(the PUBLIC OpenSSL::Crypto OpenSSL::SSL)
+target_link_libraries(the PUBLIC ${THE_LIBRARIES})
 
 if (MINGW OR UNIX)
   configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
