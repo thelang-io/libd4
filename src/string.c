@@ -64,20 +64,17 @@ the_str_t the_str_concat (const the_str_t self, const the_str_t other) {
 }
 
 bool the_str_contains (const the_str_t self, const the_str_t search) {
-  bool r = self.len == 0;
-
-  if (!r && self.len == search.len) {
-    r = wmemcmp(self.data, search.data, self.len) == 0;
-  } else if (!r && self.len > search.len) {
+  if (self.len == search.len) {
+    return wmemcmp(self.data, search.data, self.len) == 0;
+  } else if (self.len > 0 && self.len > search.len) {
     for (size_t i = 0; i < self.len - search.len; i++) {
       if (wmemcmp(&self.data[i], search.data, search.len) == 0) {
-        r = true;
-        break;
+        return true;
       }
     }
   }
 
-  return r;
+  return false;
 }
 
 the_str_t the_str_copy (const the_str_t self) {
@@ -131,16 +128,13 @@ the_str_t the_str_escape (const the_str_t self) {
 }
 
 int32_t the_str_find (const the_str_t self, const the_str_t search) {
-  int32_t r = -1;
-
   for (size_t i = 0; i < self.len; i++) {
     if (wmemcmp(&self.data[i], search.data, search.len) == 0) {
-      r = (int32_t) i;
-      break;
+      return (int32_t) i;
     }
   }
 
-  return r;
+  return -1;
 }
 
 void the_str_free (the_str_t self) {

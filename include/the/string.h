@@ -86,44 +86,90 @@ bool the_str_empty (const the_str_t self);
  */
 bool the_str_eq (const the_str_t self, const the_str_t rhs);
 
-/** todo */
+/**
+ * Escapes all escapable characters in a string.
+ * @param self String to escape.
+ * @return Newly created string with escape characters escaped.
+ */
 the_str_t the_str_escape (const the_str_t self);
 
-/** todo */
+/**
+ * Finds substring in a string.
+ * @param self String to search in.
+ * @param search String to search for.
+ * @return Position of found string, -1 otherwise.
+ */
 int32_t the_str_find (const the_str_t self, const the_str_t search);
 
-/** todo */
+/**
+ * Deallocates string.
+ * @param self String to deallocate.
+ */
 void the_str_free (the_str_t self);
 
-/** todo */
+/**
+ * Check whether string is greater than or equal to right-hand string.
+ * @param self String to compare.
+ * @param rhs String to compare.
+ * @return Whether string is greater or equal than right-hand string.
+ */
 bool the_str_ge (const the_str_t self, const the_str_t rhs);
 
-/** todo */
+/**
+ * Check whether string is greater than right-hand string.
+ * @param self String to compare.
+ * @param rhs String to compare.
+ * @return Whether string is greater than right-hand string.
+ */
 bool the_str_gt (const the_str_t self, const the_str_t rhs);
 
-/** todo */
+/**
+ * Check whether string is less than or equal to right-hand string.
+ * @param self String to compare.
+ * @param rhs String to compare.
+ * @return Whether string is less than or equal to right-hand string.
+ */
 bool the_str_le (const the_str_t self, const the_str_t rhs);
 
-/** todo */
+/**
+ * Splits string by new line into array of strings.
+ * @param self String to split into lines.
+ * @param o1 Whether or not `keepLineBreaks` parameter is passed.
+ * @param keepLineBreaks Whether to keep line breaks in resulting array.
+ * @return Split by new line array of strings.
+ */
+the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLineBreaks);
+
+/**
+ * Creates and returns representation of the string in lowercase.
+ * @param self String to create representation for.
+ * @return Representation of the string in lowercase.
+ */
+the_str_t the_str_lower (const the_str_t self);
+
+/**
+ * Creates and returns representation of the string with only first letter in lowercase.
+ * @param self String to create representation for.
+ * @return Representation of the string with only first letter in lowercase.
+ */
+the_str_t the_str_lowerFirst (const the_str_t self);
+
+/**
+ * Check whether string is less than right-hand string.
+ * @param self String to compare.
+ * @param rhs String to compare.
+ * @return Whether string is less than right-hand string.
+ */
 bool the_str_lt (const the_str_t self, const the_str_t rhs);
 
 /** todo */
 bool the_str_ne (const the_str_t self, const the_str_t rhs);
 
 /** todo */
-the_str_t the_str_realloc (the_str_t self, const the_str_t rhs);
-
-/** todo */
-the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLineBreaks);
-
-/** todo */
-the_str_t the_str_lower (const the_str_t self);
-
-/** todo */
-the_str_t the_str_lowerFirst (const the_str_t self);
-
-/** todo */
 bool the_str_not (const the_str_t self);
+
+/** todo */
+the_str_t the_str_realloc (the_str_t self, const the_str_t rhs);
 
 /** todo */
 the_str_t the_str_replace (const the_str_t self, const the_str_t search, const the_str_t replacement, unsigned char o3, int32_t count);
@@ -182,10 +228,18 @@ the_str_t the_str_trimEnd (const the_str_t self);
 /** todo */
 the_str_t the_str_trimStart (const the_str_t self);
 
-/** todo */
+/**
+ * Creates and returns representation of the string in uppercase.
+ * @param self String to create representation for.
+ * @return Representation of the string in uppercase.
+ */
 the_str_t the_str_upper (const the_str_t self);
 
-/** todo */
+/**
+ * Creates and returns representation of the string with only first letter in uppercase.
+ * @param self String to create representation for.
+ * @return Representation of the string with only first letter in uppercase.
+ */
 the_str_t the_str_upperFirst (const the_str_t self);
 
 #endif
