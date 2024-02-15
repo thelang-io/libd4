@@ -1,6 +1,5 @@
 # libthe
 Collection of utilities for core of The programming language.
-TODO test all examples from this file, along with pkg-config.
 
 ## Building and installing
 To build with [CMake](https://cmake.org):
@@ -28,6 +27,12 @@ You can import specific utility with:
 
 ```c
 #include <the/macro.h>
+```
+
+With GCC/Clang:
+
+```bash
+cc main.c -o program -lthe
 ```
 
 With [CMake](https://cmake.org):
@@ -76,7 +81,8 @@ ctest -T memcheck --output-on-failure --test-dir build
 To test your build with [Docker](https://www.docker.com):
 
 ```bash
-$ docker run libthe
+docker build -t libthe .
+docker run libthe
 ```
 
 ## Contributing
