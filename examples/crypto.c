@@ -5,7 +5,7 @@
 
 #include <the/crypto.h>
 #include <the/safe.h>
-#include <stdio.h>
+#include <wchar.h>
 
 int main (void) {
   unsigned char *out_digest;
@@ -21,7 +21,7 @@ int main (void) {
   EVP_DigestFinal_ex(ctx, out_digest, &len);
 
   for (unsigned int i = 0; i < len; i++) {
-    printf("%02X", out_digest[i]);
+    wprintf(L"%02X", out_digest[i]);
   }
 
   the_safe_free(out_digest);

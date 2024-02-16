@@ -4,9 +4,9 @@
  */
 
 #include "safe.h"
-#include <the/error.h>
 #include <stdlib.h>
 #include <string.h>
+#include "error.h"
 
 void *the_safe_alloc (size_t size) {
   void *d = malloc(size);

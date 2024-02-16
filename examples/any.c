@@ -7,7 +7,6 @@
 #include <the/number.h>
 #include <the/safe.h>
 #include <the/string.h>
-#include <stdio.h>
 
 #define TYPE_u64 1
 
@@ -55,11 +54,11 @@ int main (void) {
   b_str = the_any_str(b);
 
   if (the_any_eq(a, b)) {
-    printf("a = %ls\n", a_str.data);
+    wprintf(L"a = %ls\n", a_str.data);
   }
 
   if (the_any_ne(b, c)) {
-    printf("b = %ls\n", b_str.data);
+    wprintf(L"b = %ls\n", b_str.data);
   }
 
   the_str_free(b_str);

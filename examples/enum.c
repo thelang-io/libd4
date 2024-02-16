@@ -5,7 +5,6 @@
 
 #include <the/enum.h>
 #include <the/string.h>
-#include <stdio.h>
 
 enum Color {
   Red = 10,
@@ -16,8 +15,8 @@ int main (void) {
   the_str_t a_str = the_enum_str(Red);
   the_str_t b_str = the_enum_str(Green);
 
-  printf("Red as string = %ls\n", a_str.data);
-  printf("Green as string = %ls\n", b_str.data);
+  wprintf(L"Red as string = %ls\n", a_str.data);
+  wprintf(L"Green as string = %ls\n", b_str.data);
 
   the_str_free(b_str);
   the_str_free(a_str);
