@@ -51,7 +51,7 @@ else ()
 endif ()
 
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
-include_directories(include)
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 list(APPEND THE_LIBRARIES OpenSSL::Crypto)
 list(APPEND THE_LIBRARIES OpenSSL::SSL)
@@ -69,7 +69,7 @@ else ()
   list(APPEND THE_LIBRARIES ${CMAKE_DL_LIBS})
 endif ()
 
-add_library(the ${sources})
+add_library(the SHARED ${sources})
 target_link_libraries(the PUBLIC ${THE_LIBRARIES})
 
 if (MINGW OR UNIX)
@@ -86,7 +86,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_EXAMPLES)
 
   foreach (example ${examples})
     add_executable(${PROJECT_NAME}-example-${example} examples/${example}.c)
-    target_link_libraries(${PROJECT_NAME}-example-${example} PUBLIC the)
+    target_link_libraries(${PROJECT_NAME}-example-${example} PRIVATE the)
   endforeach ()
 endif ()
 
@@ -99,7 +99,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
 
   foreach (test ${tests})
     add_executable(${PROJECT_NAME}-test-${test} test/${test}-test.c)
-    target_link_libraries(${PROJECT_NAME}-test-${test} PUBLIC the)
+    target_link_libraries(${PROJECT_NAME}-test-${test} PRIVATE the)
     add_test(${test} ${PROJECT_NAME}-test-${test})
   endforeach ()
 endif ()
