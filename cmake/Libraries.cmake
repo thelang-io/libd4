@@ -3,6 +3,9 @@
 # Licensed under the MIT License
 #
 
+list(APPEND THE_LIBRARIES OpenSSL::SSL)
+list(APPEND THE_LIBRARIES OpenSSL::Crypto)
+
 if (WIN32)
   list(APPEND THE_LIBRARIES ws2_32)
   list(APPEND THE_LIBRARIES gdi32)
@@ -15,6 +18,3 @@ else ()
   list(APPEND THE_LIBRARIES Threads::Threads)
   list(APPEND THE_LIBRARIES ${CMAKE_DL_LIBS})
 endif ()
-
-list(APPEND THE_LIBRARIES OpenSSL::SSL)
-list(APPEND THE_LIBRARIES OpenSSL::Crypto)
