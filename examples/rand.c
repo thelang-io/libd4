@@ -4,6 +4,7 @@
  */
 
 #include <the/rand.h>
+#include <stdio.h>
 #include <wchar.h>
 
 int main (void) {

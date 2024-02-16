@@ -5,6 +5,7 @@
 
 #include <the/error.h>
 #include <the/string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 

@@ -6,6 +6,7 @@
 #include "error.h"
 #include <the/safe.h>
 #include <the/string.h>
+#include <stdio.h>
 #include <stdlib.h>
 
 the_err_state_t the_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};

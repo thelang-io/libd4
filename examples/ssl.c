@@ -6,6 +6,7 @@
 #include <the/macro.h>
 #include <the/ssl.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <string.h>
 #include <wchar.h>
 
