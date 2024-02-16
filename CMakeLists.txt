@@ -50,9 +50,6 @@ else ()
   set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Werror -Wextra -pedantic-errors ${LIBTHE_CMAKE_FLAGS}")
 endif ()
 
-set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
-
 if (WIN32)
   list(APPEND THE_LIBRARIES ws2_32)
   list(APPEND THE_LIBRARIES gdi32)
@@ -69,7 +66,22 @@ endif ()
 list(APPEND THE_LIBRARIES OpenSSL::Crypto)
 list(APPEND THE_LIBRARIES OpenSSL::SSL)
 
-add_library(the SHARED ${sources})
+set(
+  sources
+  src/any.c
+  src/bool.c
+  src/byte.c
+  src/char.c
+  src/enum.c
+  src/error.c
+  src/number.c
+  src/rune.c
+  src/safe.c
+  src/string.c
+)
+
+add_library(the ${sources})
+target_include_directories(the PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(the PUBLIC ${THE_LIBRARIES})
 
 if (MINGW OR UNIX)
