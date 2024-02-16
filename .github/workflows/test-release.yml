@@ -1,4 +1,4 @@
-name: Test
+name: Test Release
 
 on:
   pull_request:
@@ -11,8 +11,8 @@ concurrency:
   group: test-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
-  test:
-    name: Build
+  test-release:
+    name: Build Release
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
