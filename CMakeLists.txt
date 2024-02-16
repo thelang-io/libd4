@@ -3,7 +3,7 @@
 # Licensed under the MIT License
 #
 
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.14)
 
 project(
   libthe
@@ -12,14 +12,15 @@ project(
   DESCRIPTION "Collection of utilities for core of The programming language."
 )
 
-include(GNUInstallDirs)
-
 option(LIBTHE_BUILD_EXAMPLES "Build example programs" OFF)
 option(LIBTHE_BUILD_TESTS "Build test programs" OFF)
 
-include(cmake/DownloadOpenSSL.cmake)
+include(cmake/Policies.cmake)
+set_policies()
+
 include(cmake/Flags.cmake)
 include(cmake/Libraries.cmake)
+include(cmake/DownloadOpenSSL.cmake)
 
 set(
   sources

@@ -3,6 +3,8 @@
 # Licensed under the MIT License
 #
 
+include(GNUInstallDirs)
+
 if (MINGW OR UNIX)
   configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 

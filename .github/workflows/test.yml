@@ -41,7 +41,7 @@ jobs:
             build/openssl
             build/openssl-prefix
             build/openssl-src
-          key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/openssl.cmake') }}
+          key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
       - if: runner.os == 'Windows'
         run: New-Item -ItemType Directory -Force -Path build
       - if: runner.os != 'Windows'
