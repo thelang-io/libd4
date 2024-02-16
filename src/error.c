@@ -6,10 +6,9 @@
 #include "error.h"
 #include <the/safe.h>
 #include <the/string.h>
-#include <stdio.h>
 #include <stdlib.h>
 
-the_err_state_t the_err_state = {0, NULL, NULL, NULL, NULL, NULL, NULL};
+the_err_state_t the_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};
 
 void the_error_alloc (const the_err_state_t *state, size_t size) {
   wchar_t d[4096];
@@ -51,7 +50,8 @@ void the_error_assign (the_err_state_t *state, int line, int col, int id, void *
   state->id = id;
   state->ctx = ctx;
   state->free_cb = free_cb;
-  the_error_stack_pos(state, line, col);
+  if (line != 0) state->stack_last->line = line;
+  if (col != 0) state->stack_last->col = col;
   the_error_stack_str(state);
 }
 
@@ -81,14 +81,10 @@ void the_error_stack_pop (the_err_state_t *state) {
   the_safe_free(stack);
 }
 
-void the_error_stack_pos (the_err_state_t *state, int line, int col) {
-  if (line != 0) state->stack_last->line = line;
-  if (col != 0) state->stack_last->col = col;
-}
-
 void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wchar_t *name, int line, int col) {
   the_err_stack_t *stack;
-  the_error_stack_pos(state, line, col);
+  if (line != 0) state->stack_last->line = line;
+  if (col != 0) state->stack_last->col = col;
   stack = the_safe_alloc(sizeof(the_err_stack_t));
   stack->file = file;
   stack->name = name;

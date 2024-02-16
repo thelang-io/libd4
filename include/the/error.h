@@ -18,13 +18,6 @@
 extern the_err_state_t the_err_state;
 
 /**
- * Instantly reports error and exists the application. Used internally by safe_alloc, safe_realloc functions.
- * @param state Error state to generate stack from.
- * @param size Size that safe function failed to allocate.
- */
-THE_NORETURN void the_error_alloc (const the_err_state_t *state, size_t size);
-
-/**
  * Populates all required fields on error state from specified information.
  * @param state Error state to perform action on.
  * @param line Line where error appeared.
@@ -63,14 +56,6 @@ the_err_buf_t *the_error_buf_increase (the_err_state_t *state);
 void the_error_stack_pop (the_err_state_t *state);
 
 /**
- * Sets position of last item of error state stack.
- * @param state Error state to perform action on.
- * @param line Line of the error.
- * @param col Line column of the error.
- */
-void the_error_stack_pos (the_err_state_t *state, int line, int col);
-
-/**
  * Inserts new item to error state stack.
  * @param state Error state to perform action on.
  * @param file File of the error.
@@ -79,12 +64,6 @@ void the_error_stack_pos (the_err_state_t *state, int line, int col);
  * @param col Line column of the error.
  */
 void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wchar_t *name, int line, int col);
-
-/**
- * Populates stack field on the error state context from error state.
- * @param state Error state to perform action on.
- */
-void the_error_stack_str (the_err_state_t *state);
 
 /**
  * Unsets previously set error on the error state.
