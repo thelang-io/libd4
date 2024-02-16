@@ -6,8 +6,8 @@ To build with [CMake](https://cmake.org):
 
 ```bash
 mkdir -p build
-cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug
-cmake --build build
+cmake . -B ./build
+cmake --build build --config Debug
 ```
 
 To install with [CMake](https://cmake.org):
@@ -68,8 +68,8 @@ target_link_libraries(target PUBLIC libthe)
 To test your build with [CMake](https://cmake.org):
 
 ```bash
-cmake . -B ./build -DCMAKE_BUILD_TYPE=Debug -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
-cmake --build build
+cmake . -B ./build -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
+cmake --build build --config Debug
 
 # Without memcheck
 ctest --output-on-failure --test-dir build

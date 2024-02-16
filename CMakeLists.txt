@@ -53,9 +53,6 @@ endif ()
 set(sources src/any.c src/bool.c src/byte.c src/char.c src/enum.c src/error.c src/number.c src/rune.c src/safe.c src/string.c)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
-list(APPEND THE_LIBRARIES OpenSSL::Crypto)
-list(APPEND THE_LIBRARIES OpenSSL::SSL)
-
 if (WIN32)
   list(APPEND THE_LIBRARIES ws2_32)
   list(APPEND THE_LIBRARIES gdi32)
@@ -68,6 +65,9 @@ else ()
   list(APPEND THE_LIBRARIES Threads::Threads)
   list(APPEND THE_LIBRARIES ${CMAKE_DL_LIBS})
 endif ()
+
+list(APPEND THE_LIBRARIES OpenSSL::Crypto)
+list(APPEND THE_LIBRARIES OpenSSL::SSL)
 
 add_library(the SHARED ${sources})
 target_link_libraries(the PUBLIC ${THE_LIBRARIES})
