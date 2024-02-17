@@ -46,7 +46,7 @@ the_str_t the_str_alloc (const wchar_t *fmt, ...) {
   va_start(args, fmt);
   l = (size_t) snwprintf(fmt, args);
   d = the_safe_alloc((l + 1) * sizeof(wchar_t));
-  vswprintf(d, l, fmt, args);
+  vswprintf(d, l + 1, fmt, args);
   va_end(args);
 
   return (the_str_t) {d, l};
@@ -100,7 +100,7 @@ bool the_str_contains (const the_str_t self, const the_str_t search) {
 the_str_t the_str_copy (const the_str_t self) {
   wchar_t *d = the_safe_alloc((self.len + 1) * sizeof(wchar_t));
   wmemcpy(d, self.data, self.len);
-  d[self.len - 1] = L'\0';
+  d[self.len] = L'\0';
   return (the_str_t) {d, self.len};
 }
 
@@ -143,7 +143,7 @@ the_str_t the_str_escape (const the_str_t self) {
     d[l++] = c;
   }
 
-  d[l - 1] = L'\0';
+  d[l] = L'\0';
   return (the_str_t) {d, l};
 }
 
@@ -182,8 +182,15 @@ bool the_str_ne (const the_str_t self, const the_str_t rhs) {
 }
 
 the_str_t the_str_realloc (the_str_t self, const the_str_t rhs) {
-  the_str_free(self);
-  return the_str_copy(rhs);
+  if (self.len == 0) {
+    self.data = the_safe_alloc((rhs.len + 1) * sizeof(wchar_t));
+  } else {
+    self.data = the_safe_realloc(self.data, (rhs.len + 1) * sizeof(wchar_t));
+  }
+
+  wmemcpy(self.data, rhs.data, rhs.len);
+  self.data[rhs.len] = L'\0';
+  return (the_str_t) {self.data, rhs.len};
 }
 
 the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLineBreaks) {
