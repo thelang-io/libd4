@@ -47,7 +47,7 @@ static the_str_t crypto_sha256 (const char *msg) {
   return result;
 }
 
-static void test_crypto_sha256 (void) {
+static void test_crypto (void) {
   the_str_t s = crypto_sha256("Aaron");
   the_str_t s_cmp = the_str_alloc(L"324A17D21917A99CF2AC6EA468B73ECE5685161D414E9416C16DF0018D3C6DB5");
 
@@ -58,5 +58,5 @@ static void test_crypto_sha256 (void) {
 }
 
 int main (void) {
-  test_crypto_sha256();
+  test_crypto();
 }

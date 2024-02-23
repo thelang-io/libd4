@@ -27,7 +27,7 @@
 #endif
 
 int main (void) {
-  char *port = "80";
+  char *port = "443";
   char *hostname = "thelang.io";
   const char *template = "GET / HTTP/1.1\r\n\r\n";
 

@@ -12,7 +12,7 @@ static int rand_int (void) {
   return (d[0] << 24) | (d[1] << 16) | (d[2] << 8) | d[3];
 }
 
-static void test_rand_int (void) {
+static void test_rand (void) {
   int num1 = rand_int();
   int num2 = rand_int();
 
@@ -20,5 +20,5 @@ static void test_rand_int (void) {
 }
 
 int main (void) {
-  test_rand_int();
+  test_rand();
 }
