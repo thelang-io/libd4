@@ -16,7 +16,7 @@ static void test_rand_int (void) {
   int num1 = rand_int();
   int num2 = rand_int();
 
-  assert(num1 != num2);
+  assert(((void) "Two random numbers are not equal", num1 != num2));
 }
 
 int main (void) {

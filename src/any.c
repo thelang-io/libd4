@@ -13,7 +13,9 @@ the_any_t the_any_copy (const the_any_t self) {
 }
 
 bool the_any_eq (const the_any_t self, const the_any_t rhs) {
-  if (self.type != rhs.type || ((self.ctx == NULL || rhs.ctx == NULL) && rhs.ctx != self.ctx)) {
+  if (self.ctx == NULL || rhs.ctx == NULL) {
+    return self.ctx == rhs.ctx;
+  } else if (self.type != rhs.type) {
     return false;
   }
 
@@ -25,8 +27,10 @@ void the_any_free (the_any_t self) {
 }
 
 bool the_any_ne (const the_any_t self, const the_any_t rhs) {
-  if (self.type == rhs.type || ((self.ctx == NULL || rhs.ctx == NULL) && rhs.ctx == self.ctx)) {
-    return false;
+  if (self.ctx == NULL || rhs.ctx == NULL) {
+    return self.ctx != rhs.ctx;
+  } else if (self.type != rhs.type) {
+    return true;
   }
 
   return !self.eq_cb(self.ctx, rhs.ctx);
