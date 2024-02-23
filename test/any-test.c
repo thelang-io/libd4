@@ -4,8 +4,8 @@
  */
 
 #include "any-test.h"
-#include "../src/string.h"
 #include <assert.h>
+#include "../src/string.h"
 
 static void test_any_copy (void) {
   the_any_t a1 = any_u64(10);
