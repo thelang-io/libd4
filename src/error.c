@@ -5,12 +5,13 @@
 
 #include "error.h"
 #include <the/safe.h>
-#include <the/string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "string.h"
 
 the_err_state_t the_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};
 
+// todo test with the_safe_alloc and the_safe_realloc
 void the_error_alloc (const the_err_state_t *state, size_t size) {
   wchar_t d[4096];
   size_t l = 0;
@@ -63,6 +64,11 @@ void the_error_assign_generic (the_err_state_t *state, int line, int col, the_st
 void the_error_buf_decrease (the_err_state_t *state) {
   the_err_buf_t *buf = state->buf_last;
   state->buf_last = buf->prev;
+
+  if (state->buf_last == NULL) {
+    state->buf_first = NULL;
+  }
+
   the_safe_free(buf);
 }
 
@@ -97,7 +103,7 @@ void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wc
 }
 
 void the_error_stack_str (the_err_state_t *state) {
-  the_Error_t *err = state->ctx;
+  the_Error_t *err = (the_Error_t *) state->ctx;
   err->stack = the_str_realloc(err->stack, err->message);
 
   for (the_err_stack_t *it = state->stack_last; it != NULL; it = it->prev) {
@@ -105,24 +111,24 @@ void the_error_stack_str (the_err_state_t *state) {
     size_t z;
 
     if (it->col == 0 && it->line == 0) {
-      fmt = THE_EOL L"  at %s (%s)";
-      z = (size_t) swprintf(NULL, 0, fmt, it->name, it->file);
+      fmt = THE_EOL L"  at %ls (%ls)";
+      z = (size_t) snwprintf(fmt, it->name, it->file);
     } else if (it->col == 0) {
-      fmt = THE_EOL L"  at %s (%s:%d)";
-      z = (size_t) swprintf(NULL, 0, fmt, it->name, it->file, it->line);
+      fmt = THE_EOL L"  at %ls (%ls:%d)";
+      z = (size_t) snwprintf(fmt, it->name, it->file, it->line);
     } else {
-      fmt = THE_EOL L"  at %s (%s:%d:%d)";
-      z = (size_t) swprintf(NULL, 0, fmt, it->name, it->file, it->line, it->col);
+      fmt = THE_EOL L"  at %ls (%ls:%d:%d)";
+      z = (size_t) snwprintf(fmt, it->name, it->file, it->line, it->col);
     }
 
     err->stack.data = the_safe_realloc(err->stack.data, (err->stack.len + z + 1) * sizeof(wchar_t));
 
     if (it->col == 0 && it->line == 0) {
-      swprintf(&err->stack.data[err->stack.len], z, fmt, it->name, it->file);
+      swprintf(&err->stack.data[err->stack.len], z + 1, fmt, it->name, it->file);
     } else if (it->col == 0) {
-      swprintf(&err->stack.data[err->stack.len], z, fmt, it->name, it->file, it->line);
+      swprintf(&err->stack.data[err->stack.len], z + 1, fmt, it->name, it->file, it->line);
     } else {
-      swprintf(&err->stack.data[err->stack.len], z, fmt, it->name, it->file, it->line, it->col);
+      swprintf(&err->stack.data[err->stack.len], z + 1, fmt, it->name, it->file, it->line, it->col);
     }
 
     err->stack.len += z;

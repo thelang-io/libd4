@@ -8,4 +8,7 @@
 
 #include <the/string.h>
 
+int snwprintf (const wchar_t *, ...);
+int vsnwprintf (const wchar_t *, va_list);
+
 #endif

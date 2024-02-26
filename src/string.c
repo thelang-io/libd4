@@ -13,7 +13,18 @@
 #include <limits.h>
 #include <stdarg.h>
 
-static int snwprintf (const wchar_t *fmt, va_list args) {
+int snwprintf (const wchar_t *fmt, ...) {
+  va_list args;
+  int result;
+
+  va_start(args, fmt);
+  result = vsnwprintf(fmt, args);
+  va_end(args);
+
+  return result;
+}
+
+int vsnwprintf (const wchar_t *fmt, va_list args) {
   unsigned long long buf_size = 1024;
   wchar_t *buffer = the_safe_alloc(buf_size * sizeof(wchar_t));
   int fmt_size = -1;
@@ -44,7 +55,7 @@ the_str_t the_str_alloc (const wchar_t *fmt, ...) {
   }
 
   va_start(args, fmt);
-  l = (size_t) snwprintf(fmt, args);
+  l = (size_t) vsnwprintf(fmt, args);
   d = the_safe_alloc((l + 1) * sizeof(wchar_t));
   vswprintf(d, l + 1, fmt, args);
   va_end(args);
