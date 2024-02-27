@@ -7,16 +7,30 @@
 #include <the/string.h>
 #include <inttypes.h>
 
+static the_str_t str_float_truncate (the_str_t s) {
+  for (size_t i = s.len - 1; i >= 1; i--) {
+    if (s.data[i] == '0' && s.data[i - 1] != '.') {
+      s.data[i] = '\0';
+      s.len--;
+      continue;
+    }
+
+    break;
+  }
+
+  return s;
+}
+
 the_str_t the_f32_str (float self) {
-  return the_str_alloc(L"%f", (double) self);
+  return str_float_truncate(the_str_alloc(L"%f", (double) self));
 }
 
 the_str_t the_f64_str (double self) {
-  return the_str_alloc(L"%f", self);
+  return str_float_truncate(the_str_alloc(L"%f", self));
 }
 
 the_str_t the_float_str (double self) {
-  return the_str_alloc(L"%f", self);
+  return str_float_truncate(the_str_alloc(L"%f", self));
 }
 
 the_str_t the_i8_str (int8_t self) {
