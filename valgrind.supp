@@ -1,0 +1,5 @@
+{
+   wmemcmp false positive
+   Memcheck:Addr32
+   fun:__wmemcmp_avx2_movbe
+}
