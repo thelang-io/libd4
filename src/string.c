@@ -11,7 +11,6 @@
 #include <float.h>
 #include <inttypes.h>
 #include <limits.h>
-#include <stdarg.h>
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
