@@ -8,6 +8,6 @@
 set -e
 
 if ! ctest -T memcheck --output-on-failure --test-dir build; then
-  find Testing/Temporary -name "MemoryChecker.*.log" -exec cat {} +
+  find build/Testing/Temporary -name "MemoryChecker.*.log" -exec cat {} +
   exit 1
 fi

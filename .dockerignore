@@ -1,9 +1,10 @@
 *
+!cmake/
 !examples/
 !include/
 !scripts/
 !src/
-!tests/
+!test/
 !CMakeLists.txt
 !LICENSE
 !libthe.pc.in
