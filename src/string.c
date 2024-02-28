@@ -46,19 +46,18 @@ int vsnwprintf (const wchar_t *fmt, va_list args) {
 
 the_str_t the_str_alloc (const wchar_t *fmt, ...) {
   va_list args;
-  size_t l;
-  wchar_t *d;
-
-  if (fmt[0] == L'\0') {
-    return (the_str_t) {NULL, 0};
-  }
+  size_t l = 0;
+  wchar_t *d = NULL;
 
   va_start(args, fmt);
-  l = (size_t) vsnwprintf(fmt, args);
-  d = the_safe_alloc((l + 1) * sizeof(wchar_t));
-  vswprintf(d, l + 1, fmt, args);
-  va_end(args);
 
+  if (fmt[0] != L'\0') {
+    l = (size_t) vsnwprintf(fmt, args);
+    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+    vswprintf(d, l + 1, fmt, args);
+  }
+
+  va_end(args);
   return (the_str_t) {d, l};
 }
 
