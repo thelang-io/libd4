@@ -11,50 +11,25 @@
 
 the_err_state_t the_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};
 
-// todo test with the_safe_alloc and the_safe_realloc
-void the_error_alloc (const the_err_state_t *state, size_t size) {
+void the_error_alloc (the_err_state_t *state, size_t size) {
   wchar_t d[4096];
-  size_t l = 0;
-
-  for (the_err_stack_t *it = state->stack_last; it != NULL; it = it->prev) {
-    wchar_t *fmt;
-    size_t z;
-
-    if (it->col == 0 && it->line == 0) {
-      fmt = THE_EOL L"  at %s (%s)";
-      z = (size_t) swprintf(NULL, 0, fmt, it->name, it->file);
-    } else if (it->col == 0) {
-      fmt = THE_EOL L"  at %s (%s:%d)";
-      z = (size_t) swprintf(NULL, 0, fmt, it->name, it->file, it->line);
-    } else {
-      fmt = THE_EOL L"  at %s (%s:%d:%d)";
-      z = (size_t) swprintf(NULL, 0, fmt, it->name, it->file, it->line, it->col);
-    }
-
-    if (l + z >= 4096) break;
-
-    if (it->col == 0 && it->line == 0) {
-      swprintf(&d[l], z, fmt, it->name, it->file);
-    } else if (it->col == 0) {
-      swprintf(&d[l], z, fmt, it->name, it->file, it->line);
-    } else {
-      swprintf(&d[l], z, fmt, it->name, it->file, it->line, it->col);
-    }
-
-    l += z;
-  }
-
+  the_str_t stack = (the_str_t) {d, sizeof(d) / sizeof(d[0])};
+  the_error_stack_str(state, &stack, stack.len);
   fwprintf(stderr, L"Allocation Error: failed to allocate %zu bytes%s" THE_EOL, size, d);
   exit(EXIT_FAILURE);
 }
 
 void the_error_assign (the_err_state_t *state, int line, int col, int id, void *ctx, the_err_state_free_cb free_cb) {
+  the_Error_t *err = (the_Error_t *) ctx;
+
   state->id = id;
   state->ctx = ctx;
   state->free_cb = free_cb;
   if (line != 0) state->stack_last->line = line;
   if (col != 0) state->stack_last->col = col;
-  the_error_stack_str(state);
+
+  err->stack = the_str_realloc(err->stack, err->message);
+  the_error_stack_str(state, &err->stack, 0);
 }
 
 void the_error_assign_generic (the_err_state_t *state, int line, int col, the_str_t message) {
@@ -102,10 +77,7 @@ void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wc
   state->stack_last = stack;
 }
 
-void the_error_stack_str (the_err_state_t *state) {
-  the_Error_t *err = (the_Error_t *) state->ctx;
-  err->stack = the_str_realloc(err->stack, err->message);
-
+void the_error_stack_str (the_err_state_t *state, the_str_t *err, size_t max_len) {
   for (the_err_stack_t *it = state->stack_last; it != NULL; it = it->prev) {
     wchar_t *fmt;
     size_t z;
@@ -121,17 +93,21 @@ void the_error_stack_str (the_err_state_t *state) {
       z = (size_t) snwprintf(fmt, it->name, it->file, it->line, it->col);
     }
 
-    err->stack.data = the_safe_realloc(err->stack.data, (err->stack.len + z + 1) * sizeof(wchar_t));
-
-    if (it->col == 0 && it->line == 0) {
-      swprintf(&err->stack.data[err->stack.len], z + 1, fmt, it->name, it->file);
-    } else if (it->col == 0) {
-      swprintf(&err->stack.data[err->stack.len], z + 1, fmt, it->name, it->file, it->line);
-    } else {
-      swprintf(&err->stack.data[err->stack.len], z + 1, fmt, it->name, it->file, it->line, it->col);
+    if (max_len == 0) {
+      err->data = the_safe_realloc(err->data, (err->len + z + 1) * sizeof(wchar_t));
+    } else if (err->len + z >= max_len) {
+      break;
     }
 
-    err->stack.len += z;
+    if (it->col == 0 && it->line == 0) {
+      swprintf(&err->data[err->len], z + 1, fmt, it->name, it->file);
+    } else if (it->col == 0) {
+      swprintf(&err->data[err->len], z + 1, fmt, it->name, it->file, it->line);
+    } else {
+      swprintf(&err->data[err->len], z + 1, fmt, it->name, it->file, it->line, it->col);
+    }
+
+    err->len += z;
   }
 }
 

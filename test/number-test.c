@@ -4,7 +4,6 @@
  */
 
 #include <assert.h>
-#include <limits.h>
 #include "../src/number.h"
 #include "../src/string.h"
 
