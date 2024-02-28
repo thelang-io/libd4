@@ -27,9 +27,13 @@ int vsnwprintf (const wchar_t *fmt, va_list args) {
   unsigned long long buf_size = 1024;
   wchar_t *buffer = the_safe_alloc(buf_size * sizeof(wchar_t));
   int fmt_size = -1;
+  va_list args_copy;
+  int y;
 
   while (buf_size <= INT_MAX) {
-    int y = vswprintf(buffer, (size_t) buf_size, fmt, args);
+    va_copy(args_copy, args);
+    y = vswprintf(buffer, (size_t) buf_size, fmt, args_copy);
+    va_end(args_copy);
 
     if (y >= 0) {
       fmt_size = y;
