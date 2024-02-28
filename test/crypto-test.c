@@ -19,6 +19,7 @@ static the_str_t convert_byte_array_to_str (const char *buf, unsigned int len) {
     wide_buf[i * 2 + 1] = hex[buf[i] & 0xF];
   }
 
+  wide_buf[len * 2] = '\0';
   result = the_str_alloc(wide_buf);
   the_safe_free(wide_buf);
 

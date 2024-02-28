@@ -8,7 +8,6 @@
 #include <the/ssl.h>
 #include <the/string.h>
 #include <assert.h>
-#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
@@ -29,14 +28,14 @@
   #define SOCKET_ERROR (-1)
 #endif
 
-static the_str_t request (char *hostname, const char *request) {
+static the_str_t request (char *hostname, const char *request, size_t request_len) {
   struct addrinfo *addr = NULL;
   struct addrinfo hints;
   int fd;
   SSL_CTX *ctx = NULL;
   SSL *ssl = NULL;
   char *buf = NULL;
-  size_t buf_len;
+  int read_bytes;
   wchar_t *wide_buf;
   the_str_t result;
 
@@ -89,12 +88,12 @@ static the_str_t request (char *hostname, const char *request) {
     goto L4;
   }
 
-  SSL_write(ssl, request, (int) strlen(request));
+  SSL_write(ssl, request, (int) request_len);
   SSL_shutdown(ssl);
 
   buf = the_safe_alloc(1024);
 
-  if (SSL_read(ssl, buf, 1024) < 0) {
+  if ((read_bytes = SSL_read(ssl, buf, 1024)) < 0) {
     fwprintf(stderr, L"Failed to read from socket with SSL.\n");
     the_safe_free(buf);
     buf = NULL;
@@ -118,14 +117,13 @@ L1:
     return the_str_alloc(L"");
   }
 
-  buf_len = strlen(buf);
-  wide_buf = the_safe_alloc((buf_len + 1) * sizeof(wchar_t));
+  wide_buf = the_safe_alloc((read_bytes + 1) * sizeof(wchar_t));
 
-  for (unsigned int i = 0; i < buf_len; i++) {
+  for (int i = 0; i < read_bytes; i++) {
     wide_buf[i] = (wchar_t) buf[i];
   }
 
-  wide_buf[buf_len] = L'\0';
+  wide_buf[read_bytes] = L'\0';
   result = the_str_alloc(wide_buf);
 
   the_safe_free(buf);
@@ -153,16 +151,15 @@ static the_str_t request_data (const the_str_t response) {
 }
 
 static void test_ssl (void) {
-  the_str_t a = request(
-    "ci.thelang.io",
+  char template[] =
     "POST /echo HTTP/1.1\r\n"
     "Host: ci.thelang.io\r\n"
     "Content-Type: application/x-www-form-urlencoded\r\n"
     "Content-Length: 27\r\n"
     "\r\n"
-    "field1=value1&field2=value2\r\n"
-  );
+    "field1=value1&field2=value2\r\n";
 
+  the_str_t a = request("ci.thelang.io", template, sizeof(template) / sizeof(template[0]));
   the_str_t s = request_data(a);
   the_str_t s_cmp = the_str_alloc(L"field1=value1&field2=value2");
 

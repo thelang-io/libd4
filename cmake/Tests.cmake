@@ -12,6 +12,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
 
   foreach (test ${tests})
     add_executable(${PROJECT_NAME}-test-${test} test/${test}-test.c)
+    target_compile_options(${PROJECT_NAME}-test-${test} PRIVATE -g)
     target_link_libraries(${PROJECT_NAME}-test-${test} PUBLIC the)
     add_test(${test} ${PROJECT_NAME}-test-${test})
   endforeach ()

@@ -90,6 +90,8 @@ static void test_error_assign_generic_with_stack (void) {
   the_error_stack_pop(&the_err_state);
   the_error_stack_pop(&the_err_state);
 
+  the_str_free(s5);
+  the_str_free(s4);
   the_str_free(s3);
   the_str_free(s2);
   the_str_free(s1);
@@ -151,7 +153,7 @@ static void test_error_stack_pop (void) {
   the_error_stack_pop(&the_err_state);
   the_error_stack_pop(&the_err_state);
 
-  assert(((void) "Resets to empty", the_err_state.stack_first != NULL));
+  assert(((void) "Resets to empty", the_err_state.stack_first == NULL && the_err_state.stack_last == NULL));
 }
 
 static void test_error_unset (void) {

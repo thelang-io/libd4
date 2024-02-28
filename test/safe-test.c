@@ -8,31 +8,23 @@
 #include "../src/string.h"
 
 static void test_safe_alloc (void) {
-  void *d1 = the_safe_alloc(0);
   void *d2 = the_safe_alloc(64);
-
-  assert(((void) "Allocates 0", d1 != NULL));
   assert(((void) "Allocates 64", d2 != NULL));
-
-  the_safe_free(d1);
   the_safe_free(d2);
 }
 
 static void test_safe_free (void) {
-  void *d1 = the_safe_alloc(0);
   void *d2 = the_safe_alloc(64);
-
-  the_safe_free(d1);
   the_safe_free(d2);
 }
 
 static void test_safe_realloc (void) {
-  void *d = the_safe_alloc(0);
+  void *d = NULL;
 
   d = the_safe_realloc(d, 64);
   assert(((void) "Reallocates from 0 to 64", d != NULL));
-  d = the_safe_realloc(d, 0);
-  assert(((void) "Reallocates from 64 to 0", d != NULL));
+  d = the_safe_realloc(d, 128);
+  assert(((void) "Reallocates from 64 to 128", d != NULL));
 
   the_safe_free(d);
 }

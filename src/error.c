@@ -59,8 +59,15 @@ the_err_buf_t *the_error_buf_increase (the_err_state_t *state) {
 
 void the_error_stack_pop (the_err_state_t *state) {
   the_err_stack_t *stack = state->stack_last;
+  bool was_last = state->stack_last == state->stack_first;
+
   state->stack_last = stack->prev;
   the_safe_free(stack);
+
+  if (was_last) {
+    state->stack_first = NULL;
+    state->stack_last = NULL;
+  }
 }
 
 void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wchar_t *name, int line, int col) {
@@ -70,6 +77,8 @@ void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wc
   stack = the_safe_alloc(sizeof(the_err_stack_t));
   stack->file = file;
   stack->name = name;
+  stack->line = 0;
+  stack->col = 0;
   stack->next = NULL;
   stack->prev = state->stack_last;
   if (state->stack_first == NULL) state->stack_first = stack;
