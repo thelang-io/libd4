@@ -16,6 +16,7 @@ static void test_byte_str (void) {
   the_str_t s2_cmp = the_str_alloc(L"10");
 
   fprintf(stderr, "%ls:%zu:%ls:%zu\n", a1.data, a1.len, s1_cmp.data, s1_cmp.len);
+  fprintf(stderr, "%ls:%zu:%ls:%zu\n", a2.data, a2.len, s2_cmp.data, s2_cmp.len);
 
   assert(((void) "Stringifies 0x00", the_str_eq(a1, s1_cmp)));
   assert(((void) "Stringifies 0x0A", the_str_eq(a2, s2_cmp)));
