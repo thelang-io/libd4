@@ -14,6 +14,7 @@ project(
 
 option(LIBTHE_BUILD_EXAMPLES "Build example programs" OFF)
 option(LIBTHE_BUILD_TESTS "Build test programs" OFF)
+option(LIBTHE_COVERAGE "Build programs with support for coverage" OFF)
 
 include(cmake/Policies.cmake)
 set_policies()

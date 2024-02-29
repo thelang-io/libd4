@@ -11,6 +11,7 @@
 
 the_err_state_t the_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};
 
+// LCOV_EXCL_START
 void the_error_alloc (the_err_state_t *state, size_t size) {
   wchar_t d[4096];
   the_str_t stack = (the_str_t) {d, sizeof(d) / sizeof(d[0])};
@@ -18,6 +19,7 @@ void the_error_alloc (the_err_state_t *state, size_t size) {
   fwprintf(stderr, L"Allocation Error: failed to allocate %zu bytes%s" THE_EOL, size, d);
   exit(EXIT_FAILURE);
 }
+// LCOV_EXCL_STOP
 
 void the_error_assign (the_err_state_t *state, int line, int col, int id, void *ctx, the_err_state_free_cb free_cb) {
   the_Error_t *err = (the_Error_t *) ctx;
@@ -105,7 +107,7 @@ void the_error_stack_str (the_err_state_t *state, the_str_t *err, size_t max_len
     if (max_len == 0) {
       err->data = the_safe_realloc(err->data, (err->len + z + 1) * sizeof(wchar_t));
     } else if (err->len + z >= max_len) {
-      break;
+      break; // LCOV_EXCL_LINE
     }
 
     if (it->col == 0 && it->line == 0) {

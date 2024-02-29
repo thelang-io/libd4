@@ -27,6 +27,15 @@ list(APPEND LIBTHE_CMAKE_FLAGS "-Wundef")
 list(APPEND LIBTHE_CMAKE_FLAGS "-Wunreachable-code")
 list(APPEND LIBTHE_CMAKE_FLAGS "-Wunused-macros")
 list(APPEND LIBTHE_CMAKE_FLAGS "-Wvla")
+
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_COVERAGE)
+  list(APPEND LIBTHE_CMAKE_FLAGS "-O0")
+  list(APPEND LIBTHE_CMAKE_FLAGS "-fcoverage-mapping")
+  list(APPEND LIBTHE_CMAKE_FLAGS "-fprofile-arcs")
+  list(APPEND LIBTHE_CMAKE_FLAGS "-fprofile-instr-generate")
+  list(APPEND LIBTHE_CMAKE_FLAGS "-ftest-coverage")
+endif ()
+
 list(JOIN LIBTHE_CMAKE_FLAGS " " LIBTHE_CMAKE_FLAGS)
 
 if (MSVC)

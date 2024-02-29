@@ -12,7 +12,7 @@ void *the_safe_alloc (size_t size) {
   void *d = malloc(size);
 
   if (d == NULL) {
-    the_error_alloc(&the_err_state, size);
+    the_error_alloc(&the_err_state, size); // LCOV_EXCL_LINE
   }
 
   return d;
@@ -26,7 +26,7 @@ void *the_safe_realloc (void *self, size_t size) {
   void *d = realloc(self, size);
 
   if (d == NULL) {
-    the_error_alloc(&the_err_state, size);
+    the_error_alloc(&the_err_state, size); // LCOV_EXCL_LINE
   }
 
   return d;
