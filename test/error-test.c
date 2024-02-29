@@ -6,6 +6,7 @@
 #include "error-test.h"
 #include <the/macro.h>
 #include <assert.h>
+#include <string.h>
 
 static void test_error_assign (void) {
   the_str_t s1 = the_str_alloc(L"An error occurred");
@@ -132,13 +133,13 @@ static void test_error_stack_push (void) {
   the_error_stack_push(&the_err_state, L"test.c", L"main", 0, 0);
 
   assert(((void) "Stack not empty", the_err_state.stack_first != NULL));
-  assert(((void) "Pushed correct file name", wmemcmp(the_err_state.stack_first->file, L"test.c", 6) == 0));
-  assert(((void) "Pushed correct function name", wmemcmp(the_err_state.stack_first->name, L"main", 4) == 0));
+  assert(((void) "Pushed correct file name", memcmp(the_err_state.stack_first->file, L"test.c", 6 * sizeof(wchar_t)) == 0));
+  assert(((void) "Pushed correct function name", memcmp(the_err_state.stack_first->name, L"main", 4 * sizeof(wchar_t)) == 0));
 
   the_error_stack_push(&the_err_state, L"test2.c", L"main2", 10, 10);
 
-  assert(((void) "Pushed correct second file name", wmemcmp(the_err_state.stack_last->file, L"test2.c", 7) == 0));
-  assert(((void) "Pushed correct second function name", wmemcmp(the_err_state.stack_last->name, L"main2", 5) == 0));
+  assert(((void) "Pushed correct second file name", memcmp(the_err_state.stack_last->file, L"test2.c", 7 * sizeof(wchar_t)) == 0));
+  assert(((void) "Pushed correct second function name", memcmp(the_err_state.stack_last->name, L"main2", 5 * sizeof(wchar_t)) == 0));
   assert(((void) "Pushed correct second line number", the_err_state.stack_first->line == 10));
   assert(((void) "Pushed correct second line column", the_err_state.stack_first->col == 10));
 

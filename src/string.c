@@ -11,6 +11,7 @@
 #include <float.h>
 #include <inttypes.h>
 #include <limits.h>
+#include <string.h>
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
@@ -98,10 +99,10 @@ the_str_t the_str_concat (const the_str_t self, const the_str_t other) {
 
 bool the_str_contains (const the_str_t self, const the_str_t search) {
   if (self.len == search.len) {
-    return wmemcmp(self.data, search.data, self.len) == 0;
+    return memcmp(self.data, search.data, self.len * sizeof(wchar_t)) == 0;
   } else if (self.len > 0 && self.len > search.len) {
     for (size_t i = 0; i < self.len - search.len; i++) {
-      if (wmemcmp(&self.data[i], search.data, search.len) == 0) {
+      if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0) {
         return true;
       }
     }
@@ -122,7 +123,7 @@ bool the_str_empty (const the_str_t self) {
 }
 
 bool the_str_eq (const the_str_t self, const the_str_t rhs) {
-  return self.len == rhs.len && wmemcmp(self.data, rhs.data, self.len) == 0;
+  return self.len == rhs.len && memcmp(self.data, rhs.data, self.len * sizeof(wchar_t)) == 0;
 }
 
 the_str_t the_str_escape (const the_str_t self) {
@@ -162,7 +163,7 @@ the_str_t the_str_escape (const the_str_t self) {
 
 int32_t the_str_find (const the_str_t self, const the_str_t search) {
   for (size_t i = 0; i < self.len; i++) {
-    if (wmemcmp(&self.data[i], search.data, search.len) == 0) {
+    if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0) {
       return (int32_t) i;
     }
   }
@@ -175,23 +176,23 @@ void the_str_free (the_str_t self) {
 }
 
 bool the_str_ge (const the_str_t self, const the_str_t rhs) {
-  return wmemcmp(self.data, rhs.data, self.len > rhs.len ? self.len : rhs.len) >= 0;
+  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) >= 0;
 }
 
 bool the_str_gt (const the_str_t self, const the_str_t rhs) {
-  return wmemcmp(self.data, rhs.data, self.len > rhs.len ? self.len : rhs.len) > 0;
+  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) > 0;
 }
 
 bool the_str_le (const the_str_t self, const the_str_t rhs) {
-  return wmemcmp(self.data, rhs.data, self.len > rhs.len ? self.len : rhs.len) <= 0;
+  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) <= 0;
 }
 
 bool the_str_lt (const the_str_t self, const the_str_t rhs) {
-  return wmemcmp(self.data, rhs.data, self.len > rhs.len ? self.len : rhs.len) < 0;
+  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) < 0;
 }
 
 bool the_str_ne (const the_str_t self, const the_str_t rhs) {
-  return self.len != rhs.len || wmemcmp(self.data, rhs.data, self.len) != 0;
+  return self.len != rhs.len || memcmp(self.data, rhs.data, self.len * sizeof(wchar_t)) != 0;
 }
 
 the_str_t the_str_realloc (the_str_t self, const the_str_t rhs) {
@@ -291,7 +292,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
       }
     }
   } else if (self.len == search.len && search.len > 0) {
-    if (wmemcmp(self.data, search.data, search.len) != 0) {
+    if (memcmp(self.data, search.data, search.len * sizeof(wchar_t)) != 0) {
       l = self.len;
       d = the_safe_alloc((l + 1) * sizeof(wchar_t));
       wmemcpy(d, self.data, l);
@@ -306,7 +307,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
     for (size_t i = 0; i < self.len; i++) {
       if (
         i <= self.len - search.len &&
-        wmemcmp(&self.data[i], search.data, search.len) == 0 &&
+        memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0 &&
         (count <= 0 || k++ < count)
       ) {
         i += search.len - 1;
@@ -328,7 +329,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
     for (size_t i = 0; i < self.len; i++) {
       if (
         i <= self.len - search.len &&
-        wmemcmp(&self.data[i], search.data, search.len) == 0 &&
+        memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0 &&
         (count <= 0 || k++ < count)
       ) {
         if (search.len < replacement.len) {
@@ -408,7 +409,7 @@ the_arr_str_t the_str_split (const the_str_t self, THE_UNUSED unsigned char o1, 
     size_t i = 0;
 
     for (size_t j = 0; j <= self.len - delimiter.len; j++) {
-      if (wmemcmp(&self.data[j], delimiter.data, delimiter.len) == 0) {
+      if (memcmp(&self.data[j], delimiter.data, delimiter.len * sizeof(wchar_t)) == 0) {
         r = the_safe_realloc(r, ++l * sizeof(the_str_t));
         r[l - 1] = the_str_calloc(&self.data[i], j - i);
         j += delimiter.len;
