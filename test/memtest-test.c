@@ -3,7 +3,6 @@
  * Licensed under the MIT License
  */
 
-#include <stdbool.h>
 #include <stdlib.h>
 #include <wchar.h>
 
@@ -27,7 +26,7 @@ int main (void) {
   a2 = (the_str_t) {d2, 2};
   s2_cmp = (the_str_t) {d4, 2};
 
-  wmemcmp(a2.data, s2_cmp.data, a2.len);
+  (void) wmemcmp(a2.data, s2_cmp.data, a2.len);
 
   free(s2_cmp.data);
   free(a2.data);
