@@ -8,11 +8,11 @@ on:
 
 concurrency:
   cancel-in-progress: true
-  group: test-${{ github.event.pull_request.number || github.sha }}
+  group: test-install-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
-  test:
-    name: Build and Test
+  test-install:
+    name: Test Install
     runs-on: ${{ matrix.config.os }}
     strategy:
       fail-fast: false
@@ -49,7 +49,3 @@ jobs:
       - run: cmake . -B ./build -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
       - run: cmake --build build --config Debug
       - run: ${{ matrix.config['install-prefix'] }} cmake --install build
-      - if: runner.os == 'Linux'
-        run: scripts/docker-entrypoint.sh
-      - if: runner.os != 'Linux'
-        run: ctest --output-on-failure --test-dir build

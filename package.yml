@@ -1,0 +1,10 @@
+name: the/helpers
+version: 0.0.0
+description: The programming language helpers
+license: MIT
+
+scripts:
+  check-total-coverage: the run scripts/check-total-coverage
+
+packages:
+  the/html: 0.1.0

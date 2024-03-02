@@ -1,0 +1,27 @@
+/*!
+ * Copyright (c) Aaron Delasy
+ * Licensed under the MIT License
+ */
+
+import HTMLElement, HTMLNode, HTMLText, parse from "the/html"
+
+main {
+  content := fs_readFileSync("./coverage/html/index.html").str()
+  nodes := parse(content)
+
+  htmlNode := ((nodes[1] as HTMLNode) as HTMLElement)
+  bodyNode := ((htmlNode.childNodes[1] as HTMLNode) as HTMLElement)
+  tableNode := ((bodyNode.childNodes[0] as HTMLNode) as HTMLElement)
+  thirdRowNode := ((tableNode.childNodes[2] as HTMLNode) as HTMLElement)
+  firstCellNode := ((thirdRowNode.childNodes[0] as HTMLNode) as HTMLElement)
+  table2Node := ((firstCellNode.childNodes[0] as HTMLNode) as HTMLElement)
+  secondRow2Node := ((table2Node.childNodes[1] as HTMLNode) as HTMLElement)
+  fifthCell2Node := ((secondRow2Node.childNodes[4] as HTMLNode) as HTMLElement)
+  textNode := ((fifthCell2Node.childNodes[0] as HTMLNode) as HTMLText)
+  value := textNode.nodeValue.replace("&nbsp;", "").replace("%", "").trim().toFloat()
+
+  if value != 100 {
+    print("Total coverage is: " + value.str(), to: "stderr")
+    process_exit(1)
+  }
+}
