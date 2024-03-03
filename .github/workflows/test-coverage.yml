@@ -38,5 +38,9 @@ jobs:
       - run: ctest --output-on-failure --test-dir coverage
       - run: lcov --capture -d coverage -o coverage/test.info --exclude 'test/*'
       - run: genhtml -o coverage/html coverage/test.info
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-data-${{ github.event.pull_request.number || github.sha }}
+          path: coverage/html
       - run: the install
       - run: the script check-total-coverage
