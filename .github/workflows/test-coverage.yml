@@ -23,6 +23,8 @@ jobs:
             coverage/openssl-prefix
             coverage/openssl-src
           key: coverage-cmake-openssl-ubuntu-22.04-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
+      - if: runner.os == 'Linux'
+        run: sudo apt-get install lcov
       - if: runner.os == 'Windows'
         run: New-Item -ItemType Directory -Force -Path coverage
       - if: runner.os != 'Windows'

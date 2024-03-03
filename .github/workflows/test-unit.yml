@@ -25,8 +25,6 @@ jobs:
           - os: windows-2022
     steps:
       - uses: actions/checkout@v4
-      - if: runner.os == 'Linux'
-        run: sudo apt-get install valgrind
       - if: runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
       - if: runner.os == 'Windows'
@@ -38,6 +36,8 @@ jobs:
             build/openssl-prefix
             build/openssl-src
           key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
+      - if: runner.os == 'Linux'
+        run: sudo apt-get install valgrind
       - if: runner.os == 'Windows'
         run: New-Item -ItemType Directory -Force -Path build
       - if: runner.os != 'Windows'
