@@ -6,7 +6,7 @@
 import HTMLElement, HTMLNode, HTMLText, parse from "the/html"
 
 main {
-  content := fs_readFileSync("./coverage/html2/index.html").str()
+  content := fs_readFileSync("./coverage/html/index.html").str()
   nodes := parse(content)
 
   htmlNode := ((nodes[1] as HTMLNode) as HTMLElement)
