@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   test-coverage:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
       - uses: thelang-io/setup-the@v1
@@ -23,6 +23,10 @@ jobs:
             coverage/openssl-prefix
             coverage/openssl-src
           key: coverage-cmake-openssl-ubuntu-22.04-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
+      - if: runner.os == 'Windows'
+        run: New-Item -ItemType Directory -Force -Path coverage
+      - if: runner.os != 'Windows'
+        run: mkdir -p coverage
       - run: cmake . -B ./coverage -DLIBTHE_BUILD_TESTS=ON -DLIBTHE_COVERAGE=ON
       - run: cmake --build coverage --config Debug
       - run: ctest --output-on-failure --test-dir coverage

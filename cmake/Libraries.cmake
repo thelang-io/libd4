@@ -13,6 +13,8 @@ if (WIN32)
   list(APPEND THE_LIBRARIES crypt32)
   list(APPEND THE_LIBRARIES user32)
 else ()
+  set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
+  set(THREADS_PREFER_PTHREAD_FLAG TRUE)
   find_package(Threads REQUIRED)
 
   list(APPEND THE_LIBRARIES Threads::Threads)
