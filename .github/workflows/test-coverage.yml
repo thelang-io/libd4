@@ -12,27 +12,19 @@ concurrency:
 
 jobs:
   test-coverage:
-    runs-on: ubuntu-22.04
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v4
       - uses: thelang-io/setup-the@v1
-      - if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
-      - if: runner.os == 'Windows'
-        uses: ilammy/setup-nasm@v1
       - uses: actions/cache@v4
         with:
           path: |
             coverage/openssl
             coverage/openssl-prefix
             coverage/openssl-src
-          key: coverage-cmake-openssl-ubuntu-22.04-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
-      - if: runner.os == 'Linux'
-        run: sudo apt-get install lcov
-      - if: runner.os == 'Windows'
-        run: New-Item -ItemType Directory -Force -Path coverage
-      - if: runner.os != 'Windows'
-        run: mkdir -p coverage
+          key: coverage-cmake-openssl-macos-14-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
+      - run: brew install lcov
+      - run: mkdir -p coverage
       - run: cmake . -B ./coverage -DLIBTHE_BUILD_TESTS=ON -DLIBTHE_COVERAGE=ON
       - run: cmake --build coverage --config Debug
       - run: ctest --output-on-failure --test-dir coverage
@@ -40,7 +32,7 @@ jobs:
       - run: genhtml -o coverage/html coverage/test.info
       - uses: actions/upload-artifact@v4
         with:
-          name: coverage-data-${{ github.event.pull_request.number || github.sha }}
+          name: coverage-data
           path: coverage/html
       - run: the install
       - run: the script check-total-coverage
