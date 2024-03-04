@@ -66,17 +66,17 @@ the_str_t the_str_alloc (const wchar_t *fmt, ...) {
   return (the_str_t) {d, l};
 }
 
-the_str_t the_str_calloc (const wchar_t *self, size_t size) {
+the_str_t the_str_calloc (const wchar_t *self, size_t length) {
   wchar_t *d;
 
-  if (size == 0) {
+  if (length == 0) {
     return (the_str_t) {NULL, 0};
   }
 
-  d = the_safe_alloc((size + 1) * sizeof(wchar_t));
-  wmemcpy(d, self, size);
-  d[size - 1] = L'\0';
-  return (the_str_t) {d, size};
+  d = the_safe_alloc((length + 1) * sizeof(wchar_t));
+  wmemcpy(d, self, length);
+  d[length] = L'\0';
+  return (the_str_t) {d, length};
 }
 
 wchar_t *the_str_at (the_err_state_t *state, int line, int col, const the_str_t self, int32_t index) {
@@ -85,7 +85,7 @@ wchar_t *the_str_at (the_err_state_t *state, int line, int col, const the_str_t 
     longjmp(state->buf_last->buf, state->id);
   }
 
-  return index < 0 ? &self.data[self.len - (size_t) index] : &self.data[index];
+  return index < 0 ? &self.data[self.len + (size_t) index] : &self.data[index];
 }
 
 the_str_t the_str_concat (const the_str_t self, const the_str_t other) {

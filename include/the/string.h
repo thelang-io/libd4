@@ -32,10 +32,10 @@ the_str_t the_str_alloc (const wchar_t *fmt, ...);
 /**
  * Allocates string from C string of specified size.
  * @param self String to copy data from.
- * @param size Size that needs to be copied from self string.
+ * @param length Length of string that needs to be copied from self string.
  * @return Newly allocated string.
  */
-the_str_t the_str_calloc (const wchar_t *self, size_t size);
+the_str_t the_str_calloc (const wchar_t *self, size_t length);
 
 /**
  * Returns a wide character at specified position in string otherwise throws error if index more than string length.
