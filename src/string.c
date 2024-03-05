@@ -93,16 +93,16 @@ the_str_t the_str_concat (const the_str_t self, const the_str_t other) {
   wchar_t *d = the_safe_alloc((l + 1) * sizeof(wchar_t));
   wmemcpy(d, self.data, self.len);
   wmemcpy(&d[self.len], other.data, other.len);
-  d[l - 1] = L'\0';
+  d[l] = L'\0';
   return (the_str_t) {d, l};
 }
 
 bool the_str_contains (const the_str_t self, const the_str_t search) {
   if (self.len == search.len) {
-    return memcmp(self.data, search.data, self.len * sizeof(wchar_t)) == 0;
+    return memcmp(self.data, search.data, self.len * sizeof(wchar_t)) >= 0;
   } else if (self.len > 0 && self.len > search.len) {
-    for (size_t i = 0; i < self.len - search.len; i++) {
-      if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0) {
+    for (size_t i = 0; i < self.len - search.len + 1; i++) {
+      if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) >= 0) {
         return true;
       }
     }
@@ -162,6 +162,10 @@ the_str_t the_str_escape (const the_str_t self) {
 }
 
 int32_t the_str_find (const the_str_t self, const the_str_t search) {
+  if (search.len == 0) {
+    return 0;
+  }
+
   for (size_t i = 0; i < self.len; i++) {
     if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0) {
       return (int32_t) i;
