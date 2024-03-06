@@ -8,19 +8,11 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <the/array-macro.h>
 #include <the/error-type.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-
-/** Structure representing array of string objects. */
-typedef struct {
-  /** Pointer to a first element of the array object. */
-  the_str_t *data;
-
-  /** Length of array object. */
-  size_t len;
-} the_arr_str_t;
 
 /**
  * Allocates string with format specifiers (similar to printf).

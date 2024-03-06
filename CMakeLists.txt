@@ -26,6 +26,7 @@ include(cmake/DownloadOpenSSL.cmake)
 set(
   sources
   src/any.c
+  src/array.c
   src/bool.c
   src/byte.c
   src/char.c
