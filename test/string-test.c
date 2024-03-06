@@ -83,6 +83,9 @@ static void test_string_at (void) {
     assert(((void) "Finds at position -4", *the_str_at(&the_err_state, 0, 0, s2, -4) == L'1'));
     assert(((void) "Finds at position -1", *the_str_at(&the_err_state, 0, 0, s2, -1) == L'4'));
   });
+
+  the_str_free(s1);
+  the_str_free(s2);
 }
 
 static void test_string_concat (void) {
