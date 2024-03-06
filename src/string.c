@@ -81,7 +81,9 @@ the_str_t the_str_calloc (const wchar_t *self, size_t length) {
 
 wchar_t *the_str_at (the_err_state_t *state, int line, int col, const the_str_t self, int32_t index) {
   if ((index >= 0 && (size_t) index >= self.len) || (index < 0 && index < -((int32_t) self.len))) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"index %" PRId32 L" out of string bounds", index));
+    the_str_t message = the_str_alloc(L"index %" PRId32 L" out of string bounds", index);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -436,9 +438,13 @@ double the_str_toFloat (the_err_state_t *state, int line, int col, const the_str
   r = wcstod(self.data, &e);
 
   if (errno == ERANGE || r < -DBL_MAX || DBL_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -453,9 +459,13 @@ float the_str_toF32 (the_err_state_t *state, int line, int col, const the_str_t 
   r = wcstof(self.data, &e);
 
   if (errno == ERANGE || r < -FLT_MAX || FLT_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -470,9 +480,13 @@ double the_str_toF64 (the_err_state_t *state, int line, int col, const the_str_t
   r = wcstod(self.data, &e);
 
   if (errno == ERANGE || r < -DBL_MAX || DBL_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -484,7 +498,9 @@ ptrdiff_t the_str_toIsize (the_err_state_t *state, int line, int col, const the_
   long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -492,9 +508,13 @@ ptrdiff_t the_str_toIsize (the_err_state_t *state, int line, int col, const the_
   r = wcstoll(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < PTRDIFF_MIN || PTRDIFF_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -506,7 +526,9 @@ int8_t the_str_toI8 (the_err_state_t *state, int line, int col, const the_str_t 
   long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -514,9 +536,13 @@ int8_t the_str_toI8 (the_err_state_t *state, int line, int col, const the_str_t 
   r = wcstol(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT8_MIN || INT8_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -528,7 +554,9 @@ int16_t the_str_toI16 (the_err_state_t *state, int line, int col, const the_str_
   long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -536,9 +564,13 @@ int16_t the_str_toI16 (the_err_state_t *state, int line, int col, const the_str_
   r = wcstol(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT16_MIN || INT16_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -550,7 +582,9 @@ int32_t the_str_toI32 (the_err_state_t *state, int line, int col, const the_str_
   long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -558,9 +592,13 @@ int32_t the_str_toI32 (the_err_state_t *state, int line, int col, const the_str_
   r = wcstol(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT32_MIN || INT32_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -572,7 +610,9 @@ int64_t the_str_toI64 (the_err_state_t *state, int line, int col, const the_str_
   long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -580,9 +620,13 @@ int64_t the_str_toI64 (the_err_state_t *state, int line, int col, const the_str_
   r = wcstoll(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT64_MIN || INT64_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -594,7 +638,9 @@ size_t the_str_toUsize (the_err_state_t *state, int line, int col, const the_str
   unsigned long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -602,9 +648,13 @@ size_t the_str_toUsize (the_err_state_t *state, int line, int col, const the_str
   r = wcstoull(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || SIZE_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -616,7 +666,9 @@ uint8_t the_str_toU8 (the_err_state_t *state, int line, int col, const the_str_t
   unsigned long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -624,9 +676,13 @@ uint8_t the_str_toU8 (the_err_state_t *state, int line, int col, const the_str_t
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT8_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -638,7 +694,9 @@ uint16_t the_str_toU16 (the_err_state_t *state, int line, int col, const the_str
   unsigned long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -646,9 +704,13 @@ uint16_t the_str_toU16 (the_err_state_t *state, int line, int col, const the_str
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT16_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -660,7 +722,9 @@ uint32_t the_str_toU32 (the_err_state_t *state, int line, int col, const the_str
   unsigned long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -668,9 +732,13 @@ uint32_t the_str_toU32 (the_err_state_t *state, int line, int col, const the_str
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT32_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
@@ -682,7 +750,9 @@ uint64_t the_str_toU64 (the_err_state_t *state, int line, int col, const the_str
   unsigned long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix));
+    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -690,9 +760,13 @@ uint64_t the_str_toU64 (the_err_state_t *state, int line, int col, const the_str
   r = wcstoull(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT64_MAX < r) {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` out of range", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_error_assign_generic(state, line, col, the_str_alloc(L"value `%ls` has invalid syntax", self.data));
+    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    the_error_assign_generic(state, line, col, message);
+    the_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);

@@ -13,7 +13,9 @@ const char GATE[4] = "GATE";
 
 static void pay_debt (int pay_amount, int debt_amount) {
   if (debt_amount != pay_amount) {
-    the_error_assign_generic(&the_err_state, 10, 10, the_str_alloc(L"Not enough funds."));
+    the_str_t message = the_str_alloc(L"Not enough funds.");
+    the_error_assign_generic(&the_err_state, 10, 10, message);
+    the_str_free(message);
   }
 
   if (the_err_state.id != -1) longjmp(the_err_state.buf_last->buf, the_err_state.id);
