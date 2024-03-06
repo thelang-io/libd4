@@ -8,23 +8,23 @@
 
 #include "../src/error.h"
 
-#define ASSERT_NO_THROW(errorId, block) \
+#define ASSERT_NO_THROW(error_id, block) \
   do { \
     the_error_stack_push(&the_err_state, L"test.c", L"main", 0, 0); \
-    if (setjmp(the_error_buf_increase(&the_err_state)->buf) != 0) goto L##errorId; \
+    if (setjmp(the_error_buf_increase(&the_err_state)->buf) != 0) goto L##error_id; \
     block \
-L##errorId: \
+L##error_id: \
     the_error_stack_pop(&the_err_state); \
     assert(((void) "Throws no errors", the_err_state.id == -1)); \
   } while (0)
 
-#define ASSERT_THROW_WITH_MESSAGE(errorId, block, err) \
+#define ASSERT_THROW_WITH_MESSAGE(error_id, block, err) \
   do { \
     the_Error_t *error; \
     the_error_stack_push(&the_err_state, L"test.c", L"main", 0, 0); \
-    if (setjmp(the_error_buf_increase(&the_err_state)->buf) != 0) goto L##errorId; \
+    if (setjmp(the_error_buf_increase(&the_err_state)->buf) != 0) goto L##error_id; \
     block \
-L##errorId: \
+L##error_id: \
     the_error_stack_pop(&the_err_state); \
     assert(((void) "Throws error", the_err_state.id != -1)); \
     error = the_err_state.ctx; \
