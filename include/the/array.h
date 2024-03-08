@@ -10,7 +10,7 @@
 
 #include <the/string.h>
 
-#define DEFINE_ARRAY(type_name, underlying_type, copy_block, free_block) \
+#define THE_DEFINE_ARRAY(type_name, underlying_type, copy_block, free_block) \
   the_##type_name##_t the_##type_name##_alloc (size_t length, ...) { \
     underlying_type *data; \
     va_list args; \

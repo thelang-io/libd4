@@ -14,7 +14,7 @@
 #include <stdarg.h>
 #include <stdbool.h>
 
-#define DECLARE_ARRAY(type_name, underlying_type) \
+#define THE_DECLARE_ARRAY(type_name, underlying_type) \
   typedef struct { \
     underlying_type *data; \
     size_t len; \
@@ -42,6 +42,6 @@
   the_##type_name##_t the_##type_name##_slice (the_##type_name##_t self, unsigned int o1, int32_t start, unsigned int o2, int32_t end); \
   the_str_t the_##type_name##_str (the_##type_name##_t self);
 
-DECLARE_ARRAY(arr_str, the_str_t)
+THE_DECLARE_ARRAY(arr_str, the_str_t)
 
 #endif
