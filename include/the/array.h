@@ -8,9 +8,11 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <the/fn.h>
 #include <the/string.h>
 
-#define THE_DEFINE_ARRAY(type_name, underlying_type, copy_block, free_block) \
+// todo check all params have correct "const" in definition
+#define THE_ARRAY_DEFINE(type_name, underlying_type, copy_block, free_block) \
   the_##type_name##_t the_##type_name##_alloc (size_t length, ...) { \
     underlying_type *data; \
     va_list args; \
@@ -203,10 +205,10 @@
 //  n->d = re_alloc(n->d, n->l * sizeof(" + elementTypeInfo.typeCodeTrimmed + "));
 //  size_t k = 0;
 //  for (size_t i = n->l - m.l; i < n->l; i++) n->d[i] = m.d[k++];
-//  free(m.d);
+//  the_safe_free(m.d);
 //}
 //
-//the_##type_name##_t the_##type_name##_realloc (the_##type_name##_t n1, the_##type_name##_t n2) {
+//the_##type_name##_t the_##type_name##_realloc (the_##type_name##_t n1, const the_##type_name##_t n2) {
 //  " + this->_genFreeFn(type, CodegenASTExprAccess::create("n1"))->str() + ";
 //  return n2;
 //}

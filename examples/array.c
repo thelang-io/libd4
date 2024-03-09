@@ -5,8 +5,8 @@
 
 #include <the/array.h>
 
-THE_DECLARE_ARRAY(arr_u64, uint64_t)
-THE_DEFINE_ARRAY(arr_u64, uint64_t, self.data[i], (void) self.data[i])
+THE_ARRAY_DECLARE(arr_u64, uint64_t)
+THE_ARRAY_DEFINE(arr_u64, uint64_t, self.data[i], (void) self.data[i])
 
 // todo
 int main (void) {
