@@ -18,6 +18,17 @@ void *the_safe_alloc (size_t size) {
   return d;
 }
 
+void *the_safe_calloc (const void *ptr, size_t size) {
+  void *d = malloc(size);
+
+  if (d == NULL) {
+    the_error_alloc(&the_err_state, size); // LCOV_EXCL_LINE
+  }
+
+  memcpy(d, ptr, size);
+  return d;
+}
+
 void the_safe_free (void *self) {
   free(self);
 }

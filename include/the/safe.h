@@ -18,6 +18,14 @@
 void *the_safe_alloc (size_t size);
 
 /**
+ * Safely allocates X amount of bytes and copies pointer. Sets the error in case allocation fails.
+ * @param ptr Amount of bytes to allocate.
+ * @param size Size of the pointer.
+ * @return Pointer to address in memory where allocated bytes reside.
+ */
+void *the_safe_calloc (const void *ptr, size_t size); // todo test
+
+/**
  * Safely deallocates pointer.
  * @param self Pointer to deallocate.
  */

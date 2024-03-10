@@ -16,7 +16,7 @@
  * @param ctx Context of the object to copy.
  * @return Newly copied object.
  */
-typedef void *(*the_any_copy_cb) (const void *);
+typedef void *(*the_any_copy_cb) (const void *ctx);
 
 /**
  * Callback that is used as a property of the_any_t object to compare two objects.
@@ -24,20 +24,20 @@ typedef void *(*the_any_copy_cb) (const void *);
  * @param rhs_ctx Context of the object to compare to.
  * @return Whether objects are equal or not.
  */
-typedef bool (*the_any_eq_cb) (const void *, const void *);
+typedef bool (*the_any_eq_cb) (const void *lhs_ctx, const void *rhs_ctx);
 
 /**
  * Callback that is used as a property of the_any_t object to deallocate the object.
  * @param ctx Object to deallocate.
  */
-typedef void (*the_any_free_cb) (void *);
+typedef void (*the_any_free_cb) (void *ctx);
 
 /**
  * Callback that is used as a property of the_any_t object to convert the object to a string.
  * @param ctx Context of the object to generate string representation for.
  * @return String representation of the object.
  */
-typedef the_str_t (*the_any_str_cb) (const void *);
+typedef the_str_t (*the_any_str_cb) (const void *ctx);
 
 /** Structure representing the_any_t object. */
 typedef struct the_any_s {

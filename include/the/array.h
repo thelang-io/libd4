@@ -11,6 +11,7 @@
 #include <the/fn.h>
 #include <the/string.h>
 
+// todo test
 // todo check all params have correct "const" in definition
 #define THE_ARRAY_DEFINE(type_name, underlying_type, copy_block, free_block) \
   the_##type_name##_t the_##type_name##_alloc (size_t length, ...) { \

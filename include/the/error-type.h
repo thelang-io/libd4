@@ -16,7 +16,7 @@
  * @param ctx Context of the object to copy.
  * @return Newly copied object.
  */
-typedef void (*the_err_state_free_cb) (void *);
+typedef void (*the_err_state_free_cb) (void *ctx);
 
 /** Structure representing the_err_buf_t linked list. */
 typedef struct the_err_buf_s {
