@@ -13,18 +13,18 @@
 
 // todo test
 #define THE_FUNCTION_DEFINE(type_name, return_type) \
-  the_##type_name##_t the_##type_name##_alloc (const the_str_t name, the_##type_name##_func func, void *ctx, the_fn_copy_cb copy_cb, the_fn_free_cb free_cb) { \
-    return (the_##type_name##_t) {name, func, ctx, copy_cb, free_cb}; \
+  the_##type_name##_t the_##type_name##_alloc (const the_str_t name, void *ctx, the_fn_copy_cb copy_cb, the_fn_free_cb free_cb, the_##type_name##_func func) { \
+    return (the_##type_name##_t) {name, ctx, copy_cb, free_cb, func}; \
   } \
   \
   the_##type_name##_t the_##type_name##_copy (const the_##type_name##_t self) { \
     return self.ctx == NULL \
-      ? (the_##type_name##_t) {the_str_copy(self.name), self.func, self.copy_cb(self.ctx), self.copy_cb, self.free_cb} \
-      : (the_##type_name##_t) {the_str_copy(self.name), self.func, NULL, NULL, NULL}; \
+      ? (the_##type_name##_t) {the_str_copy(self.name), self.copy_cb(self.ctx), self.copy_cb, self.free_cb, self.func} \
+      : (the_##type_name##_t) {the_str_copy(self.name), NULL, NULL, NULL, self.func}; \
   } \
   \
   void the_##type_name##_free (the_##type_name##_t self) { \
-    if (self.ctx != NULL) self.free_cb(self.ctx); \
+    if (self.ctx != NULL && self.free_cb != NULL) self.free_cb(self.ctx); \
     the_str_free(self.name); \
   } \
   \
@@ -40,11 +40,5 @@
   the_str_t the_##type_name##_str (const the_##type_name##_t self) { \
     return the_str_copy(self.name); \
   }
-
-/**
- * Function to be used with function context object that has no properties to free.
- * @param ctx Context of the function.
- */
-void the_fn_ctx_free_generic (void *ctx);
 
 #endif

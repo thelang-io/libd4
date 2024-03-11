@@ -32,7 +32,6 @@ set(
   src/char.c
   src/enum.c
   src/error.c
-  src/fn.c
   src/number.c
   src/rune.c
   src/safe.c
