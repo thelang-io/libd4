@@ -6,14 +6,14 @@
 #include <the/fn.h>
 #include <stdio.h>
 
-THE_FUNCTION_DECLARE(fn_sFRintFE, int)
+THE_FUNCTION_DECLARE(s, int)
 
-THE_FUNCTION_DECLARE_WITH_PARAMS(fn_sFPintFRintFE, int, {
+THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, int, {
   int b;
 })
 
-THE_FUNCTION_DEFINE(fn_sFRintFE, int)
-THE_FUNCTION_DEFINE(fn_sFPintFRintFE, int)
+THE_FUNCTION_DEFINE(s, int)
+THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int)
 
 typedef struct {
   int *a;

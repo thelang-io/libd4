@@ -11,18 +11,18 @@
 #include <the/string.h>
 
 /** Macro that should be used to generate function type entities. */
-#define THE_FUNCTION_DECLARE(type_name, return_type) \
-  THE_FUNCTION_DECLARE_BASE(type_name, return_type)
+#define THE_FUNCTION_DECLARE(prefix, return_type) \
+  THE_FUNCTION_DECLARE_BASE(return_type, fn_##prefix##FR##return_type##FE)
 
 /** Macro that should be used to generate function type entities along with params. */
-#define THE_FUNCTION_DECLARE_WITH_PARAMS(type_name, return_type, params_declaration) \
+#define THE_FUNCTION_DECLARE_WITH_PARAMS(prefix, return_type, params_declaration, params_definition) \
   /** Object representation of the function params type. */ \
-  typedef struct params_declaration the_##type_name##_params_t; \
+  typedef struct params_definition the_fn_##prefix##FP##params_declaration##FR##return_type##FE_params_t; \
   \
-  THE_FUNCTION_DECLARE_BASE(type_name, return_type)
+  THE_FUNCTION_DECLARE_BASE(return_type, fn_##prefix##FP##params_declaration##FR##return_type##FE)
 
 /** Macro that is used internally to generate function type entities. */
-#define THE_FUNCTION_DECLARE_BASE(type_name, return_type) \
+#define THE_FUNCTION_DECLARE_BASE(return_type, type_name) \
   /**
    * Functor that is used as main call entry of the function object.
    * @param ctx Context of the function.
