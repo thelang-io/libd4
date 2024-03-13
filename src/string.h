@@ -7,7 +7,6 @@
 #define SRC_STRING_H
 
 #include <the/string.h>
-#include <stdarg.h>
 
 int snwprintf (const wchar_t *, ...);
 int vsnwprintf (const wchar_t *, va_list);

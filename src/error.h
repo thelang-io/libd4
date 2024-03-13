@@ -7,9 +7,10 @@
 #define SRC_ERROR_H
 
 #include <the/error.h>
+#include <the/macro.h>
 
 /**
- * Instantly reports error and exists the application. Used internally by safe_alloc, safe_realloc functions.
+ * Instantly reports error and quits the application. Used internally by safe_alloc, safe_realloc functions.
  * @param state Error state to generate stack from.
  * @param size Size that safe function failed to allocate.
  */

@@ -10,7 +10,6 @@
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
-#include <wchar.h>
 
 #if defined(THE_OS_WINDOWS)
   #include <winsock2.h>

@@ -4,7 +4,6 @@
  */
 
 #include "error-test.h"
-#include <the/macro.h>
 #include <assert.h>
 #include <string.h>
 

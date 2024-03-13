@@ -6,11 +6,9 @@
 #include "string.h"
 #include <the/array.h>
 #include <the/error.h>
-#include <the/safe.h>
+#include <the/macro.h>
 #include <ctype.h>
-#include <errno.h>
 #include <float.h>
-#include <inttypes.h>
 #include <limits.h>
 #include <string.h>
 

@@ -9,6 +9,7 @@
 /* See https://github.com/thelang-io/helpers for reference. */
 
 #include <the/error-type.h>
+#include <errno.h>
 
 /** Type id representing generic error. */
 #define TYPE_Error 0
