@@ -8,12 +8,12 @@
 
 THE_FUNCTION_DECLARE(s, int)
 
-THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, int, {
-  int b;
+THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, FP3int, {
+  int n0;
 })
 
 THE_FUNCTION_DEFINE(s, int)
-THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int)
+THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, FP3int)
 
 typedef struct {
   int *a;
@@ -29,21 +29,21 @@ static void job_ctx_free (job_ctx_t *ctx) {
   the_safe_free(ctx);
 }
 
-static int job (job_ctx_t *ctx, the_fn_sFPintFRintFE_params_t *params) {
-  printf("Context a: %d, Params: b: %d\n", *ctx->a, params->b);
-  *ctx->a += params->b;
+static int job (job_ctx_t *ctx, the_fn_sFP3intFRintFE_params_t *params) {
+  wprintf(L"Context a: %d, Params: b: %d\n", *ctx->a, params->n0);
+  *ctx->a += params->n0;
   return *ctx->a;
 }
 
-static int job2 (THE_UNUSED void *ctx, the_fn_sFPintFRintFE_params_t *params) {
-  printf("Params: b: %d\n", params->b);
-  return params->b;
+static int job2 (THE_UNUSED void *ctx, the_fn_sFP3intFRintFE_params_t *params) {
+  wprintf(L"Params: b: %d\n", params->n0);
+  return params->n0;
 }
 
 int main (void) {
   int a = 2;
 
-  the_fn_sFPintFRintFE_t a1 = the_fn_sFPintFRintFE_alloc(
+  the_fn_sFP3intFRintFE_t a1 = the_fn_sFP3intFRintFE_alloc(
     the_str_alloc(L"job"),
     the_safe_calloc(&(job_ctx_t) {&a}, sizeof(job_ctx_t)),
     (void *(*) (const void *)) job_ctx_copy,
@@ -51,7 +51,7 @@ int main (void) {
     (int (*) (void *, void *)) job
   );
 
-  the_fn_sFPintFRintFE_t a2 = the_fn_sFPintFRintFE_alloc(
+  the_fn_sFP3intFRintFE_t a2 = the_fn_sFP3intFRintFE_alloc(
     the_str_alloc(L"job2"),
     NULL,
     NULL,
@@ -61,47 +61,47 @@ int main (void) {
 
   int result1;
   int result2;
-  the_str_t s1 = the_fn_sFPintFRintFE_str(a1);
-  the_str_t s2 = the_fn_sFPintFRintFE_str(a2);
+  the_str_t s1 = the_fn_sFP3intFRintFE_str(a1);
+  the_str_t s2 = the_fn_sFP3intFRintFE_str(a2);
 
-  printf("a1: %ls\n", s1.data);
-  printf("a2: %ls\n", s2.data);
+  wprintf(L"a1: %ls\n", s1.data);
+  wprintf(L"a2: %ls\n", s2.data);
 
-  if (the_fn_sFPintFRintFE_eq(a1, a2)) {
-    printf("a1 == a2\n");
+  if (the_fn_sFP3intFRintFE_eq(a1, a2)) {
+    wprintf(L"a1 == a2\n");
   } else {
-    printf("a1 != a2\n");
+    wprintf(L"a1 != a2\n");
   }
 
-  result1 = a1.func(a1.ctx, the_safe_calloc(&(the_fn_sFPintFRintFE_params_t) {10}, sizeof(the_fn_sFPintFRintFE_params_t)));
-  printf("Result: %d\n", result1);
-  result2 = a2.func(a1.ctx, the_safe_calloc(&(the_fn_sFPintFRintFE_params_t) {2}, sizeof(the_fn_sFPintFRintFE_params_t)));
-  printf("Result: %d\n", result2);
+  result1 = a1.func(a1.ctx, the_safe_calloc(&(the_fn_sFP3intFRintFE_params_t) {10}, sizeof(the_fn_sFP3intFRintFE_params_t)));
+  wprintf(L"Result: %d\n", result1);
+  result2 = a2.func(a1.ctx, the_safe_calloc(&(the_fn_sFP3intFRintFE_params_t) {2}, sizeof(the_fn_sFP3intFRintFE_params_t)));
+  wprintf(L"Result: %d\n", result2);
 
   the_str_free(s1);
   the_str_free(s2);
-  a2 = the_fn_sFPintFRintFE_realloc(a2, a1);
+  a2 = the_fn_sFP3intFRintFE_realloc(a2, a1);
 
-  s1 = the_fn_sFPintFRintFE_str(a1);
-  s2 = the_fn_sFPintFRintFE_str(a2);
+  s1 = the_fn_sFP3intFRintFE_str(a1);
+  s2 = the_fn_sFP3intFRintFE_str(a2);
 
-  printf("a1: %ls\n", s1.data);
-  printf("a2: %ls\n", s2.data);
+  wprintf(L"a1: %ls\n", s1.data);
+  wprintf(L"a2: %ls\n", s2.data);
 
-  if (the_fn_sFPintFRintFE_eq(a1, a2)) {
-    printf("a1 == a2\n");
+  if (the_fn_sFP3intFRintFE_eq(a1, a2)) {
+    wprintf(L"a1 == a2\n");
   } else {
-    printf("a1 != a2\n");
+    wprintf(L"a1 != a2\n");
   }
 
-  result2 = a2.func(a1.ctx, the_safe_calloc(&(the_fn_sFPintFRintFE_params_t) {2}, sizeof(the_fn_sFPintFRintFE_params_t)));
-  printf("Result: %d\n", result2);
+  result2 = a2.func(a1.ctx, the_safe_calloc(&(the_fn_sFP3intFRintFE_params_t) {2}, sizeof(the_fn_sFP3intFRintFE_params_t)));
+  wprintf(L"Result: %d\n", result2);
 
   the_str_free(s1);
   the_str_free(s2);
 
-  the_fn_sFPintFRintFE_free(a1);
-  the_fn_sFPintFRintFE_free(a2);
+  the_fn_sFP3intFRintFE_free(a1);
+  the_fn_sFP3intFRintFE_free(a2);
 
   return 0;
 }

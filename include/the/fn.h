@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
-#include <the/fn-macro.h>
-#include <string.h>
+#include <the/safe.h>
+#include <the/string.h>
 
 // todo test
 
@@ -19,7 +19,7 @@
 
 /** Macro that can be used to define a function object with parameters. */
 #define THE_FUNCTION_DEFINE_WITH_PARAMS(prefix, return_type, params_declaration) \
-  THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##FP##params_declaration##FR##return_type##FE)
+  THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##params_declaration##FR##return_type##FE)
 
 /** Macro that is used internally to define function object. */
 #define THE_FUNCTION_DEFINE_BASE(return_type, type_name) \

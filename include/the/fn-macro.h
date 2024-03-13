@@ -8,7 +8,8 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
-#include <the/string.h>
+#include <the/string-type.h>
+#include <stdbool.h>
 
 /** Macro that should be used to generate function type entities. */
 #define THE_FUNCTION_DECLARE(prefix, return_type) \
@@ -17,9 +18,9 @@
 /** Macro that should be used to generate function type entities along with params. */
 #define THE_FUNCTION_DECLARE_WITH_PARAMS(prefix, return_type, params_declaration, params_definition) \
   /** Object representation of the function params type. */ \
-  typedef struct params_definition the_fn_##prefix##FP##params_declaration##FR##return_type##FE_params_t; \
+  typedef struct params_definition the_fn_##prefix##params_declaration##FR##return_type##FE_params_t; \
   \
-  THE_FUNCTION_DECLARE_BASE(return_type, fn_##prefix##FP##params_declaration##FR##return_type##FE)
+  THE_FUNCTION_DECLARE_BASE(return_type, fn_##prefix##params_declaration##FR##return_type##FE)
 
 /** Macro that is used internally to generate function type entities. */
 #define THE_FUNCTION_DECLARE_BASE(return_type, type_name) \
