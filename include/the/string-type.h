@@ -8,6 +8,7 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <stddef.h>
 #include <wchar.h>
 
 /** Structure representing string object. */

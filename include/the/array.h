@@ -9,7 +9,7 @@
 /* See https://github.com/thelang-io/helpers for reference. */
 
 #include <the/fn.h>
-#include <the/string.h>
+#include <inttypes.h>
 
 // todo test
 // todo check all params have correct "const" in definition

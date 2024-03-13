@@ -4,7 +4,7 @@
  */
 
 #include <the/fn.h>
-#include <stdio.h>
+#include <the/macro.h>
 
 THE_FUNCTION_DECLARE(s, int)
 

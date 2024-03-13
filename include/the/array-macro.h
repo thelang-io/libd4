@@ -8,11 +8,10 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
-#include <the/error.h>
-#include <the/safe.h>
-#include <inttypes.h>
+#include <the/error-type.h>
+#include <the/fn-macro.h>
 #include <stdarg.h>
-#include <stdbool.h>
+#include <stdint.h>
 
 // todo documentation
 

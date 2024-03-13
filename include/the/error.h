@@ -8,7 +8,6 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
-#include <the/macro.h>
 #include <the/error-type.h>
 
 /** Type id representing generic error. */

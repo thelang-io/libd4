@@ -4,6 +4,7 @@
  */
 
 #include <the/error.h>
+#include <the/macro.h>
 #include <the/string.h>
 
 int main (void) {
