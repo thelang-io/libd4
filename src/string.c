@@ -5,7 +5,6 @@
 
 #include "string.h"
 #include <the/array.h>
-#include <the/error.h>
 #include <the/macro.h>
 #include <ctype.h>
 #include <float.h>
@@ -221,7 +220,7 @@ the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLi
   size_t start = 0;
 
   if (self.len != 0) {
-    return (the_arr_str_t) {NULL, 0};
+    return (the_arr_str_t) {NULL, 0, the_str_copy, the_str_free};
   }
 
   for (size_t j = 0; j < self.len; j++) {
@@ -246,7 +245,7 @@ the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLi
     result[len - 1] = the_str_calloc(&self.data[start], self.len - start);
   }
 
-  return (the_arr_str_t) {result, len};
+  return (the_arr_str_t) {result, len, the_str_copy, the_str_free};
 }
 
 the_str_t the_str_lower (const the_str_t self) {
@@ -428,7 +427,7 @@ the_arr_str_t the_str_split (const the_str_t self, THE_UNUSED unsigned char o1, 
     r[l - 1] = the_str_calloc(&self.data[i], self.len - i);
   }
 
-  return (the_arr_str_t) {r, l};
+  return (the_arr_str_t) {r, l, the_str_copy, the_str_free};
 }
 
 double the_str_toFloat (the_err_state_t *state, int line, int col, const the_str_t self) {
