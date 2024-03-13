@@ -9,10 +9,8 @@
 /* See https://github.com/thelang-io/helpers for reference. */
 
 #include <the/array-macro.h>
-#include <the/error-type.h>
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
+
+THE_ARRAY_DECLARE(str, the_str_t)
 
 /**
  * Allocates string with format specifiers (similar to printf).

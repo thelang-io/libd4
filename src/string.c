@@ -4,6 +4,7 @@
  */
 
 #include "string.h"
+#include <the/array.h>
 #include <the/error.h>
 #include <the/safe.h>
 #include <ctype.h>
@@ -12,6 +13,8 @@
 #include <inttypes.h>
 #include <limits.h>
 #include <string.h>
+
+THE_ARRAY_DEFINE(str, the_str_t)
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
