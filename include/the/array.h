@@ -23,14 +23,14 @@
   the_arr_##element_type_name##_t the_arr_##element_type_name##_alloc (size_t length, ...) { \
     element_type *data; \
     va_list args; \
-    if (length == 0) return (the_arr_##element_type_name##_t) {NULL, 0, NULL, NULL}; \
+    if (length == 0) return (the_arr_##element_type_name##_t) {NULL, 0, NULL, NULL, NULL, NULL}; /* todo */ \
     data = the_safe_alloc(length * sizeof(element_type)); \
     va_start(args, length); \
     for (size_t i = 0; i < length; i++) { \
       data[i] = va_arg(args, element_type); \
     } \
     va_end(args); \
-    return (the_arr_##element_type_name##_t) {data, length, NULL, NULL}; \
+    return (the_arr_##element_type_name##_t) {data, length, NULL, NULL, NULL, NULL}; /* todo */ \
   } \
   \
   element_type *the_arr_##element_type_name##_at (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, int32_t index) { \
@@ -43,14 +43,39 @@
     return index < 0 ? &self.data[self.len + index] : &self.data[index]; \
   } \
   \
+  the_arr_##element_type_name##_t *the_arr_##element_type_name##_clear (the_arr_##element_type_name##_t *self) { \
+    the_arr_##element_type_name##_free(*self); \
+    self->data = NULL; \
+    self->len = 0; \
+    return self; \
+  } \
+  \
+  the_arr_##element_type_name##_t the_arr_##element_type_name##_concat (const the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t other) { \
+    size_t len = self.len + other.len; \
+    element_type *data = the_safe_alloc(len * sizeof(element_type)); \
+    size_t k = 0; \
+    for (size_t i = 0; i < self.len; i++) data[k++] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
+    for (size_t i = 0; i < other.len; i++) data[k++] = other.copy_cb == NULL ? other.data[i] : other.copy_cb(other.data[i]); \
+    return (the_arr_##element_type_name##_t) {data, len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+  } \
+  \
+  bool the_arr_##element_type_name##_contains (const the_arr_##element_type_name##_t self, const element_type search) { \
+    for (size_t i = 0; i < self.len; i++) { \
+      if (self.eq_cb === NULL ? self.data[i] == search : self.eq_cb(self.data[i], search)) { \
+        return true; \
+      } \
+    } \
+    return false; \
+  } \
+  \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_copy (const the_arr_##element_type_name##_t self) { \
     element_type *data; \
-    if (self.len == 0) return (the_arr_##element_type_name##_t) {NULL, 0, self.copy_cb, self.free_cb}; \
+    if (self.len == 0) return (the_arr_##element_type_name##_t) {NULL, 0, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
     data = the_safe_alloc(self.len * sizeof(element_type)); \
     for (size_t i = 0; i < self.len; i++) { \
       data[i] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
     } \
-    return (the_arr_##element_type_name##_t) {data, self.len, self.copy_cb, self.free_cb}; \
+    return (the_arr_##element_type_name##_t) {data, self.len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
   } \
   \
   void the_arr_##element_type_name##_free (the_arr_##element_type_name##_t self) { \
@@ -60,41 +85,6 @@
     if (self.data != NULL) the_safe_free(self.data); \
   }
 
-//the_arr_##element_type_name##_t *the_arr_##element_type_name##_clear (the_arr_##element_type_name##_t *self) {
-//  " + this->_genFreeFn(type, cFree)->str() + ";
-//  self->d = NULL;
-//  self->l = 0;
-//  return self;
-//}
-//
-//the_arr_##element_type_name##_t the_arr_##element_type_name##_concat (the_arr_##element_type_name##_t self, " + param1TypeInfo.typeCode + "n1) {
-//  size_t l = self.l + n1.l;
-//  " + elementTypeInfo.typeRefCode + "d = alloc(l * sizeof(" + elementTypeInfo.typeCodeTrimmed + "));
-//  size_t k = 0;
-//  for (size_t i = 0; i < self.l; i++) d[k++] = ";
-//this->_genCopyFn(elementTypeInfo.type, cCopy1)->str() + ";
-//  for (size_t i = 0; i < n1.l; i++) d[k++] = ";
-//this->_genCopyFn(elementTypeInfo.type, cCopy2)->str() + ";
-//  " + this->_genFreeFn(type, CodegenASTExprAccess::create("n1"))->str() + ";
-//  " + this->_genFreeFn(type, CodegenASTExprAccess::create("self"))->str() + ";
-//  return (the_arr_##element_type_name##_t) {d, l};
-//}
-//
-//bool the_arr_##element_type_name##_contains (the_arr_##element_type_name##_t self, " + param1TypeInfo.typeCode + "n1) {
-//  bool r = false;
-//  for (size_t i = 0; i < self.l; i++) {
-//    if (" + this->_genEqFn(elementTypeInfo.type, cEq1, cEq2)->str() + ") {
-//      r = true;
-//      break;
-//    }
-//  }
-//if (param1TypeInfo.type->shouldBeFreed()) {
-//  " + this->_genFreeFn(param1TypeInfo.type, CodegenASTExprAccess::create("n1"))->str() + ";
-//}
-//  " + this->_genFreeFn(type, CodegenASTExprAccess::create("self"))->str() + ";
-//  return r;
-//}
-//
 //bool the_arr_##element_type_name##_empty (the_arr_##element_type_name##_t n) {
 //  bool r = n.l == 0;
 //  " + this->_genFreeFn(type, CodegenASTExprAccess::create("n"))->str() + ";
