@@ -16,14 +16,14 @@
 // todo documentation
 
 #define THE_ARRAY_DECLARE(element_type_name, element_type) \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, bool, FP3##element_type_name, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(s, bool, bool, FP3##element_type_name, { \
     the_err_state_t *state; \
     int line; \
     int col; \
     element_type n0; \
   }) \
   \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, void, FP3##element_type_name##FP3int, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(s, void, void, FP3##element_type_name##FP3int, { \
     the_err_state_t *state; \
     int line; \
     int col; \
@@ -31,7 +31,7 @@
     int32_t n1; \
   }) \
   \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, FP3##element_type_name##FP3##element_type_name, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(s, i32, int32_t, FP3##element_type_name##FP3##element_type_name, { \
     the_err_state_t *state; \
     int line; \
     int col; \

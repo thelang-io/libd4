@@ -14,12 +14,12 @@
 // todo test
 
 /** Macro that can be used to define a function object without parameters. */
-#define THE_FUNCTION_DEFINE(prefix, return_type) \
-  THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##FR##return_type##FE)
+#define THE_FUNCTION_DEFINE(prefix, return_type_name, return_type) \
+  THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##FR##return_type_name##FE)
 
 /** Macro that can be used to define a function object with parameters. */
-#define THE_FUNCTION_DEFINE_WITH_PARAMS(prefix, return_type, params_declaration) \
-  THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##params_declaration##FR##return_type##FE)
+#define THE_FUNCTION_DEFINE_WITH_PARAMS(prefix, return_type_name, return_type, params_declaration) \
+  THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##params_declaration##FR##return_type_name##FE)
 
 /** Macro that is used internally to define function object. */
 #define THE_FUNCTION_DEFINE_BASE(return_type, type_name) \
