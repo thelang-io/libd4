@@ -31,7 +31,7 @@
     int32_t n1; \
   }) \
   \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, i32, int32_t, FP3##element_type_name##FP3##element_type_name, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, int32_t, FP3##element_type_name##FP3##element_type_name, { \
     the_err_state_t *state; \
     int line; \
     int col; \

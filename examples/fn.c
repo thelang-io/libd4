@@ -6,14 +6,14 @@
 #include <the/fn.h>
 #include <the/macro.h>
 
-THE_FUNCTION_DECLARE(s, int)
+THE_FUNCTION_DECLARE(s, int, int32_t)
 
-THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, FP3int, {
+THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, int32_t, FP3int, {
   int n0;
 })
 
-THE_FUNCTION_DEFINE(s, int)
-THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, FP3int)
+THE_FUNCTION_DEFINE(s, int, int32_t)
+THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int32_t, FP3int)
 
 typedef struct {
   int *a;
