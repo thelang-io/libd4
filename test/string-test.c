@@ -299,10 +299,6 @@ static void test_string_lt (void) {
   // todo
 }
 
-static void test_string_ne (void) {
-  // todo
-}
-
 static void test_string_not (void) {
   // todo
 }
@@ -416,7 +412,6 @@ int main (void) {
   test_string_lower();
   test_string_lowerFirst();
   test_string_lt();
-  test_string_ne();
   test_string_not();
   test_string_realloc();
   test_string_replace();

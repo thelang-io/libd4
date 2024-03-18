@@ -48,12 +48,6 @@
   \
   void the_union_##subtypes_type_name##UE_free (the_union_##subtypes_type_name##UE_t self) free_block \
   \
-  bool the_union_##subtypes_type_name##UE_ne (const the_union_##subtypes_type_name##UE_t self, const the_union_##subtypes_type_name##UE_t rhs) { \
-    if (self.type != rhs.type) return true; \
-    ne_block \
-    return true; \
-  } \
-  \
   the_union_##subtypes_type_name##UE_t the_union_##subtypes_type_name##UE_realloc (the_union_##subtypes_type_name##UE_t self, const the_union_##subtypes_type_name##UE_t rhs) { \
     the_union_##subtypes_type_name##UE_free(self); \
     return the_union_##subtypes_type_name##UE_copy(rhs); \

@@ -56,31 +56,6 @@ static void test_any_free (void) {
   the_any_free(a2);
 }
 
-static void test_any_ne (void) {
-  the_any_t a1 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
-  the_any_t a2 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
-  the_any_t a3 = any_u64(10);
-  the_any_t a4 = any_u64(10);
-  the_any_t a5 = any_u64(20);
-  the_any_t a6 = any_u32(10);
-
-  assert(((void) "Value not equals itself", !the_any_ne(a3, a3)));
-  assert(((void) "Value not equals itself when NULL", !the_any_ne(a1, a1)));
-  assert(((void) "NULL not equals NULL", !the_any_ne(a1, a2)));
-  assert(((void) "Value not equals NULL", the_any_ne(a3, a1)));
-  assert(((void) "Value not equals same value", !the_any_ne(a3, a4)));
-  assert(((void) "Value not equals different value", the_any_ne(a3, a5)));
-  assert(((void) "Different types different values", the_any_ne(a5, a6)));
-  assert(((void) "Different types same values", the_any_ne(a3, a6)));
-
-  the_any_free(a1);
-  the_any_free(a2);
-  the_any_free(a3);
-  the_any_free(a4);
-  the_any_free(a5);
-  the_any_free(a6);
-}
-
 static void test_any_realloc (void) {
   the_any_t a = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
   the_any_t a1 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
@@ -129,7 +104,6 @@ int main (void) {
   test_any_copy();
   test_any_eq();
   test_any_free();
-  test_any_ne();
   test_any_realloc();
   test_any_str();
 }

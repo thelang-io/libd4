@@ -57,10 +57,6 @@ int main (void) {
     wprintf(L"a = %ls\n", a_str.data);
   }
 
-  if (the_any_ne(b, c)) {
-    wprintf(L"b = %ls\n", b_str.data);
-  }
-
   the_str_free(b_str);
   the_str_free(a_str);
 

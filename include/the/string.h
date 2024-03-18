@@ -153,13 +153,6 @@ the_str_t the_str_lowerFirst (const the_str_t self);
 bool the_str_lt (const the_str_t self, const the_str_t rhs);
 
 /**
- * Checks whether string not equal right-hand string.
- * @param self String to check.
- * @return Whether string not equal right-hand string.
- */
-bool the_str_ne (const the_str_t self, const the_str_t rhs);
-
-/**
  * Checks whether string is not empty.
  * @param self String to check.
  * @return Whether string is not empty.

@@ -32,7 +32,6 @@
   the_union_##subtypes_type_name##UE_t the_union_##subtypes_type_name##UE_copy (const the_union_##subtypes_type_name##UE_t self); \
   bool the_union_##subtypes_type_name##UE_eq (const the_union_##subtypes_type_name##UE_t self, const the_union_##subtypes_type_name##UE_t rhs); \
   void the_union_##subtypes_type_name##UE_free (the_union_##subtypes_type_name##UE_t self); \
-  bool the_union_##subtypes_type_name##UE_ne (const the_union_##subtypes_type_name##UE_t self, const the_union_##subtypes_type_name##UE_t rhs); \
   the_union_##subtypes_type_name##UE_t the_union_##subtypes_type_name##UE_realloc (the_union_##subtypes_type_name##UE_t self, const the_union_##subtypes_type_name##UE_t rhs); \
   the_str_t the_union_##subtypes_type_name##UE_str (const the_union_##subtypes_type_name##UE_t self);
 

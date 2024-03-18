@@ -26,16 +26,6 @@ void the_any_free (the_any_t self) {
   if (self.ctx != NULL) self.free_cb(self.ctx);
 }
 
-bool the_any_ne (const the_any_t self, const the_any_t rhs) {
-  if (self.ctx == NULL || rhs.ctx == NULL) {
-    return self.ctx != rhs.ctx;
-  } else if (self.type != rhs.type) {
-    return true;
-  }
-
-  return !self.eq_cb(self.ctx, rhs.ctx);
-}
-
 the_any_t the_any_realloc (the_any_t self, const the_any_t rhs) {
   the_any_free(self);
   return the_any_copy(rhs);

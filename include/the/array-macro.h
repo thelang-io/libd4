@@ -71,7 +71,6 @@
   the_str_t the_arr_##element_type_name##_join (const the_arr_##element_type_name##_t self, unsigned char o1, const the_str_t separator); \
   element_type *the_arr_##element_type_name##_last (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self); \
   the_arr_##element_type_name##_t *the_arr_##element_type_name##_merge (the_arr_##element_type_name##_t *self, const the_arr_##element_type_name##_t other); \
-  bool the_arr_##element_type_name##_ne (const the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t rhs); \
   element_type the_arr_##element_type_name##_pop (the_arr_##element_type_name##_t *self); \
   void the_arr_##element_type_name##_push (the_arr_##element_type_name##_t *self, const the_arr_##element_type_name##_t elements); \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_realloc (the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t rhs); \

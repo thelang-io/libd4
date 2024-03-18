@@ -172,17 +172,6 @@
     return self; \
   } \
   \
-  bool the_arr_##element_type_name##_ne (const the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t rhs) { \
-    if (self.len != rhs.len) return true; \
-    for (size_t i = 0; i < self.len; i++) { \
-      /* if (!(self.eq_cb == NULL ? self.data[i] == rhs.data[i] : self.eq_cb(self.data[i], rhs.data[i])) { todo */ \
-        (void) rhs; /* todo remove */ \
-        return true; \
-      /* } */ \
-    } \
-    return false; \
-  } \
-  \
   element_type the_arr_##element_type_name##_pop (the_arr_##element_type_name##_t *self) { \
     self->len--; \
     return self->data[self->len]; \

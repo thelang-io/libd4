@@ -50,7 +50,7 @@ typedef struct the_any_s {
   /** Callback of the_any_t object used inside `the_any_copy`, `the_any_realloc` functions. */
   the_any_copy_cb copy_cb;
 
-  /** Callback of the_any_t object used inside `the_any_eq`, `the_any_ne` functions. */
+  /** Callback of the_any_t object used inside `the_any_eq` function. */
   the_any_eq_cb eq_cb;
 
   /** Callback of the_any_t object used inside `the_any_free`, `the_any_realloc` functions. */
@@ -80,14 +80,6 @@ bool the_any_eq (const the_any_t self, const the_any_t rhs);
  * @param self Object to deallocate.
  */
 void the_any_free (the_any_t self);
-
-/**
- * Checks whether two objects are not equal.
- * @param self Object to compare from.
- * @param rhs Object to compare to.
- * @return Whether objects are not equal.
- */
-bool the_any_ne (const the_any_t self, const the_any_t rhs);
 
 /**
  * Reallocates the object with value copied from another object.
