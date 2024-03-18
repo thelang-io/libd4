@@ -4,7 +4,7 @@
 #
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_EXAMPLES)
-  set(examples any array bool byte char crypto enum error fn macro number rand safe ssl string)
+  set(examples any array bool byte char crypto enum error fn macro number rand safe ssl string union)
 
   foreach (example ${examples})
     add_executable(${PROJECT_NAME}-example-${example} examples/${example}.c)
