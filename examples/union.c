@@ -27,9 +27,6 @@ THE_UNION_DEFINE(intUSstr, {
 }, {
   if (self.type == TYPE_str) the_str_free(self.data.v2);
 }, {
-  if (self.type == TYPE_int) return self.data.v1 != rhs.data.v1;
-  if (self.type == TYPE_str) return !the_str_eq(self.data.v2, rhs.data.v2);
-}, {
   if (self.type == TYPE_int) return the_i32_str(self.data.v1);
   if (self.type == TYPE_str) return the_str_copy(self.data.v2);
 })

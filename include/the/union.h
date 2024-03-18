@@ -19,10 +19,9 @@
  * @param copy_block todo
  * @param eq_block todo
  * @param free_block todo
- * @param ne_block todo
  * @param str_block todo
  */
-#define THE_UNION_DEFINE(subtypes_type_name, alloc_block, copy_block, eq_block, free_block, ne_block, str_block) \
+#define THE_UNION_DEFINE(subtypes_type_name, alloc_block, copy_block, eq_block, free_block, str_block) \
   the_union_##subtypes_type_name##UE_t the_union_##subtypes_type_name##UE_alloc (int type, ...) { \
     the_union_##subtypes_type_name##UE_t self; \
     va_list args; \
