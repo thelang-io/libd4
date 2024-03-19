@@ -8,6 +8,9 @@
 THE_ARRAY_DECLARE(u64, uint64_t)
 THE_ARRAY_DEFINE(u64, uint64_t)
 
+// todo the decision I made is to go with structure similar to the one in union
+//  for any, array, fn
+
 // todo
 int main (void) {
   the_arr_u64_t a1 = the_arr_u64_alloc(0);

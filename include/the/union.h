@@ -13,19 +13,20 @@
 // todo test
 
 /**
- * Macro that can be used to define a function object without parameters.
- * @param subtypes_type_name todo
- * @param alloc_block todo
- * @param copy_block todo
- * @param eq_block todo
- * @param free_block todo
- * @param str_block todo
+ * Macro that can be used to define an union object.
+ * @param subtypes_type_name All sub-types joined by US (short for "union separator") separator.
+ * @param alloc_block Block that is used for alloc method of union object.
+ * @param copy_block Block that is used for copy method of union object.
+ * @param eq_block Block that is used for equals method of union object.
+ * @param free_block Block that is used for free method of union object.
+ * @param str_block Block that is used for str method of union object.
  */
 #define THE_UNION_DEFINE(subtypes_type_name, alloc_block, copy_block, eq_block, free_block, str_block) \
   the_union_##subtypes_type_name##UE_t the_union_##subtypes_type_name##UE_alloc (int type, ...) { \
     the_union_##subtypes_type_name##UE_t self; \
     va_list args; \
     self.type = type; \
+    if (type == -1) return self; \
     va_start(args, type); \
     alloc_block \
     va_end(args); \

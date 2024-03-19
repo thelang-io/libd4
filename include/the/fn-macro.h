@@ -71,7 +71,7 @@
   the_##type_name##_t the_##type_name##_copy (const the_##type_name##_t self); \
   \
   /**
-   * Compare two function objects.
+   * Compares two function objects.
    * @param self First function object to compare.
    * @param rhs Second function object to compare.
    * @return Whether two function objects share the same address of functors.
@@ -79,7 +79,7 @@
   bool the_##type_name##_eq (const the_##type_name##_t self, const the_##type_name##_t rhs); \
   \
   /**
-   * Deallocate function object.
+   * Deallocates function object.
    * @param self Function object to deallocate.
    */ \
   void the_##type_name##_free (the_##type_name##_t self); \

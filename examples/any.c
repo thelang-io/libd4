@@ -28,6 +28,7 @@ void *any_u64_copy (const void *ctx) {
   return data;
 }
 
+// todo somehow solve it for primitive types it should auto compare
 bool any_u64_eq (const void *lhs_ctx, const void *rhs_ctx) {
   return *(const uint64_t *) lhs_ctx == *(const uint64_t *) rhs_ctx;
 }
