@@ -298,13 +298,18 @@
   } \
   \
   the_str_t the_arr_##element_type_name##_str (const the_arr_##element_type_name##_t self) { \
+    the_str_t b = the_str_alloc(L"]"); \
+    the_str_t c = the_str_alloc(L", "); \
     the_str_t r = the_str_alloc(L"["); \
     for (size_t i = 0; i < self.len; i++) { \
       const element_type element = self.data[i]; \
-      if (i != 0) r = the_str_realloc(r, the_str_concat(r, the_str_alloc(L", "))); \
+      if (i != 0) r = the_str_realloc(r, the_str_concat(r, c)); \
       r = the_str_realloc(r, the_str_concat(r, str_block)); \
     } \
-    return the_str_concat(r, the_str_alloc(L"]")); \
+    r = the_str_realloc(r, the_str_concat(r, b)); \
+    the_str_free(b); \
+    the_str_free(c); \
+    return r; \
   }
 
 #endif
