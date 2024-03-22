@@ -14,9 +14,16 @@
 #include <string.h>
 
 // todo test
-// todo check all params have correct "const" in definition
 
-#define THE_ARRAY_DEFINE(element_type_name, element_type) \
+/**
+ * Macro that can be used to define an array object.
+ * @param element_type_name Type name of the element.
+ * @param copy_block Block that is used for copy method of array object.
+ * @param eq_block Block that is used for equals method of array object.
+ * @param free_block Block that is used for free method of array object.
+ * @param str_block Block that is used for str method of array object.
+ */
+#define THE_ARRAY_DEFINE(element_type_name, element_type, copy_block, eq_block, free_block, str_block) \
   THE_FUNCTION_DEFINE_WITH_PARAMS(s, bool, bool, FP3##element_type_name) \
   THE_FUNCTION_DEFINE_WITH_PARAMS(s, void, void, FP3##element_type_name##FP3int) \
   THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int32_t, FP3##element_type_name##FP3##element_type_name) \
@@ -24,14 +31,14 @@
   the_arr_##element_type_name##_t the_arr_##element_type_name##_alloc (size_t length, ...) { \
     element_type *data; \
     va_list args; \
-    if (length == 0) return (the_arr_##element_type_name##_t) {NULL, 0, NULL, NULL, NULL, NULL}; /* todo pass functions */ \
+    if (length == 0) return (the_arr_##element_type_name##_t) {NULL, 0}; \
     data = the_safe_alloc(length * sizeof(element_type)); \
     va_start(args, length); \
     for (size_t i = 0; i < length; i++) { \
       data[i] = va_arg(args, element_type); \
     } \
     va_end(args); \
-    return (the_arr_##element_type_name##_t) {data, length, NULL, NULL, NULL, NULL}; /* todo */ \
+    return (the_arr_##element_type_name##_t) {data, length}; \
   } \
   \
   element_type *the_arr_##element_type_name##_at (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, int32_t index) { \
@@ -55,29 +62,35 @@
     size_t len = self.len + other.len; \
     element_type *data = the_safe_alloc(len * sizeof(element_type)); \
     size_t k = 0; \
-    for (size_t i = 0; i < self.len; i++) data[k++] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
-    for (size_t i = 0; i < other.len; i++) data[k++] = other.copy_cb == NULL ? other.data[i] : other.copy_cb(other.data[i]); \
-    return (the_arr_##element_type_name##_t) {data, len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+    for (size_t i = 0; i < self.len; i++) { \
+      const element_type element = self.data[i]; \
+      data[k++] = copy_block; \
+    } \
+    for (size_t i = 0; i < other.len; i++) { \
+      const element_type element = other.data[i]; \
+      data[k++] = copy_block; \
+    } \
+    return (the_arr_##element_type_name##_t) {data, len}; \
   } \
   \
   bool the_arr_##element_type_name##_contains (const the_arr_##element_type_name##_t self, const element_type search) { \
+    const element_type rhs_element = search; \
     for (size_t i = 0; i < self.len; i++) { \
-      /* if (self.eq_cb == NULL ? self.data[i] == search : self.eq_cb(self.data[i], search)) { todo */ \
-        (void) search; /* todo remove */ \
-        return true; \
-      /* } */ \
+      const element_type lhs_element = self.data[i]; \
+      if (eq_block) return true; \
     } \
     return false; \
   } \
   \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_copy (const the_arr_##element_type_name##_t self) { \
     element_type *data; \
-    if (self.len == 0) return (the_arr_##element_type_name##_t) {NULL, 0, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+    if (self.len == 0) return (the_arr_##element_type_name##_t) {NULL, 0}; \
     data = the_safe_alloc(self.len * sizeof(element_type)); \
     for (size_t i = 0; i < self.len; i++) { \
-      data[i] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
+      const element_type element = self.data[i]; \
+      data[i] = copy_block; \
     } \
-    return (the_arr_##element_type_name##_t) {data, self.len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+    return (the_arr_##element_type_name##_t) {data, self.len}; \
   } \
   \
   bool the_arr_##element_type_name##_empty (const the_arr_##element_type_name##_t self) { \
@@ -87,10 +100,9 @@
   bool the_arr_##element_type_name##_eq (const the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t rhs) { \
     if (self.len != rhs.len) return false; \
     for (size_t i = 0; i < self.len; i++) { \
-      /* if (self.eq_cb == NULL ? self.data[i] == rhs.data[i] : self.eq_cb(self.data[i], rhs.data[i])) { todo */ \
-        (void) rhs; /* todo remove */ \
-        return false; \
-      /* } */ \
+      const element_type lhs_element = self.data[i]; \
+      const element_type rhs_element = rhs.data[i]; \
+      if (!(eq_block)) return false; \
     } \
     return true; \
   } \
@@ -108,10 +120,11 @@
           ) \
         ) \
       ) { \
-        data[len++] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
+        const element_type element = self.data[i]; \
+        data[len++] = copy_block; \
       } \
     } \
-    return (the_arr_##element_type_name##_t) {data, len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+    return (the_arr_##element_type_name##_t) {data, len}; \
   } \
   \
   element_type *the_arr_##element_type_name##_first (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self) { \
@@ -137,8 +150,9 @@
   } \
   \
   void the_arr_##element_type_name##_free (the_arr_##element_type_name##_t self) { \
-    if (self.free_cb != NULL) { \
-      for (size_t i = 0; i < self.len; i++) self.free_cb(self.data[i]); \
+    for (size_t i = 0; i < self.len; i++) { \
+      element_type element = self.data[i]; \
+      free_block; \
     } \
     if (self.data != NULL) the_safe_free(self.data); \
   } \
@@ -147,8 +161,9 @@
     the_str_t x = o1 == 0 ? the_str_alloc(L",") : separator; \
     the_str_t result = the_str_alloc(L""); \
     for (size_t i = 0; i < self.len; i++) { \
+      const element_type element = self.data[i]; \
       if (i != 0) result = the_str_realloc(result, the_str_concat(result, x)); \
-      result = the_str_realloc(result, the_str_concat(result, self.str_cb(self.data[i]))); \
+      result = the_str_realloc(result, the_str_concat(result, str_block)); \
     } \
     if (o1 == 0) the_str_free(x); \
     return result; \
@@ -168,7 +183,10 @@
     size_t k = self->len; \
     self->len += other.len; \
     self->data = the_safe_realloc(self->data, self->len * sizeof(element_type)); \
-    for (size_t i = 0; i < other.len; i++) self->data[k++] = other.copy_cb == NULL ? other.data[i] : other.copy_cb(other.data[i]); \
+    for (size_t i = 0; i < other.len; i++) { \
+      const element_type element = other.data[i]; \
+      self->data[k++] = copy_block; \
+    } \
     return self; \
   } \
   \
@@ -177,12 +195,16 @@
     return self->data[self->len]; \
   } \
   \
+  /* todo replace with variadic */ \
   void the_arr_##element_type_name##_push (the_arr_##element_type_name##_t *self, const the_arr_##element_type_name##_t elements) { \
     size_t k = 0; \
     if (elements.len == 0) return; \
     self->len += elements.len; \
     self->data = the_safe_realloc(self->data, self->len * sizeof(element_type)); \
-    for (size_t i = self->len - elements.len; i < self->len; i++) self->data[i] = self->copy_cb == NULL ? elements.data[k++] : self->copy_cb(elements.data[k++]); \
+    for (size_t i = self->len - elements.len; i < self->len; i++) { \
+      const element_type element = elements.data[k++]; \
+      self->data[i] = copy_block; \
+    } \
   } \
   \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_realloc (the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t rhs) { \
@@ -192,6 +214,7 @@
   \
   the_arr_##element_type_name##_t *the_arr_##element_type_name##_remove (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self, int32_t index) { \
     size_t i; \
+    element_type element; \
     if ((index >= 0 && (size_t) index >= self->len) || (index < 0 && index < -((int32_t) self->len))) { \
       the_str_t message = the_str_alloc(L"index %" PRId32 " out of array bounds", index); \
       the_error_assign_generic(state, line, col, message); \
@@ -199,7 +222,8 @@
       longjmp(state->buf_last->buf, state->id); \
     } \
     i = index < 0 ? index + self->len : index; \
-    if (self->free_cb != NULL) self->free_cb(self->data[i]); \
+    element = self->data[i]; \
+    free_block; \
     if (i != self->len - 1) { \
       memmove(&self->data[i], &self->data[i + 1], (--self->len - i) * sizeof(element_type)); \
     } else { \
@@ -211,11 +235,14 @@
   the_arr_##element_type_name##_t the_arr_##element_type_name##_reverse (const the_arr_##element_type_name##_t self) { \
     element_type *data; \
     if (self.len == 0) { \
-      return (the_arr_##element_type_name##_t) {NULL, 0, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+      return (the_arr_##element_type_name##_t) {NULL, 0}; \
     } \
     data = the_safe_alloc(self.len * sizeof(element_type)); \
-    for (size_t i = 0; i < self.len; i++) data[i] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
-    return (the_arr_##element_type_name##_t) {data, self.len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+    for (size_t i = 0; i < self.len; i++) { \
+      const element_type element = self.data[i]; \
+      data[i] = copy_block; \
+    } \
+    return (the_arr_##element_type_name##_t) {data, self.len}; \
   } \
   \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_slice (const the_arr_##element_type_name##_t self, unsigned int o1, int32_t start, unsigned int o2, int32_t end) { \
@@ -236,12 +263,15 @@
       j = (int32_t) end; \
     } \
     if (i > j || (size_t) i >= self.len) { \
-      return (the_arr_##element_type_name##_t) {NULL, 0, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+      return (the_arr_##element_type_name##_t) {NULL, 0}; \
     } \
     len = j - i; \
     data = the_safe_alloc(len * sizeof(element_type)); \
-    for (size_t k = 0; i < j; i++) data[k++] = self.copy_cb == NULL ? self.data[i] : self.copy_cb(self.data[i]); \
-    return (the_arr_##element_type_name##_t) {data, len, self.copy_cb, self.eq_cb, self.free_cb, self.str_cb}; \
+    for (size_t k = 0; i < j; i++) { \
+      const element_type element = self.data[i]; \
+      data[k++] = copy_block; \
+    } \
+    return (the_arr_##element_type_name##_t) {data, len}; \
   } \
   \
   the_arr_##element_type_name##_t *the_arr_##element_type_name##_sort (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self, const the_fn_sFP3##element_type_name##FP3##element_type_name##FRintFE_t comparator) { \
@@ -270,14 +300,9 @@
   the_str_t the_arr_##element_type_name##_str (const the_arr_##element_type_name##_t self) { \
     the_str_t r = the_str_alloc(L"["); \
     for (size_t i = 0; i < self.len; i++) { \
+      const element_type element = self.data[i]; \
       if (i != 0) r = the_str_realloc(r, the_str_concat(r, the_str_alloc(L", "))); \
-      if (self.str_cb == NULL) { \
-        r = the_str_realloc(r, the_str_concat(r, the_str_alloc(L"\""))); \
-        /* r = the_str_realloc(r, the_str_concat(r, the_str_copy(self.data[i]))); todo */ \
-        r = the_str_realloc(r, the_str_concat(r, the_str_alloc(L"\""))); \
-      } else { \
-        r = the_str_realloc(r, the_str_concat(r, self.str_cb(self.data[i]))); \
-      } \
+      r = the_str_realloc(r, the_str_concat(r, str_block)); \
     } \
     return the_str_concat(r, the_str_alloc(L"]")); \
   }

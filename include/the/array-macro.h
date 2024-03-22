@@ -39,21 +39,9 @@
     element_type n1; \
   }) \
   \
-  typedef element_type (*the_arr_##element_type_name##_copy_cb) (const element_type ctx); \
-  \
-  typedef bool (*the_arr_##element_type_name##_eq_cb) (const element_type lhs_ctx, const element_type rhs_ctx); \
-  \
-  typedef void (*the_arr_##element_type_name##_free_cb) (element_type ctx); \
-  \
-  typedef the_str_t (*the_arr_##element_type_name##_str_cb) (const element_type ctx); \
-  \
   typedef struct { \
     element_type *data; \
     size_t len; \
-    the_arr_##element_type_name##_copy_cb copy_cb; \
-    the_arr_##element_type_name##_eq_cb eq_cb; \
-    the_arr_##element_type_name##_free_cb free_cb; \
-    the_arr_##element_type_name##_str_cb str_cb; \
   } the_arr_##element_type_name##_t; \
   \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_alloc (size_t length, ...); \
