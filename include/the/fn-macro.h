@@ -11,19 +11,34 @@
 #include <the/string-type.h>
 #include <stdbool.h>
 
-/** Macro that should be used to generate function type entities. */
+/**
+ * Macro that should be used to generate function type entities.
+ * @param prefix Function prefix can be one of: a (asynchronous) and s (synchronous).
+ * @param return_type_name Name of the function return type.
+ * @param return_type Function return type.
+ */
 #define THE_FUNCTION_DECLARE(prefix, return_type_name, return_type) \
   THE_FUNCTION_DECLARE_BASE(return_type, fn_##prefix##FR##return_type_name##FE)
 
-// todo explain macro params
-/** Macro that should be used to generate function type entities along with params. */
+/**
+ * Macro that should be used to generate function type entities along with params.
+ * @param prefix Function prefix can be one of: a (asynchronous) and s (synchronous).
+ * @param return_type_name Name of the function return type.
+ * @param return_type Function return type.
+ * @param params_type_name Name of parameters type to be used when generating name of the function type.
+ * @param params_definition Definition of parameters that is going to be declared as corresponding object.
+ */
 #define THE_FUNCTION_DECLARE_WITH_PARAMS(prefix, return_type_name, return_type, params_type_name, params_definition) \
   /** Object representation of the function params type. */ \
   typedef struct params_definition the_fn_##prefix##params_type_name##FR##return_type_name##FE_params_t; \
   \
   THE_FUNCTION_DECLARE_BASE(return_type, fn_##prefix##params_type_name##FR##return_type_name##FE)
 
-/** Macro that is used internally to generate function type entities. */
+/**
+ * Macro that is used internally to generate function type entities.
+ * @param return_type Function return type.
+ * @param type_name Generated name of the function type.
+ */
 #define THE_FUNCTION_DECLARE_BASE(return_type, type_name) \
   /**
    * Functor that is used as main call entry of the function object.

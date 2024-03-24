@@ -12,6 +12,7 @@
 #include <the/string.h>
 
 // todo test
+// todo explain macro params
 
 /** Macro that can be used to define a function object without parameters. */
 #define THE_FUNCTION_DEFINE(prefix, return_type_name, return_type) \
