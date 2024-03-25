@@ -5,4 +5,4 @@
 
 #include "rune.h"
 
-// todo
+// todo implement rune

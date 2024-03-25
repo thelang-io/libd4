@@ -12,17 +12,31 @@
 #include <the/string.h>
 
 // todo test
-// todo explain macro params
 
-/** Macro that can be used to define a function object without parameters. */
+/**
+ * Macro that can be used to define a function object without parameters.
+ * @param prefix Function prefix can be one of: a (asynchronous) and s (synchronous).
+ * @param return_type_name Name of the function return type.
+ * @param return_type Function return type.
+ */
 #define THE_FUNCTION_DEFINE(prefix, return_type_name, return_type) \
   THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##FR##return_type_name##FE)
 
-/** Macro that can be used to define a function object with parameters. */
+/**
+ * Macro that can be used to define a function object with parameters.
+ * @param prefix Function prefix can be one of: a (asynchronous) and s (synchronous).
+ * @param return_type_name Name of the function return type.
+ * @param return_type Function return type.
+ * @param params_declaration Declaration of parameters to be used to construct function name.
+ */
 #define THE_FUNCTION_DEFINE_WITH_PARAMS(prefix, return_type_name, return_type, params_declaration) \
   THE_FUNCTION_DEFINE_BASE(return_type, fn_##prefix##params_declaration##FR##return_type_name##FE)
 
-/** Macro that is used internally to define function object. */
+/**
+ * Macro that is used internally to define function object.
+ * @param return_type Function return type.
+ * @param type_name Generated name of the function type.
+ */
 #define THE_FUNCTION_DEFINE_BASE(return_type, type_name) \
   the_##type_name##_t the_##type_name##_alloc (const the_str_t name, void *ctx, the_fn_copy_cb copy_cb, the_fn_free_cb free_cb, the_##type_name##_func func) { \
     return (the_##type_name##_t) {name, ctx, copy_cb, free_cb, func}; \

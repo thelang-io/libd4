@@ -35,7 +35,8 @@
     data = the_safe_alloc(length * sizeof(element_type)); \
     va_start(args, length); \
     for (size_t i = 0; i < length; i++) { \
-      data[i] = va_arg(args, element_type); \
+      const element_type element = va_arg(args, element_type); \
+      data[i] = copy_block; \
     } \
     va_end(args); \
     return (the_arr_##element_type_name##_t) {data, length}; \
@@ -195,16 +196,17 @@
     return self->data[self->len]; \
   } \
   \
-  /* todo replace with variadic */ \
-  void the_arr_##element_type_name##_push (the_arr_##element_type_name##_t *self, const the_arr_##element_type_name##_t elements) { \
-    size_t k = 0; \
-    if (elements.len == 0) return; \
-    self->len += elements.len; \
+  void the_arr_##element_type_name##_push (the_arr_##element_type_name##_t *self, size_t length, ...) { \
+    va_list args; \
+    if (length == 0) return; \
+    self->len += length; \
     self->data = the_safe_realloc(self->data, self->len * sizeof(element_type)); \
-    for (size_t i = self->len - elements.len; i < self->len; i++) { \
-      const element_type element = elements.data[k++]; \
+    va_start(args, length); \
+    for (size_t i = self->len - length; i < self->len; i++) { \
+      const element_type element = va_arg(args, element_type); \
       self->data[i] = copy_block; \
     } \
+    va_end(args); \
   } \
   \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_realloc (the_arr_##element_type_name##_t self, const the_arr_##element_type_name##_t rhs) { \

@@ -10,7 +10,7 @@
 
 #define TYPE_u64 1
 
-// todo implement
+// todo implement generator
 //THE_ANY_DEFINE(u64, uint64_t, {
 //  uint64_t *data = the_safe_alloc(sizeof(uint64_t));
 //  *data = value;

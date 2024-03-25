@@ -10,6 +10,6 @@
 
 #include <the/string-type.h>
 
-// todo
+// todo implement rune
 
 #endif
