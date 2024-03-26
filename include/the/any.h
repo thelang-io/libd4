@@ -8,6 +8,7 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <the/safe.h>
 #include <the/string-type.h>
 #include <stdbool.h>
 
@@ -95,5 +96,89 @@ the_any_t the_any_realloc (the_any_t self, const the_any_t rhs);
  * @return String representation of the object.
  */
 the_str_t the_any_str (const the_any_t self);
+
+/**
+ * Macro that should be used to generate any object.
+ * @param underlying_type_name Name of the underlying type.
+ * @param underlying_type Underlying type of the any object.
+ */
+#define THE_ANY_DECLARE(underlying_type_name, underlying_type) \
+  /**
+   * Allocates any object.
+   * @param val Underlying value of the any object.
+   * @return Allocated any object.
+   */ \
+  the_any_t the_any_##underlying_type_name (underlying_type val); \
+  \
+  /**
+   * Copies any object.
+   * @param ctx Any object to copy.
+   * @return Newly copied any object.
+   */ \
+  void *the_any_##underlying_type_name##_copy (const void *ctx); \
+  \
+  /**
+   * Compares two any objects.
+   * @param ctx First any object to compare.
+   * @param rhs_ctx Second any object to compare.
+   * @return Whether two any objects are the same.
+   */ \
+  bool the_any_##underlying_type_name##_eq (const void *ctx, const void *rhs_ctx); \
+  \
+  /**
+   * Deallocates any object.
+   * @param ctx Any object to deallocate.
+   */ \
+  void the_any_##underlying_type_name##_free (void *ctx); \
+  \
+  /**
+   * Generates string representation of the any object.
+   * @param ctx Any object to generate string representation for.
+   * @return String representation of the any object.
+   */ \
+  the_str_t the_any_##underlying_type_name##_str (const void *ctx); \
+
+// todo test
+
+/**
+ * Macro that should be used to generate any object.
+ * @param underlying_type_id ID of the underlying type of the any type.
+ * @param underlying_type_name Name of the underlying type of the any type.
+ * @param underlying_type Underlying type of the any type.
+ * @param copy_block Block that is used for copy method of any object.
+ * @param eq_block Block that is used for equals method of any object.
+ * @param free_block Block that is used for free method of any object.
+ * @param str_block Block that is used for str method of any object.
+ */
+#define THE_ANY_DEFINE(underlying_type_id, underlying_type_name, underlying_type, copy_block, eq_block, free_block, str_block) \
+  the_any_t the_any_##underlying_type_name (underlying_type val) { \
+    underlying_type *data = the_safe_alloc(sizeof(underlying_type)); \
+    *data = copy_block; \
+    return (the_any_t) {underlying_type_id, data, the_any_##underlying_type_name##_copy, the_any_##underlying_type_name##_eq, the_any_##underlying_type_name##_free, the_any_##underlying_type_name##_str}; \
+  } \
+  \
+  void *the_any_##underlying_type_name##_copy (const void *ctx) { \
+    underlying_type *data = the_safe_alloc(sizeof(underlying_type)); \
+    const underlying_type val = *(const underlying_type *) ctx; \
+    *data = copy_block; \
+    return data; \
+  } \
+  \
+  bool the_any_##underlying_type_name##_eq (const void *lhs_ctx, const void *rhs_ctx) { \
+    const underlying_type lhs_val = *(const underlying_type *) lhs_ctx; \
+    const underlying_type rhs_val = *(const underlying_type *) rhs_ctx; \
+    return eq_block; \
+  } \
+  \
+  void the_any_##underlying_type_name##_free (void *ctx) { \
+    underlying_type val = *(underlying_type *) ctx; \
+    free_block; \
+    the_safe_free(ctx); \
+  } \
+  \
+  the_str_t the_any_##underlying_type_name##_str (const void *ctx) { \
+    const underlying_type val = *(const underlying_type *) ctx; \
+    return str_block; \
+  }
 
 #endif
