@@ -15,7 +15,6 @@ THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, int32_t, FP3int, {
 THE_FUNCTION_DEFINE(s, int, int32_t)
 THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int32_t, FP3int)
 
-// todo pack context declaration into a macro
 typedef struct {
   int *a;
 } job_ctx_t;

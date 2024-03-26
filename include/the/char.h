@@ -71,7 +71,7 @@ char the_char_lower (char self);
 /**
  * Generate a string by repeating the character X amount of times.
  * @param self Character to repeat.
- * @param times Amount of time to repeat a character.
+ * @param times Amount of times to repeat a character.
  * @return String resulted by repeating the character X amount of times.
  */
 the_str_t the_char_repeat (char self, int32_t times);
