@@ -3,12 +3,10 @@
  * Licensed under the MIT License
  */
 
-#ifndef THE_reference_H
-#define THE_reference_H
+#ifndef THE_REFERENCE_H
+#define THE_REFERENCE_H
 
 /* See https://github.com/thelang-io/helpers for reference. */
-
-// todo test
 
 /**
  * Macro that should be used to generate reference type.

@@ -12,8 +12,6 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-// todo test
-
 /**
  * Generates byte representation of the object.
  * @param self Object to generate byte representation for.

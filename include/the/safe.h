@@ -23,7 +23,7 @@ void *the_safe_alloc (size_t size);
  * @param size Size of the pointer.
  * @return Pointer to address in memory where allocated bytes reside.
  */
-void *the_safe_calloc (const void *ptr, size_t size); // todo test
+void *the_safe_calloc (const void *ptr, size_t size);
 
 /**
  * Safely deallocates pointer.

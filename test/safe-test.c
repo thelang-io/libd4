@@ -13,6 +13,17 @@ static void test_safe_alloc (void) {
   the_safe_free(d2);
 }
 
+static void test_safe_calloc (void) {
+  void *d1 = the_safe_alloc(64);
+  void *d2 = the_safe_calloc(d1, sizeof(int));
+
+  assert(((void) "Allocates 64", d1 != NULL));
+  assert(((void) "Allocates 64", d2 != NULL));
+
+  the_safe_free(d2);
+  the_safe_free(d1);
+}
+
 static void test_safe_free (void) {
   void *d2 = the_safe_alloc(64);
   the_safe_free(d2);
@@ -51,6 +62,7 @@ static void test_safe_swap (void) {
 
 int main (void) {
   test_safe_alloc();
+  test_safe_calloc();
   test_safe_free();
   test_safe_realloc();
   test_safe_swap();

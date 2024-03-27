@@ -138,8 +138,6 @@ the_str_t the_any_str (const the_any_t self);
    */ \
   the_str_t the_any_##underlying_type_name##_str (const void *ctx); \
 
-// todo test
-
 /**
  * Macro that should be used to generate any object.
  * @param underlying_type_id ID of the underlying type of the any type.
