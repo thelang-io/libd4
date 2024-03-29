@@ -3,9 +3,20 @@
  * Licensed under the MIT License
  */
 
-#include "any-test.h"
-#include <assert.h>
+#include "../src/any.h"
+#include "../src/number.h"
+#include "../src/safe.h"
 #include "../src/string.h"
+#include <assert.h>
+
+#define TYPE_u32 1
+#define TYPE_u64 2
+
+THE_ANY_DECLARE(u32, uint32_t)
+THE_ANY_DEFINE(TYPE_u32, u32, uint32_t, val, lhs_val == rhs_val, (void) val, the_u32_str(val))
+
+THE_ANY_DECLARE(u64, uint64_t)
+THE_ANY_DEFINE(TYPE_u64, u64, uint64_t, val, lhs_val == rhs_val, (void) val, the_u64_str(val))
 
 static void test_any_copy (void) {
   the_any_t a1 = the_any_u64(10);
