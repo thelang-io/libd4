@@ -12,8 +12,6 @@
 #include <the/safe.h>
 #include <the/string.h>
 
-// todo test
-
 /**
  * Macro that should be used to generate optional type.
  * @param underlying_type_name Name of the underlying type of the optional type.

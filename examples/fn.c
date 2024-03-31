@@ -43,8 +43,11 @@ static int job2 (THE_UNUSED void *ctx, the_fn_sFP3intFRintFE_params_t *params) {
 int main (void) {
   int a = 2;
 
+  the_str_t name1 = the_str_alloc(L"job");
+  the_str_t name2 = the_str_alloc(L"job2");
+
   the_fn_sFP3intFRintFE_t a1 = the_fn_sFP3intFRintFE_alloc(
-    the_str_alloc(L"job"),
+    name1,
     the_safe_calloc(&(job_ctx_t) {&a}, sizeof(job_ctx_t)),
     (void *(*) (const void *)) job_ctx_copy,
     (void (*) (void *)) job_ctx_free,
@@ -52,7 +55,7 @@ int main (void) {
   );
 
   the_fn_sFP3intFRintFE_t a2 = the_fn_sFP3intFRintFE_alloc(
-    the_str_alloc(L"job2"),
+    name2,
     NULL,
     NULL,
     NULL,
@@ -102,6 +105,9 @@ int main (void) {
 
   the_fn_sFP3intFRintFE_free(a1);
   the_fn_sFP3intFRintFE_free(a2);
+
+  the_str_free(name1);
+  the_str_free(name2);
 
   return 0;
 }

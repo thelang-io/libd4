@@ -11,8 +11,6 @@
 #include <the/safe.h>
 #include <the/string.h>
 
-// todo test
-
 /**
  * Macro that can be used to define a function object without parameters.
  * @param prefix Function prefix can be one of: a (asynchronous) and s (synchronous).
@@ -39,22 +37,22 @@
  */
 #define THE_FUNCTION_DEFINE_BASE(return_type, type_name) \
   the_##type_name##_t the_##type_name##_alloc (const the_str_t name, void *ctx, the_fn_copy_cb copy_cb, the_fn_free_cb free_cb, the_##type_name##_func func) { \
-    return (the_##type_name##_t) {name, ctx, copy_cb, free_cb, func}; \
+    return (the_##type_name##_t) {the_str_copy(name), ctx, copy_cb, free_cb, func}; \
   } \
   \
   the_##type_name##_t the_##type_name##_copy (const the_##type_name##_t self) { \
     return self.ctx == NULL \
-      ? (the_##type_name##_t) {the_str_copy(self.name), self.copy_cb(self.ctx), self.copy_cb, self.free_cb, self.func} \
-      : (the_##type_name##_t) {the_str_copy(self.name), NULL, NULL, NULL, self.func}; \
+      ? (the_##type_name##_t) {the_str_copy(self.name), NULL, NULL, NULL, self.func} \
+      : (the_##type_name##_t) {the_str_copy(self.name), self.copy_cb(self.ctx), self.copy_cb, self.free_cb, self.func}; \
+  } \
+  \
+  bool the_##type_name##_eq (const the_##type_name##_t self, const the_##type_name##_t rhs) { \
+    return self.func == rhs.func; \
   } \
   \
   void the_##type_name##_free (the_##type_name##_t self) { \
     if (self.ctx != NULL && self.free_cb != NULL) self.free_cb(self.ctx); \
     the_str_free(self.name); \
-  } \
-  \
-  bool the_##type_name##_eq (const the_##type_name##_t self, const the_##type_name##_t rhs) { \
-    return self.func == rhs.func; \
   } \
   \
   the_##type_name##_t the_##type_name##_realloc (the_##type_name##_t self, const the_##type_name##_t rhs) { \
