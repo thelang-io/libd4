@@ -11,7 +11,7 @@
 #include <limits.h>
 #include <string.h>
 
-THE_ARRAY_DEFINE(str, the_str_t, the_str_copy(element), the_str_eq(lhs_element, rhs_element), the_str_free(element), the_str_copy(element))
+THE_ARRAY_DEFINE(str, the_str_t, the_str_t, the_str_copy(element), the_str_eq(lhs_element, rhs_element), the_str_free(element), the_str_copy(element))
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;

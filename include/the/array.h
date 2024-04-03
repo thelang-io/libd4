@@ -18,12 +18,14 @@
 /**
  * Macro that can be used to define an array object.
  * @param element_type_name Type name of the element.
+ * @param element_type Element type of the array object.
+ * @param alloc_element_type Element type of the array object to be used inside variadic argument (cast to int in some cases).
  * @param copy_block Block that is used for copy method of array object.
  * @param eq_block Block that is used for equals method of array object.
  * @param free_block Block that is used for free method of array object.
  * @param str_block Block that is used for str method of array object.
  */
-#define THE_ARRAY_DEFINE(element_type_name, element_type, copy_block, eq_block, free_block, str_block) \
+#define THE_ARRAY_DEFINE(element_type_name, element_type, alloc_element_type, copy_block, eq_block, free_block, str_block) \
   THE_FUNCTION_DEFINE_WITH_PARAMS(s, bool, bool, FP3##element_type_name) \
   THE_FUNCTION_DEFINE_WITH_PARAMS(s, void, void, FP3##element_type_name##FP3int) \
   THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int32_t, FP3##element_type_name##FP3##element_type_name) \
@@ -35,7 +37,7 @@
     data = the_safe_alloc(length * sizeof(element_type)); \
     va_start(args, length); \
     for (size_t i = 0; i < length; i++) { \
-      const element_type element = va_arg(args, element_type); \
+      const element_type element = va_arg(args, alloc_element_type); \
       data[i] = copy_block; \
     } \
     va_end(args); \
@@ -203,7 +205,7 @@
     self->data = the_safe_realloc(self->data, self->len * sizeof(element_type)); \
     va_start(args, length); \
     for (size_t i = self->len - length; i < self->len; i++) { \
-      const element_type element = va_arg(args, element_type); \
+      const element_type element = va_arg(args, alloc_element_type); \
       self->data[i] = copy_block; \
     } \
     va_end(args); \

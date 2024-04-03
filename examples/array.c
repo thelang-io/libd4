@@ -7,10 +7,10 @@
 #include <the/number.h>
 
 THE_ARRAY_DECLARE(int, int32_t)
-THE_ARRAY_DEFINE(int, int32_t, element, lhs_element == rhs_element, (void) element, the_i32_str(element))
+THE_ARRAY_DEFINE(int, int32_t, int, element, lhs_element == rhs_element, (void) element, the_i32_str(element))
 
 THE_ARRAY_DECLARE(arr_str, the_arr_str_t)
-THE_ARRAY_DEFINE(arr_str, the_arr_str_t, the_arr_str_copy(element), the_arr_str_eq(lhs_element, rhs_element), the_arr_str_free(element), the_arr_str_str(element))
+THE_ARRAY_DEFINE(arr_str, the_arr_str_t, the_arr_str_t, the_arr_str_copy(element), the_arr_str_eq(lhs_element, rhs_element), the_arr_str_free(element), the_arr_str_str(element))
 
 int main (void) {
   the_arr_int_t a1 = the_arr_int_alloc(0);
