@@ -9,7 +9,6 @@
 /* See https://github.com/thelang-io/helpers for reference. */
 
 #include <the/string-type.h>
-#include <stdbool.h>
 
 /**
  * Macro that should be used to generate union type entities.

@@ -173,7 +173,7 @@ static void test_error_unset (void) {
 }
 
 static void test_Error_alloc (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"An error occurred");
   the_Error_t *err1 = the_Error_alloc(s2);
 

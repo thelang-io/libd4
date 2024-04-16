@@ -55,7 +55,7 @@
   \
   the_str_t the_union_##subtypes_type_name##UE_str (const the_union_##subtypes_type_name##UE_t self) { \
     str_block \
-    return the_str_alloc(L""); \
+    return (the_str_t) {NULL, 0, false}; \
   }
 
 #endif

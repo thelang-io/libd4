@@ -8,6 +8,7 @@
 
 /* See https://github.com/thelang-io/helpers for reference. */
 
+#include <stdbool.h>
 #include <stddef.h>
 #include <wchar.h>
 
@@ -18,6 +19,9 @@ typedef struct {
 
   /** Length of the string object. */
   size_t len;
+
+  /** Whether or not string is static. */
+  bool is_static;
 } the_str_t;
 
 #endif

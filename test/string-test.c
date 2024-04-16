@@ -16,7 +16,7 @@ static void test_string_vsnwprintf (void) {
 }
 
 static void test_string_alloc (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"Test");
   the_str_t s3 = the_str_alloc(L"%d", 10);
   the_str_t s4 = the_str_alloc(L"10");
@@ -43,7 +43,7 @@ static void test_string_calloc (void) {
   the_str_t s2 = the_str_calloc(data, 4);
   the_str_t s3 = the_str_calloc(&data[4], 3);
 
-  the_str_t s4 = the_str_alloc(L"");
+  the_str_t s4 = empty_str_value;
   the_str_t s5 = the_str_alloc(L"1234");
   the_str_t s6 = the_str_alloc(L"567");
 
@@ -60,7 +60,7 @@ static void test_string_calloc (void) {
 }
 
 static void test_string_at (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"1234");
 
   ASSERT_THROW_WITH_MESSAGE(AT1, {
@@ -89,7 +89,7 @@ static void test_string_at (void) {
 }
 
 static void test_string_concat (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"hello");
   the_str_t s3 = the_str_alloc(L" world");
   the_str_t s4 = the_str_alloc(L"hello world");
@@ -116,7 +116,7 @@ static void test_string_concat (void) {
 }
 
 static void test_string_contains (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"hello");
   the_str_t s3 = the_str_alloc(L"he");
   the_str_t s4 = the_str_alloc(L"ell");
@@ -140,7 +140,7 @@ static void test_string_contains (void) {
 }
 
 static void test_string_copy (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"string");
 
   the_str_t c1 = the_str_copy(s1);
@@ -156,7 +156,7 @@ static void test_string_copy (void) {
 }
 
 static void test_string_empty (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"string");
 
   assert(((void) "Checks empty", the_str_empty(s1)));
@@ -167,8 +167,8 @@ static void test_string_empty (void) {
 }
 
 static void test_string_eq (void) {
-  the_str_t s1 = the_str_alloc(L"");
-  the_str_t s2 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
+  the_str_t s2 = empty_str_value;
   the_str_t s3 = the_str_alloc(L"string");
   the_str_t s4 = the_str_alloc(L"string");
   the_str_t s5 = the_str_alloc(L"non string");
@@ -187,7 +187,7 @@ static void test_string_eq (void) {
 }
 
 static void test_string_escape (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"hello world");
   the_str_t s3 = the_str_alloc(L"hello \n world");
   the_str_t s4 = the_str_alloc(L"text \f text \n text \r text \t text \v text \" text");
@@ -234,7 +234,7 @@ static void test_string_escape (void) {
 }
 
 static void test_string_find (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"s");
   the_str_t s3 = the_str_alloc(L"string");
   the_str_t s4 = the_str_alloc(L"str");
@@ -264,7 +264,7 @@ static void test_string_find (void) {
 }
 
 static void test_string_free (void) {
-  the_str_t s1 = the_str_alloc(L"");
+  the_str_t s1 = empty_str_value;
   the_str_t s2 = the_str_alloc(L"Test");
 
   the_str_free(s1);

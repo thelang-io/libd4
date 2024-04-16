@@ -10,7 +10,6 @@
 
 #include <the/safe.h>
 #include <the/string-type.h>
-#include <stdbool.h>
 
 /**
  * Callback that is used as a property of the_any_t object to copy the object.

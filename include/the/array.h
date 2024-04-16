@@ -162,7 +162,7 @@
   \
   the_str_t the_arr_##element_type_name##_join (const the_arr_##element_type_name##_t self, unsigned char o1, const the_str_t separator) { \
     the_str_t x = o1 == 0 ? the_str_alloc(L",") : separator; \
-    the_str_t result = the_str_alloc(L""); \
+    the_str_t result = (the_str_t) {NULL, 0, false}; \
     for (size_t i = 0; i < self.len; i++) { \
       const element_type element = self.data[i]; \
       if (i != 0) result = the_str_realloc(result, the_str_concat(result, x)); \

@@ -5,8 +5,8 @@
 
 #include "char.h"
 #include <the/safe.h>
-#include <the/string.h>
 #include <ctype.h>
+#include "string.h"
 
 unsigned char the_char_byte (char self) {
   return (unsigned char) self;
@@ -43,11 +43,11 @@ char the_char_lower (char self) {
 the_str_t the_char_repeat (char self, int32_t times) {
   size_t l;
   wchar_t *d;
-  if (times <= 0) return the_str_alloc(L"");
+  if (times <= 0) return empty_str_value;
   l = (size_t) times;
   d = the_safe_alloc(l * sizeof(wchar_t));
   for (size_t i = 0; i < l; i++) d[i] = (wchar_t) self;
-  return (the_str_t) {d, l};
+  return (the_str_t) {d, l, false};
 }
 
 the_str_t the_char_str (char self) {

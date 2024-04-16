@@ -6,10 +6,10 @@
 #include <the/macro.h>
 #include <the/safe.h>
 #include <the/ssl.h>
-#include <the/string.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
+#include "../src/string.h"
 
 #if defined(THE_OS_WINDOWS)
   #include <winsock2.h>
@@ -113,7 +113,7 @@ L2:
 L1:
 
   if (buf == NULL) {
-    return the_str_alloc(L"");
+    return empty_str_value;
   }
 
   wide_buf = the_safe_alloc((read_bytes + 1) * sizeof(wchar_t));

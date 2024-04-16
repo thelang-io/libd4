@@ -23,7 +23,7 @@ static void pay_debt (int pay_amount, int debt_amount) {
 }
 
 static void lend_debt (int bank_amount, int debt_amount) {
-  the_str_t t1 = {NULL, 0};
+  the_str_t t1 = {NULL, 0, false};
 
   if (debt_amount > bank_amount) {
     the_error_assign(

@@ -11,4 +11,6 @@
 int snwprintf (const wchar_t *, ...);
 int vsnwprintf (const wchar_t *, va_list);
 
+extern the_str_t empty_str_value;
+
 #endif

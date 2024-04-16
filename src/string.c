@@ -13,6 +13,8 @@
 
 THE_ARRAY_DEFINE(str, the_str_t, the_str_t, the_str_copy(element), the_str_eq(lhs_element, rhs_element), the_str_free(element), the_str_copy(element))
 
+the_str_t empty_str_value = {NULL, 0, false};
+
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
   int result;
@@ -50,33 +52,34 @@ int vsnwprintf (const wchar_t *fmt, va_list args) {
 }
 
 the_str_t the_str_alloc (const wchar_t *fmt, ...) {
-  va_list args;
-  size_t l = 0;
   wchar_t *d = NULL;
+  size_t l = 0;
+  va_list args;
 
-  va_start(args, fmt);
-
-  if (fmt[0] != L'\0') {
-    l = (size_t) vsnwprintf(fmt, args);
-    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
-    vswprintf(d, l + 1, fmt, args);
+  if (fmt == NULL) {
+    return empty_str_value;
   }
 
+  va_start(args, fmt);
+  l = (size_t) vsnwprintf(fmt, args);
+  d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+  vswprintf(d, l + 1, fmt, args);
   va_end(args);
-  return (the_str_t) {d, l};
+
+  return (the_str_t) {d, l, false};
 }
 
 the_str_t the_str_calloc (const wchar_t *self, size_t length) {
-  wchar_t *d;
+  wchar_t *d = NULL;
 
   if (length == 0) {
-    return (the_str_t) {NULL, 0};
+    return empty_str_value;
   }
 
   d = the_safe_alloc((length + 1) * sizeof(wchar_t));
   wmemcpy(d, self, length);
   d[length] = L'\0';
-  return (the_str_t) {d, length};
+  return (the_str_t) {d, length, false};
 }
 
 wchar_t *the_str_at (the_err_state_t *state, int line, int col, const the_str_t self, int32_t index) {
@@ -96,7 +99,7 @@ the_str_t the_str_concat (const the_str_t self, const the_str_t other) {
   wmemcpy(d, self.data, self.len);
   wmemcpy(&d[self.len], other.data, other.len);
   d[l] = L'\0';
-  return (the_str_t) {d, l};
+  return (the_str_t) {d, l, false};
 }
 
 bool the_str_contains (const the_str_t self, const the_str_t search) {
@@ -117,7 +120,7 @@ the_str_t the_str_copy (const the_str_t self) {
   wchar_t *d = the_safe_alloc((self.len + 1) * sizeof(wchar_t));
   wmemcpy(d, self.data, self.len);
   d[self.len] = L'\0';
-  return (the_str_t) {d, self.len};
+  return (the_str_t) {d, self.len, false};
 }
 
 bool the_str_empty (const the_str_t self) {
@@ -160,7 +163,7 @@ the_str_t the_str_escape (const the_str_t self) {
   }
 
   d[l] = L'\0';
-  return (the_str_t) {d, l};
+  return (the_str_t) {d, l, false};
 }
 
 int32_t the_str_find (const the_str_t self, const the_str_t search) {
@@ -206,7 +209,7 @@ the_str_t the_str_realloc (the_str_t self, const the_str_t rhs) {
 
   wmemcpy(self.data, rhs.data, rhs.len);
   self.data[rhs.len] = L'\0';
-  return (the_str_t) {self.data, rhs.len};
+  return (the_str_t) {self.data, rhs.len, false};
 }
 
 the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLineBreaks) {
@@ -363,7 +366,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
     d[l] = '\0';
   }
 
-  return (the_str_t) {d, l};
+  return (the_str_t) {d, l, false};
 }
 
 the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, unsigned char o2, int32_t end) {
@@ -386,7 +389,7 @@ the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, 
   }
 
   if (i >= j || (size_t) i >= self.len) {
-    return the_str_alloc(L"");
+    return empty_str_value;
   }
 
   l = (size_t) (j - i);
@@ -788,7 +791,7 @@ the_str_t the_str_trim (const the_str_t self) {
   }
 
   if (i >= j) {
-    return the_str_alloc(L"");
+    return empty_str_value;
   }
 
   l = j - i;
@@ -803,7 +806,7 @@ the_str_t the_str_trimEnd (const the_str_t self) {
     l--;
 
     if (l == 0) {
-      return the_str_alloc(L"");
+      return empty_str_value;
     }
   }
 
@@ -823,7 +826,7 @@ the_str_t the_str_trimStart (const the_str_t self) {
   }
 
   if (i >= self.len) {
-    return the_str_alloc(L"");
+    return empty_str_value;
   }
 
   l = self.len - i;

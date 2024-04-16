@@ -9,7 +9,6 @@
 /* See https://github.com/thelang-io/helpers for reference. */
 
 #include <the/string-type.h>
-#include <stdbool.h>
 
 /**
  * Generates string representation of the object.
