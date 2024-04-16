@@ -31,6 +31,7 @@ set(
   src/char.c
   src/enum.c
   src/error.c
+  src/globals.c
   src/number.c
   src/rune.c
   src/safe.c

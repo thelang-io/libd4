@@ -181,7 +181,7 @@ int32_t the_str_find (const the_str_t self, const the_str_t search) {
 }
 
 void the_str_free (the_str_t self) {
-  the_safe_free(self.data);
+  if (!self.is_static) the_safe_free(self.data);
 }
 
 bool the_str_ge (const the_str_t self, const the_str_t rhs) {
