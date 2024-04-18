@@ -19,7 +19,7 @@ THE_ANY_DECLARE(u64, uint64_t)
 THE_ANY_DEFINE(TYPE_u64, u64, uint64_t, val, lhs_val == rhs_val, (void) val, the_u64_str(val))
 
 static void test_any_copy (void) {
-  the_any_t a1 = the_any_u64(10);
+  the_any_t a1 = the_any_u64_alloc(10);
   the_any_t a2 = the_any_copy(a1);
 
   assert(((void) "Types equal", a1.type == a2.type));
@@ -37,10 +37,10 @@ static void test_any_copy (void) {
 static void test_any_eq (void) {
   the_any_t a1 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
   the_any_t a2 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
-  the_any_t a3 = the_any_u64(10);
-  the_any_t a4 = the_any_u64(10);
-  the_any_t a5 = the_any_u64(20);
-  the_any_t a6 = the_any_u32(10);
+  the_any_t a3 = the_any_u64_alloc(10);
+  the_any_t a4 = the_any_u64_alloc(10);
+  the_any_t a5 = the_any_u64_alloc(20);
+  the_any_t a6 = the_any_u32_alloc(10);
 
   assert(((void) "Value equals itself", the_any_eq(a3, a3)));
   assert(((void) "Value equals itself when NULL", the_any_eq(a1, a1)));
@@ -61,7 +61,7 @@ static void test_any_eq (void) {
 
 static void test_any_free (void) {
   the_any_t a1 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
-  the_any_t a2 = the_any_u64(10);
+  the_any_t a2 = the_any_u64_alloc(10);
 
   the_any_free(a1);
   the_any_free(a2);
@@ -70,8 +70,8 @@ static void test_any_free (void) {
 static void test_any_realloc (void) {
   the_any_t a = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
   the_any_t a1 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
-  the_any_t a2 = the_any_u64(10);
-  the_any_t a3 = the_any_u64(20);
+  the_any_t a2 = the_any_u64_alloc(10);
+  the_any_t a3 = the_any_u64_alloc(20);
 
   a = the_any_realloc(a, a1);
   assert(((void) "Reallocates NULL into NULL", the_any_eq(a, a1)));
@@ -90,7 +90,7 @@ static void test_any_realloc (void) {
 
 static void test_any_str (void) {
   the_any_t a1 = (the_any_t) {-1, NULL, NULL, NULL, NULL, NULL};
-  the_any_t a2 = the_any_u64(10);
+  the_any_t a2 = the_any_u64_alloc(10);
 
   the_str_t s1 = the_any_str(a1);
   the_str_t s2 = the_any_str(a2);

@@ -107,7 +107,7 @@ the_str_t the_any_str (const the_any_t self);
    * @param val Underlying value of the any object.
    * @return Allocated any object.
    */ \
-  the_any_t the_any_##underlying_type_name (underlying_type val); \
+  the_any_t the_any_##underlying_type_name##_alloc (underlying_type val); \
   \
   /**
    * Copies any object.
@@ -148,7 +148,7 @@ the_str_t the_any_str (const the_any_t self);
  * @param str_block Block that is used for str method of any object.
  */
 #define THE_ANY_DEFINE(underlying_type_id, underlying_type_name, underlying_type, copy_block, eq_block, free_block, str_block) \
-  the_any_t the_any_##underlying_type_name (underlying_type val) { \
+  the_any_t the_any_##underlying_type_name##_alloc (underlying_type val) { \
     underlying_type *data = the_safe_alloc(sizeof(underlying_type)); \
     *data = copy_block; \
     return (the_any_t) {underlying_type_id, data, the_any_##underlying_type_name##_copy, the_any_##underlying_type_name##_eq, the_any_##underlying_type_name##_free, the_any_##underlying_type_name##_str}; \

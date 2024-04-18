@@ -13,8 +13,8 @@ THE_ANY_DECLARE(u64, uint64_t)
 THE_ANY_DEFINE(TYPE_u64, u64, uint64_t, val, lhs_val == rhs_val, (void) val, the_u64_str(val))
 
 int main (void) {
-  the_any_t a = the_any_u64(10);
-  the_any_t b = the_any_u64(20);
+  the_any_t a = the_any_u64_alloc(10);
+  the_any_t b = the_any_u64_alloc(20);
   the_any_t c = the_any_copy(b);
 
   the_str_t a_str;
