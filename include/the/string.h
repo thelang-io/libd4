@@ -13,7 +13,7 @@
 THE_ARRAY_DECLARE(str, the_str_t)
 
 /** Empty value that can be used when you need to initialize a string. */
-extern the_str_t empty_str_value;
+extern the_str_t the_str_empty_val;
 
 /**
  * Allocates string with format specifiers (similar to printf).

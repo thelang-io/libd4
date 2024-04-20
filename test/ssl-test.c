@@ -113,7 +113,7 @@ L2:
 L1:
 
   if (buf == NULL) {
-    return empty_str_value;
+    return the_str_empty_val;
   }
 
   wide_buf = the_safe_alloc((read_bytes + 1) * sizeof(wchar_t));

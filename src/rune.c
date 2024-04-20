@@ -42,7 +42,7 @@ wchar_t the_rune_lower (wchar_t self) {
 the_str_t the_rune_repeat (wchar_t self, int32_t times) {
   size_t l;
   wchar_t *d;
-  if (times <= 0) return empty_str_value;
+  if (times <= 0) return the_str_empty_val;
   l = (size_t) times;
   d = the_safe_alloc(l * sizeof(wchar_t));
   for (size_t i = 0; i < l; i++) d[i] = (wchar_t) self;

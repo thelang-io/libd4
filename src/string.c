@@ -13,7 +13,7 @@
 
 THE_ARRAY_DEFINE(str, the_str_t, the_str_t, the_str_copy(element), the_str_eq(lhs_element, rhs_element), the_str_free(element), the_str_copy(element))
 
-the_str_t empty_str_value = {NULL, 0, false};
+the_str_t the_str_empty_val = {NULL, 0, false};
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
@@ -57,7 +57,7 @@ the_str_t the_str_alloc (const wchar_t *fmt, ...) {
   va_list args;
 
   if (fmt == NULL) {
-    return empty_str_value;
+    return the_str_empty_val;
   }
 
   va_start(args, fmt);
@@ -73,7 +73,7 @@ the_str_t the_str_calloc (const wchar_t *self, size_t length) {
   wchar_t *d = NULL;
 
   if (length == 0) {
-    return empty_str_value;
+    return the_str_empty_val;
   }
 
   d = the_safe_alloc((length + 1) * sizeof(wchar_t));
@@ -389,7 +389,7 @@ the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, 
   }
 
   if (i >= j || (size_t) i >= self.len) {
-    return empty_str_value;
+    return the_str_empty_val;
   }
 
   l = (size_t) (j - i);
@@ -791,7 +791,7 @@ the_str_t the_str_trim (const the_str_t self) {
   }
 
   if (i >= j) {
-    return empty_str_value;
+    return the_str_empty_val;
   }
 
   l = j - i;
@@ -806,7 +806,7 @@ the_str_t the_str_trimEnd (const the_str_t self) {
     l--;
 
     if (l == 0) {
-      return empty_str_value;
+      return the_str_empty_val;
     }
   }
 
@@ -826,7 +826,7 @@ the_str_t the_str_trimStart (const the_str_t self) {
   }
 
   if (i >= self.len) {
-    return empty_str_value;
+    return the_str_empty_val;
   }
 
   l = self.len - i;

@@ -25,7 +25,7 @@ static void print_func (THE_UNUSED void *ctx, void *params) {
   the_str_t separator = p->o1 == 0 ? (the_str_t) {L" ", 1, true} : p->n1;
   the_str_t terminator = p->o2 == 0 ? (the_str_t) {PRINT_FUNC_TERMINATOR, PRINT_FUNC_TERMINATOR_LEN, true} : p->n2;
   FILE *stream = the_str_eq(p->n3, (the_str_t) {L"stderr", 6, true}) ? stderr : stdout;
-  the_str_t result = empty_str_value;
+  the_str_t result = the_str_empty_val;
 
   for (size_t i = 0; i < p->n0.len; i++) {
     the_str_t param_str = the_any_str(p->n0.data[i]);

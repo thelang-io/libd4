@@ -74,7 +74,7 @@ static void test_rune_repeat (void) {
   the_str_t a3 = the_rune_repeat(L'a', 2);
   the_str_t a4 = the_rune_repeat(L'a', 10);
 
-  the_str_t s1_cmp = empty_str_value;
+  the_str_t s1_cmp = the_str_empty_val;
   the_str_t s2_cmp = the_str_alloc(L"a");
   the_str_t s3_cmp = the_str_alloc(L"aa");
   the_str_t s4_cmp = the_str_alloc(L"aaaaaaaaaa");

@@ -130,7 +130,7 @@ void the_error_unset (the_err_state_t *state) {
 the_Error_t *the_Error_alloc (the_str_t message) {
   the_Error_t *err = the_safe_alloc(sizeof(the_Error_t));
   err->message = the_str_copy(message);
-  err->stack = empty_str_value;
+  err->stack = the_str_empty_val;
   return err;
 }
 
