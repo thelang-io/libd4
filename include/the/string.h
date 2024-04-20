@@ -12,6 +12,9 @@
 
 THE_ARRAY_DECLARE(str, the_str_t)
 
+/** Empty value that can be used when you need to initialize a string. */
+extern the_str_t empty_str_value;
+
 /**
  * Allocates string with format specifiers (similar to printf).
  * @param fmt String that contains text with format specifiers.
