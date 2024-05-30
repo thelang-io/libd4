@@ -16,7 +16,28 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
   set(MEMORYCHECK_COMMAND_OPTIONS "${LIBTHE_MEMCHECK_FLAGS}")
 
   include(CTest)
-  set(tests any array bool byte char crypto enum error fn number optional rand reference rune safe ssl string)
+
+  set(
+    tests
+    any
+    array
+    bool
+    byte
+    char
+    crypto
+    enum
+    error
+    fn
+    map
+    number
+    optional
+    rand
+    reference
+    rune
+    safe
+    ssl
+    string
+  )
 
   foreach (test ${tests})
     add_executable(${PROJECT_NAME}-test-${test} test/${test}-test.c)

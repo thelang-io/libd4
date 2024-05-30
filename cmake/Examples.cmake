@@ -17,6 +17,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_EXAMPLES)
     fn
     globals
     macro
+    map
     number
     optional
     reference

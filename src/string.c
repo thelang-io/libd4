@@ -52,8 +52,8 @@ int vsnwprintf (const wchar_t *fmt, va_list args) {
 }
 
 the_str_t the_str_alloc (const wchar_t *fmt, ...) {
-  wchar_t *d = NULL;
-  size_t l = 0;
+  wchar_t *d;
+  size_t l;
   va_list args;
 
   if (fmt == NULL) {
@@ -70,7 +70,7 @@ the_str_t the_str_alloc (const wchar_t *fmt, ...) {
 }
 
 the_str_t the_str_calloc (const wchar_t *self, size_t length) {
-  wchar_t *d = NULL;
+  wchar_t *d;
 
   if (length == 0) {
     return the_str_empty_val;
