@@ -8,6 +8,7 @@
 #include <the/number.h>
 #include <the/safe.h>
 #include <the/string.h>
+#include <stdarg.h>
 #include <string.h>
 
 THE_ARRAY_DECLARE(int, int32_t)
@@ -28,7 +29,7 @@ typedef struct {
   size_t len;
 } the_map_intMSstrME_t;
 
-the_map_intMSstrME_t the_map_intMSstrME_alloc (void); // todo
+the_map_intMSstrME_t the_map_intMSstrME_alloc (size_t len, ...);
 the_map_intMSstrME_t *the_map_intMSstrME_clear (the_map_intMSstrME_t *self);
 the_map_intMSstrME_t the_map_intMSstrME_copy (const the_map_intMSstrME_t self);
 bool the_map_intMSstrME_empty (const the_map_intMSstrME_t self);
@@ -36,25 +37,68 @@ bool the_map_intMSstrME_eq (const the_map_intMSstrME_t self, const the_map_intMS
 void the_map_intMSstrME_free (the_map_intMSstrME_t self);
 the_str_t the_map_intMSstrME_get (the_err_state_t *state, int line, int col, const the_map_intMSstrME_t self, int32_t key);
 bool the_map_intMSstrME_has (const the_map_intMSstrME_t self, int32_t key);
-size_t the_map_intMSstrME_hash (const the_map_intMSstrME_t self, const the_str_t id);
 the_arr_int_t the_map_intMSstrME_keys (const the_map_intMSstrME_t self);
 the_map_intMSstrME_t *the_map_intMSstrME_merge (the_map_intMSstrME_t *self, const the_map_intMSstrME_t other);
+void the_map_intMSstrME_place (the_map_intMSstrME_t self, the_str_t id, int32_t key, the_str_t value);
 the_map_intMSstrME_t the_map_intMSstrME_realloc (the_map_intMSstrME_t self, const the_map_intMSstrME_t rhs);
 the_map_intMSstrME_t *the_map_intMSstrME_remove (the_err_state_t *state, int line, int col, the_map_intMSstrME_t *self, int32_t key);
 the_map_intMSstrME_t *the_map_intMSstrME_reserve (the_map_intMSstrME_t *self, int32_t size);
 the_map_intMSstrME_t *the_map_intMSstrME_set (the_map_intMSstrME_t *self, int32_t key, const the_str_t value);
-void the_map_intMSstrME_set_by_id (the_map_intMSstrME_t self, the_str_t id, int32_t key, the_str_t value);
 the_map_intMSstrME_t *the_map_intMSstrME_shrink (the_map_intMSstrME_t *self);
 the_str_t the_map_intMSstrME_str (const the_map_intMSstrME_t self);
 the_arr_str_t the_map_intMSstrME_values (const the_map_intMSstrME_t self);
 
-void the_map_intMSstrME_print (const the_map_intMSstrME_t self); // todo delete
+void the_map_intMSstrME_print (const the_map_intMSstrME_t self);
 
-the_map_intMSstrME_t the_map_intMSstrME_alloc (void) {
-  size_t cap = 0x0F;
-  the_map_intMSstrME_pair_t **data = the_safe_alloc(cap * sizeof(the_map_intMSstrME_pair_t *));
-  memset(data, 0, cap * sizeof(the_map_intMSstrME_pair_t *));
-  return (the_map_intMSstrME_t) {data, cap, 0};
+size_t the_map_calc_cap (size_t cap, size_t len);
+size_t the_map_hash (the_str_t id, size_t cap);
+bool the_map_should_calc_cap (size_t cap, size_t len);
+
+size_t the_map_calc_cap (size_t cap, size_t len) {
+  while (the_map_should_calc_cap(cap, len)) {
+    cap *= 2;
+  }
+
+  return cap;
+}
+
+size_t the_map_hash (the_str_t id, size_t cap) {
+  size_t result = 0xCBF29CE484222325;
+
+  for (size_t i = 0; i < id.len; i++) {
+    result = (size_t) ((size_t) (result * (size_t) 0x00000100000001B3) ^ (size_t) id.data[i]);
+  }
+
+  return result % cap;
+}
+
+bool the_map_should_calc_cap (size_t cap, size_t len) {
+  return len >= (size_t) ((double) cap * THE_MAP_LOAD_FACTOR);
+}
+
+the_map_intMSstrME_t the_map_intMSstrME_alloc (size_t len, ...) {
+  size_t cap = the_map_calc_cap(0x0F, len);
+  the_map_intMSstrME_t self = {the_safe_alloc(cap * sizeof(the_map_intMSstrME_pair_t *)), cap, len};
+  va_list args;
+
+  memset(self.data, 0, cap * sizeof(the_map_intMSstrME_pair_t *));
+
+  if (len == 0) {
+    return self;
+  }
+
+  va_start(args, len);
+
+  for (size_t i = 0; i < len; i++) {
+    const int32_t key = va_arg(args, int32_t);
+    const the_str_t value = va_arg(args, the_str_t);
+    the_str_t id = the_i32_str(key);
+    the_map_intMSstrME_place(self, id, key, value);
+    the_str_free(id);
+  }
+
+  va_end(args);
+  return self;
 }
 
 the_map_intMSstrME_t *the_map_intMSstrME_clear (the_map_intMSstrME_t *self) {
@@ -87,7 +131,7 @@ the_map_intMSstrME_t the_map_intMSstrME_copy (const the_map_intMSstrME_t self) {
     the_map_intMSstrME_pair_t *it = self.data[i];
 
     while (it != NULL) {
-      the_map_intMSstrME_set_by_id(new_self, it->id, it->key, it->value);
+      the_map_intMSstrME_place(new_self, it->id, it->key, it->value);
       it = it->next;
     }
   }
@@ -108,7 +152,7 @@ bool the_map_intMSstrME_eq (const the_map_intMSstrME_t self, const the_map_intMS
     the_map_intMSstrME_pair_t *it1 = self.data[i];
 
     while (it1 != NULL) {
-      size_t rhs_index = the_map_intMSstrME_hash(rhs, it1->id);
+      size_t rhs_index = the_map_hash(it1->id, rhs.cap);
       the_map_intMSstrME_pair_t *it2 = rhs.data[rhs_index];
 
       while (it2 != NULL) {
@@ -146,7 +190,7 @@ void the_map_intMSstrME_free (the_map_intMSstrME_t self) {
 
 the_str_t the_map_intMSstrME_get (the_err_state_t *state, int line, int col, the_map_intMSstrME_t self, int32_t key) {
   the_str_t id = the_i32_str(key);
-  size_t index = the_map_intMSstrME_hash(self, id);
+  size_t index = the_map_hash(id, self.cap);
   the_map_intMSstrME_pair_t *it = self.data[index];
 
   while (it != NULL) {
@@ -171,7 +215,7 @@ the_str_t the_map_intMSstrME_get (the_err_state_t *state, int line, int col, the
 
 bool the_map_intMSstrME_has (the_map_intMSstrME_t self, int32_t key) {
   the_str_t id = the_i32_str(key);
-  size_t index = the_map_intMSstrME_hash(self, id);
+  size_t index = the_map_hash(id, self.cap);
   the_map_intMSstrME_pair_t *it = self.data[index];
   bool r = false;
 
@@ -186,16 +230,6 @@ bool the_map_intMSstrME_has (the_map_intMSstrME_t self, int32_t key) {
   r = it != NULL;
   the_str_free(id);
   return r;
-}
-
-size_t the_map_intMSstrME_hash (the_map_intMSstrME_t self, the_str_t id) {
-  size_t result = 0xCBF29CE484222325;
-
-  for (size_t i = 0; i < id.len; i++) {
-    result = (size_t) ((size_t) (result * (size_t) 0x00000100000001B3) ^ (size_t) id.data[i]);
-  }
-
-  return result % self.cap;
 }
 
 the_arr_int_t the_map_intMSstrME_keys (const the_map_intMSstrME_t self) {
@@ -217,9 +251,8 @@ the_arr_int_t the_map_intMSstrME_keys (const the_map_intMSstrME_t self) {
 the_map_intMSstrME_t *the_map_intMSstrME_merge (the_map_intMSstrME_t *self, const the_map_intMSstrME_t other) {
   self->len += other.len;
 
-  if (self->len >= (size_t) ((double) self->cap * THE_MAP_LOAD_FACTOR)) {
-    size_t new_cap = self->cap * 2;
-    for (; self->len >= (size_t) ((double) new_cap * THE_MAP_LOAD_FACTOR); new_cap *= 2);
+  if (the_map_should_calc_cap(self->cap, self->len)) {
+    size_t new_cap = the_map_calc_cap(self->cap, self->len);
     the_map_intMSstrME_reserve(self, (int32_t) new_cap);
   }
 
@@ -227,12 +260,37 @@ the_map_intMSstrME_t *the_map_intMSstrME_merge (the_map_intMSstrME_t *self, cons
     the_map_intMSstrME_pair_t *it = other.data[i];
 
     while (it != NULL) {
-      the_map_intMSstrME_set_by_id(*self, it->id, it->key, it->value);
+      the_map_intMSstrME_place(*self, it->id, it->key, it->value);
       it = it->next;
     }
   }
 
   return self;
+}
+
+void the_map_intMSstrME_place (the_map_intMSstrME_t self, the_str_t id, int32_t key, the_str_t value) {
+  size_t index = the_map_hash(id, self.cap);
+  the_map_intMSstrME_pair_t *it = self.data[index];
+
+  while (it != NULL) {
+    if (the_str_eq(it->id, id)) {
+      break;
+    }
+
+    it = it->next;
+  }
+
+  if (it == NULL) {
+    the_map_intMSstrME_pair_t *new_item = the_safe_alloc(sizeof(the_map_intMSstrME_pair_t));
+    new_item->id = the_str_copy(id);
+    new_item->key = key;
+    new_item->value = the_str_copy(value);
+    new_item->next = self.data[index];
+    self.data[index] = new_item;
+  } else {
+    the_str_free(it->value);
+    it->value = the_str_copy(value);
+  }
 }
 
 void the_map_intMSstrME_print (the_map_intMSstrME_t self) {
@@ -255,7 +313,7 @@ the_map_intMSstrME_t the_map_intMSstrME_realloc (the_map_intMSstrME_t self, cons
 
 the_map_intMSstrME_t *the_map_intMSstrME_remove (the_err_state_t *state, int line, int col, the_map_intMSstrME_t *self, int32_t key) {
   the_str_t id = the_i32_str(key);
-  size_t index = the_map_intMSstrME_hash(*self, id);
+  size_t index = the_map_hash(id, self->cap);
   the_map_intMSstrME_pair_t *prev = NULL;
   the_map_intMSstrME_pair_t *it = self->data[index];
 
@@ -307,7 +365,7 @@ the_map_intMSstrME_t *the_map_intMSstrME_reserve (the_map_intMSstrME_t *self, in
     while (self->data[i] != NULL) {
       the_map_intMSstrME_pair_t *it = self->data[i];
       the_map_intMSstrME_pair_t *next = it->next;
-      size_t index = the_map_intMSstrME_hash(new_self, it->id);
+      size_t index = the_map_hash(it->id, new_self.cap);
       it->next = new_self.data[index];
       new_self.data[index] = it;
       self->data[i] = next;
@@ -323,40 +381,16 @@ the_map_intMSstrME_t *the_map_intMSstrME_reserve (the_map_intMSstrME_t *self, in
 
 the_map_intMSstrME_t *the_map_intMSstrME_set (the_map_intMSstrME_t *self, int32_t key, the_str_t value) {
   the_str_t id = the_i32_str(key);
-  the_map_intMSstrME_set_by_id(*self, id, key, value);
+  the_map_intMSstrME_place(*self, id, key, value);
   the_str_free(id);
   self->len += 1;
 
-  if (self->len >= (size_t) ((double) self->cap * THE_MAP_LOAD_FACTOR)) {
-    the_map_intMSstrME_reserve(self, (int32_t) (self->cap * 2));
+  if (the_map_should_calc_cap(self->cap, self->len)) {
+    size_t new_cap = the_map_calc_cap(self->cap, self->len);
+    the_map_intMSstrME_reserve(self, (int32_t) new_cap);
   }
 
   return self;
-}
-
-void the_map_intMSstrME_set_by_id (the_map_intMSstrME_t self, the_str_t id, int32_t key, the_str_t value) {
-  size_t index = the_map_intMSstrME_hash(self, id);
-  the_map_intMSstrME_pair_t *it = self.data[index];
-
-  while (it != NULL) {
-    if (the_str_eq(it->id, id)) {
-      break;
-    }
-
-    it = it->next;
-  }
-
-  if (it == NULL) {
-    the_map_intMSstrME_pair_t *new_item = the_safe_alloc(sizeof(the_map_intMSstrME_pair_t));
-    new_item->id = the_str_copy(id);
-    new_item->key = key;
-    new_item->value = the_str_copy(value);
-    new_item->next = self.data[index];
-    self.data[index] = new_item;
-  } else {
-    the_str_free(it->value);
-    it->value = the_str_copy(value);
-  }
 }
 
 the_map_intMSstrME_t *the_map_intMSstrME_shrink (the_map_intMSstrME_t *self) {
@@ -411,14 +445,14 @@ the_arr_str_t the_map_intMSstrME_values (const the_map_intMSstrME_t self) {
 }
 
 int main (void) {
-  the_map_intMSstrME_t m1 = the_map_intMSstrME_alloc();
-  the_map_intMSstrME_t m2 = the_map_intMSstrME_alloc();
+  the_str_t val = the_str_alloc(L"string");
+  the_map_intMSstrME_t m1 = the_map_intMSstrME_alloc(0);
+  the_map_intMSstrME_t m2 = the_map_intMSstrME_alloc(0);
   the_map_intMSstrME_t m3;
   the_map_intMSstrME_t m4;
-  the_map_intMSstrME_t m5 = the_map_intMSstrME_alloc();
-  the_map_intMSstrME_t m6 = the_map_intMSstrME_alloc();
-  the_map_intMSstrME_t m7 = the_map_intMSstrME_alloc();
-  the_str_t val = the_str_alloc(L"string");
+  the_map_intMSstrME_t m5 = the_map_intMSstrME_alloc(1, 3, val);
+  the_map_intMSstrME_t m6 = the_map_intMSstrME_alloc(2, 4, val, 5, val);
+  the_map_intMSstrME_t m7 = the_map_intMSstrME_alloc(1, 2, val);
   the_str_t val2;
   the_arr_int_t keys;
   the_str_t keys_str;
@@ -429,10 +463,6 @@ int main (void) {
   the_str_t m6_str;
   the_str_t m7_str;
 
-  the_map_intMSstrME_set(&m5, 3, val);
-  the_map_intMSstrME_set(&m6, 4, val);
-  the_map_intMSstrME_set(&m6, 5, val);
-  the_map_intMSstrME_set(&m7, 2, val);
   the_map_intMSstrME_merge(&m7, m5);
   the_map_intMSstrME_merge(&m7, m6);
 
