@@ -19,14 +19,14 @@
  * @param element_type Element type of the array object.
  */
 #define THE_ARRAY_DECLARE(element_type_name, element_type) \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, bool, bool, FP3##element_type_name, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(es, bool, bool, FP3##element_type_name, { \
     the_err_state_t *state; \
     int line; \
     int col; \
     element_type n0; \
   }) \
   \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, void, void, FP3##element_type_name##FP3int, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(es, void, void, FP3##element_type_name##FP3int, { \
     the_err_state_t *state; \
     int line; \
     int col; \
@@ -34,7 +34,7 @@
     int32_t n1; \
   }) \
   \
-  THE_FUNCTION_DECLARE_WITH_PARAMS(s, int, int32_t, FP3##element_type_name##FP3##element_type_name, { \
+  THE_FUNCTION_DECLARE_WITH_PARAMS(es, int, int32_t, FP3##element_type_name##FP3##element_type_name, { \
     the_err_state_t *state; \
     int line; \
     int col; \
@@ -42,7 +42,7 @@
     element_type n1; \
   }) \
   \
-  /** Object representation of the array type */ \
+  /** Object representation of the array type. */ \
   typedef struct { \
     element_type *data; \
     size_t len; \
@@ -121,7 +121,7 @@
    * @param predicate Function to execute on each element of the array. Should return a truthy value to keep the element in the resulting array.
    * @return Array constructed out of elements that passed the test.
    */ \
-  the_arr_##element_type_name##_t the_arr_##element_type_name##_filter (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_sFP3##element_type_name##FRboolFE_t predicate); \
+  the_arr_##element_type_name##_t the_arr_##element_type_name##_filter (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_esFP3##element_type_name##FRboolFE_t predicate); \
   \
   /**
    * Returns reference to first element.
@@ -141,7 +141,7 @@
    * @param self Array to perform action on.
    * @param iterator Function to execute on each element of the array.
    */ \
-  void the_arr_##element_type_name##_forEach (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_sFP3##element_type_name##FP3intFRvoidFE_t iterator); \
+  void the_arr_##element_type_name##_forEach (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_esFP3##element_type_name##FP3intFRvoidFE_t iterator); \
   \
   /**
    * Deallocates array object.
@@ -237,7 +237,7 @@
    * @param comparator Function that defines the sort order.
    * @return Reference to self.
    */ \
-  the_arr_##element_type_name##_t *the_arr_##element_type_name##_sort (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self, const the_fn_sFP3##element_type_name##FP3##element_type_name##FRintFE_t comparator); \
+  the_arr_##element_type_name##_t *the_arr_##element_type_name##_sort (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self, const the_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_t comparator); \
   \
   /**
    * Generates string representation of the array object.

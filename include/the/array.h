@@ -26,9 +26,9 @@
  * @param str_block Block that is used for str method of array object.
  */
 #define THE_ARRAY_DEFINE(element_type_name, element_type, alloc_element_type, copy_block, eq_block, free_block, str_block) \
-  THE_FUNCTION_DEFINE_WITH_PARAMS(s, bool, bool, FP3##element_type_name) \
-  THE_FUNCTION_DEFINE_WITH_PARAMS(s, void, void, FP3##element_type_name##FP3int) \
-  THE_FUNCTION_DEFINE_WITH_PARAMS(s, int, int32_t, FP3##element_type_name##FP3##element_type_name) \
+  THE_FUNCTION_DEFINE_WITH_PARAMS(es, bool, bool, FP3##element_type_name) \
+  THE_FUNCTION_DEFINE_WITH_PARAMS(es, void, void, FP3##element_type_name##FP3int) \
+  THE_FUNCTION_DEFINE_WITH_PARAMS(es, int, int32_t, FP3##element_type_name##FP3##element_type_name) \
   \
   the_arr_##element_type_name##_t the_arr_##element_type_name##_alloc (size_t length, ...) { \
     element_type *data; \
@@ -110,7 +110,7 @@
     return true; \
   } \
   \
-  the_arr_##element_type_name##_t the_arr_##element_type_name##_filter (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_sFP3##element_type_name##FRboolFE_t predicate) { \
+  the_arr_##element_type_name##_t the_arr_##element_type_name##_filter (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_esFP3##element_type_name##FRboolFE_t predicate) { \
     size_t len = 0; \
     element_type *data = the_safe_alloc(self.len * sizeof(element_type)); \
     for (size_t i = 0; i < self.len; i++) { \
@@ -118,8 +118,8 @@
         predicate.func( \
           predicate.ctx, \
           the_safe_calloc( \
-            &(the_fn_sFP3##element_type_name##FRboolFE_params_t) {state, line, col, self.data[i]}, \
-            sizeof(the_fn_sFP3##element_type_name##FRboolFE_params_t) \
+            &(the_fn_esFP3##element_type_name##FRboolFE_params_t) {state, line, col, self.data[i]}, \
+            sizeof(the_fn_esFP3##element_type_name##FRboolFE_params_t) \
           ) \
         ) \
       ) { \
@@ -140,13 +140,13 @@
     return &self->data[0]; \
   } \
   \
-  void the_arr_##element_type_name##_forEach (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_sFP3##element_type_name##FP3intFRvoidFE_t iterator) { \
+  void the_arr_##element_type_name##_forEach (the_err_state_t *state, int line, int col, const the_arr_##element_type_name##_t self, const the_fn_esFP3##element_type_name##FP3intFRvoidFE_t iterator) { \
     for (size_t i = 0; i < self.len; i++) { \
       iterator.func( \
         iterator.ctx, \
         the_safe_calloc( \
-          &(the_fn_sFP3##element_type_name##FP3intFRvoidFE_params_t) {state, line, col, self.data[i], i}, \
-          sizeof(the_fn_sFP3##element_type_name##FP3intFRvoidFE_params_t) \
+          &(the_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) {state, line, col, self.data[i], i}, \
+          sizeof(the_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) \
         ) \
       ); \
     } \
@@ -278,7 +278,7 @@
     return (the_arr_##element_type_name##_t) {data, len}; \
   } \
   \
-  the_arr_##element_type_name##_t *the_arr_##element_type_name##_sort (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self, const the_fn_sFP3##element_type_name##FP3##element_type_name##FRintFE_t comparator) { \
+  the_arr_##element_type_name##_t *the_arr_##element_type_name##_sort (the_err_state_t *state, int line, int col, the_arr_##element_type_name##_t *self, const the_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_t comparator) { \
     if (self->len <= 1) return self; \
     while (1) { \
       unsigned char b = 0; \
@@ -286,8 +286,8 @@
         int32_t c = comparator.func( \
           comparator.ctx, \
           the_safe_calloc( \
-            &(the_fn_sFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) {state, line, col, self->data[i - 1], self->data[i]}, \
-            sizeof(the_fn_sFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) \
+            &(the_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) {state, line, col, self->data[i - 1], self->data[i]}, \
+            sizeof(the_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) \
           ) \
         ); \
         if (c > 0) { \

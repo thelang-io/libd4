@@ -102,7 +102,7 @@ the_str_t the_any_str (const the_any_t self);
  * @param underlying_type Underlying type of the any object.
  */
 #define THE_ANY_DECLARE(underlying_type_name, underlying_type) \
-  /** Object representation of the any type */ \
+  /** Object representation of the any type. */ \
   typedef underlying_type *the_any_##underlying_type_name##_t; \
   \
   /**
