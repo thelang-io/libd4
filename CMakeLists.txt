@@ -32,6 +32,7 @@ set(
   src/enum.c
   src/error.c
   src/globals.c
+  src/map.c
   src/number.c
   src/rune.c
   src/safe.c

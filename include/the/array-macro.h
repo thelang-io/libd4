@@ -44,7 +44,11 @@
   \
   /** Object representation of the array type. */ \
   typedef struct { \
+    \
+    /* Data container of the elements pointers. */ \
     element_type *data; \
+    \
+    /* Length of the array object. */ \
     size_t len; \
   } the_arr_##element_type_name##_t; \
   \
