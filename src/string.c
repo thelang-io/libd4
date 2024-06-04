@@ -200,6 +200,18 @@ bool the_str_lt (const the_str_t self, const the_str_t rhs) {
   return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) < 0;
 }
 
+the_str_t the_str_quoted_escape (the_str_t self) {
+  the_str_t q = (the_str_t) {L"\"", 1, true};
+  the_str_t escaped = the_str_escape(self);
+  the_str_t left_result = the_str_concat(q, escaped);
+  the_str_t result = the_str_concat(left_result, q);
+
+  the_str_free(escaped);
+  the_str_free(left_result);
+
+  return result;
+}
+
 the_str_t the_str_realloc (the_str_t self, const the_str_t rhs) {
   if (self.len == 0) {
     self.data = the_safe_alloc((rhs.len + 1) * sizeof(wchar_t));

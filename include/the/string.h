@@ -163,6 +163,13 @@ bool the_str_lt (const the_str_t self, const the_str_t rhs);
 bool the_str_not (const the_str_t self);
 
 /**
+ * Puts string into double quotes and escapes characters inside of it.
+ * @param self String to quote.
+ * @return Quoted string.
+ */
+the_str_t the_str_quoted_escape (the_str_t self);
+
+/**
  * Reallocates string with right-hand string data.
  * @param self String to deallocate.
  * @param rhs String where to copy data from.

@@ -303,6 +303,10 @@ static void test_string_not (void) {
   // todo
 }
 
+static void test_string_quoted_escape (void) {
+  // todo
+}
+
 static void test_string_realloc (void) {
   // todo
 }
@@ -413,6 +417,7 @@ int main (void) {
   test_string_lowerFirst();
   test_string_lt();
   test_string_not();
+  test_string_quoted_escape();
   test_string_realloc();
   test_string_replace();
   test_string_slice();
