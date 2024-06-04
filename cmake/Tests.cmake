@@ -37,6 +37,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
     safe
     ssl
     string
+    union
   )
 
   foreach (test ${tests})

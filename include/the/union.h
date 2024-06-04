@@ -10,8 +10,6 @@
 
 #include <the/union-macro.h>
 
-// todo test
-
 /**
  * Macro that can be used to define an union object.
  * @param subtypes_type_name All sub-types joined by US (short for "union separator") separator.

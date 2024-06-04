@@ -10,72 +10,95 @@ THE_ARRAY_DECLARE(arr_str, the_arr_str_t)
 THE_ARRAY_DEFINE(arr_str, the_arr_str_t, the_arr_str_t, the_arr_str_copy(element), the_arr_str_eq(lhs_element, rhs_element), the_arr_str_free(element), the_arr_str_str(element))
 
 static void test_array_alloc (void) {
+  // todo
 }
 
 static void test_array_at (void) {
+  // todo
 }
 
 static void test_array_clear (void) {
+  // todo
 }
 
 static void test_array_concat (void) {
+  // todo
 }
 
 static void test_array_contains (void) {
+  // todo
 }
 
 static void test_array_copy (void) {
+  // todo
 }
 
 static void test_array_empty (void) {
+  // todo
 }
 
 static void test_array_eq (void) {
+  // todo
 }
 
 static void test_array_filter (void) {
+  // todo
 }
 
 static void test_array_first (void) {
+  // todo
 }
 
 static void test_array_forEach (void) {
+  // todo
 }
 
 static void test_array_free (void) {
+  // todo
 }
 
 static void test_array_join (void) {
+  // todo
 }
 
 static void test_array_last (void) {
+  // todo
 }
 
 static void test_array_merge (void) {
+  // todo
 }
 
 static void test_array_pop (void) {
+  // todo
 }
 
 static void test_array_push (void) {
+  // todo
 }
 
 static void test_array_realloc (void) {
+  // todo
 }
 
 static void test_array_remove (void) {
+  // todo
 }
 
 static void test_array_reverse (void) {
+  // todo
 }
 
 static void test_array_slice (void) {
+  // todo
 }
 
 static void test_array_sort (void) {
+  // todo
 }
 
 static void test_array_str (void) {
+  // todo
 }
 
 int main (void) {

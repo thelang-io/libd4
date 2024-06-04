@@ -13,8 +13,6 @@
 #include <inttypes.h>
 #include <string.h>
 
-// todo test
-
 /**
  * Macro that can be used to define an array object.
  * @param element_type_name Type name of the element.
