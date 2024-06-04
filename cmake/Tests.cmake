@@ -28,6 +28,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBTHE_BUILD_TESTS)
     enum
     error
     fn
+    globals
     map
     number
     optional
