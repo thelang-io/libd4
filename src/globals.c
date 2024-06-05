@@ -34,8 +34,6 @@ static void print_func (THE_UNUSED void *ctx, void *params) {
   }
 
   result = the_str_realloc(result, the_str_concat(result, terminator));
-  the_str_free(separator);
-  the_str_free(terminator);
   fwprintf(stream, result.data);
   the_str_free(result);
 }
