@@ -12,9 +12,11 @@ THE_OPTIONAL_DEFINE(u32, uint32_t, val, lhs_val == rhs_val, (void) val, the_i32_
 
 static void test_optional_alloc (void) {
   the_opt_u32_t a = the_opt_u32_alloc(10);
+  the_opt_u32_t b = NULL;
 
   assert(((void) "Optional is not NULL", a != NULL));
   assert(((void) "Optional has correct value", *a == 10));
+  assert(((void) "Optional is NULL", b == NULL));
 
   the_opt_u32_free(a);
 }
