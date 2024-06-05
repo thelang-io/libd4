@@ -16,7 +16,6 @@ THE_ANY_DECLARE(str, the_str_t)
 THE_ANY_DEFINE(TYPE_str, str, the_str_t, the_str_copy(val), the_str_eq(lhs_val, rhs_val), the_str_free(val), the_str_copy(val))
 
 int main (void) {
-
   the_str_t s_e = the_str_alloc(L"");
   the_str_t s_comma = the_str_alloc(L",");
   the_str_t s_stdout = the_str_alloc(L"stdout");

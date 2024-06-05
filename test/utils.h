@@ -33,4 +33,6 @@ L##error_id: \
     the_error_unset(&the_err_state); \
   } while (0)
 
+the_str_t read_unicode_file (const char *path);
+
 #endif
