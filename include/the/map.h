@@ -11,22 +11,20 @@
 #include <the/map-macro.h>
 #include <the/array.h>
 
-// todo check const everywhere
-
 /**
  * Macro that can be used to define a map object.
  * @param key_type_name Type name of the key.
  * @param key_type Key type of the array object.
  * @param key_alloc_type Key type of the key to be used inside variadic argument (should be cast to int in some cases).
  * @param key_copy_block Block that is used for copy method of key.
- * @param key_eq_block Block that is used for equals method of key. todo not used
+ * @param key_eq_block Block that is used for equals method of key.
  * @param key_free_block Block that is used for free method of key.
  * @param key_str_block Block that is used for str method of key.
  * @param value_type_name Type name of the value.
  * @param value_type Value type of the array object.
  * @param value_alloc_type Value type of the value to be used inside variadic argument (should be cast to int in some cases).
  * @param value_copy_block Block that is used for copy method of value.
- * @param value_eq_block Block that is used for equals method of value. todo not used
+ * @param value_eq_block Block that is used for equals method of value.
  * @param value_free_block Block that is used for free method of value.
  * @param value_str_block Block that is used for str method of value.
  */
@@ -94,13 +92,16 @@
       the_map_##key_type_name##MS##value_type_name##ME_pair_t *it1 = self.data[i]; \
       while (it1 != NULL) { \
         size_t rhs_index = the_map_hash(it1->id, rhs.cap); \
+        value_type lhs_val = it1->value; \
+        value_type rhs_val; \
         the_map_##key_type_name##MS##value_type_name##ME_pair_t *it2 = rhs.data[rhs_index]; \
         while (it2 != NULL) { \
           if (the_str_eq(it2->id, it1->id)) break; \
           it2 = it2->next; \
         } \
         if (it2 == NULL) return false; \
-        /* todo compare value? */ \
+        rhs_val = it2->value; \
+        if (!value_eq_block) return false; \
         it1 = it1->next; \
       } \
     } \
@@ -123,7 +124,7 @@
     the_safe_free(self.data); \
   } \
   \
-  value_type the_map_##key_type_name##MS##value_type_name##ME_get (the_err_state_t *state, int line, int col, the_map_##key_type_name##MS##value_type_name##ME_t self, key_type key) { \
+  value_type the_map_##key_type_name##MS##value_type_name##ME_get (the_err_state_t *state, int line, int col, const the_map_##key_type_name##MS##value_type_name##ME_t self, const key_type key) { \
     the_str_t id = the_i32_str(key); \
     size_t index = the_map_hash(id, self.cap); \
     value_type val; \
@@ -143,7 +144,7 @@
     return value_copy_block; \
   } \
   \
-  bool the_map_##key_type_name##MS##value_type_name##ME_has (the_map_##key_type_name##MS##value_type_name##ME_t self, key_type key) { \
+  bool the_map_##key_type_name##MS##value_type_name##ME_has (const the_map_##key_type_name##MS##value_type_name##ME_t self, const key_type key) { \
     the_str_t id = the_i32_str(key); \
     size_t index = the_map_hash(id, self.cap); \
     the_map_##key_type_name##MS##value_type_name##ME_pair_t *it = self.data[index]; \
@@ -272,7 +273,7 @@
     return self; \
   } \
   \
-  the_map_##key_type_name##MS##value_type_name##ME_t *the_map_##key_type_name##MS##value_type_name##ME_set (the_map_##key_type_name##MS##value_type_name##ME_t *self, key_type key, value_type value) { \
+  the_map_##key_type_name##MS##value_type_name##ME_t *the_map_##key_type_name##MS##value_type_name##ME_set (the_map_##key_type_name##MS##value_type_name##ME_t *self, const key_type key, const value_type value) { \
     the_str_t id = the_i32_str(key); \
     the_map_##key_type_name##MS##value_type_name##ME_place(*self, id, key, value); \
     the_str_free(id); \
@@ -347,13 +348,28 @@
     return (the_arr_str_t) {data, self.len}; \
   }
 
-/** todo */
+/**
+ * Calculates new map capacity.
+ * @param cap Current map capacity.
+ * @param len Current map length.
+ * @return New map capacity.
+ */
 size_t the_map_calc_cap (size_t cap, size_t len);
 
-/** todo */
+/**
+ * Hashes and maps identifier to correct index inside of the map.
+ * @param id Identifier to find index for.
+ * @param cap Current map capacity.
+ * @return Index of the identifier inside of the map.
+ */
 size_t the_map_hash (the_str_t id, size_t cap);
 
-/** todo */
+/**
+ * Determines whether map needs to reallocate.
+ * @param cap Current map capacity.
+ * @param len Current map length.
+ * @return Whether map needs to reallocate.
+ */
 bool the_map_should_calc_cap (size_t cap, size_t len);
 
 #endif
