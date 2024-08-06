@@ -34,30 +34,30 @@ int main (void) {
   int32_t *v2 = d4_arr_int_first(&d4_err_state, __LINE__, 0, &a3);
   int32_t *v3 = d4_arr_int_last(&d4_err_state, __LINE__, 0, &a3);
 
-  wprintf(L"%s %s %s %s %s %s %d %d %d\n", s1.data, s2.data, s3.data, s4.data, s5.data, s6.data, *v1, *v2, *v3);
-  wprintf(L"a3 joined %s\n", s8.data);
-  wprintf(d4_arr_int_empty(a1) ? L"a1 is empty\n" : L"a1 is not empty\n");
-  wprintf(d4_arr_int_empty(a3) ? L"a3 is empty\n" : L"a3 is not empty\n");
-  wprintf(d4_arr_int_eq(a2, a4) ? L"a2 == a4\n" : L"a2 != a4\n");
-  wprintf(d4_arr_int_eq(a2, a5) ? L"a2 == a5\n" : L"a2 != a5\n");
-  wprintf(d4_arr_int_contains(a3, 0) ? L"a3 contains 0\n" : L"a3 doesn't contain 0\n");
-  wprintf(d4_arr_int_contains(a3, 2) ? L"a3 contains 2\n" : L"a3 doesn't contain 2\n");
+  wprintf(L"%ls %ls %ls %ls %ls %ls %d %d %d\n", s1.data, s2.data, s3.data, s4.data, s5.data, s6.data, *v1, *v2, *v3);
+  wprintf(L"a3 joined %ls\n", s8.data);
+  wprintf(L"%ls\n", d4_arr_int_empty(a1) ? L"a1 is empty" : L"a1 is not empty");
+  wprintf(L"%ls\n", d4_arr_int_empty(a3) ? L"a3 is empty" : L"a3 is not empty");
+  wprintf(L"%ls\n", d4_arr_int_eq(a2, a4) ? L"a2 == a4" : L"a2 != a4");
+  wprintf(L"%ls\n", d4_arr_int_eq(a2, a5) ? L"a2 == a5" : L"a2 != a5");
+  wprintf(L"%ls\n", d4_arr_int_contains(a3, 0) ? L"a3 contains 0" : L"a3 doesn't contain 0");
+  wprintf(L"%ls\n", d4_arr_int_contains(a3, 2) ? L"a3 contains 2" : L"a3 doesn't contain 2");
 
   d4_arr_int_clear(&a3);
 
   a5 = d4_arr_int_realloc(a5, d4_arr_int_copy(a3));
 
-  wprintf(d4_arr_int_empty(a3) ? L"a3 is empty\n" : L"a3 is not empty\n");
-  wprintf(d4_arr_int_eq(a2, a5) ? L"a2 == a5\n" : L"a2 != a5\n");
+  wprintf(L"%ls\n", d4_arr_int_empty(a3) ? L"a3 is empty" : L"a3 is not empty");
+  wprintf(L"%ls\n", d4_arr_int_eq(a2, a5) ? L"a2 == a5" : L"a2 != a5");
 
   wprintf(L"length of a6 before merge %zu\n", a6.len);
   d4_arr_int_merge(&a6, a2);
   wprintf(L"length of a6 after merge %zu\n", a6.len);
   d4_arr_int_push(&a6, 1, *d4_arr_int_at(&d4_err_state, 0, 0, a6, 0));
   d4_arr_int_push(&a6, 2, *d4_arr_int_at(&d4_err_state, 0, 0, a6, 1), *d4_arr_int_at(&d4_err_state, 0, 0, a6, 2));
-  wprintf(L"length of a6 after push %d\n", a6.len);
+  wprintf(L"length of a6 after push %zu\n", a6.len);
   d4_arr_int_pop(&a6);
-  wprintf(L"length of a6 after pop %d\n", a6.len);
+  wprintf(L"length of a6 after pop %zu\n", a6.len);
   d4_arr_int_remove(&d4_err_state, __LINE__, 0, &a6, 3);
   wprintf(L"length of a6 after remove %zu\n", a6.len);
 

@@ -105,7 +105,9 @@ d4_str_t d4_str_concat (const d4_str_t self, const d4_str_t other) {
 bool d4_str_contains (const d4_str_t self, const d4_str_t search) {
   if (self.len == search.len) {
     return memcmp(self.data, search.data, self.len * sizeof(wchar_t)) >= 0;
-  } else if (self.len > 0 && self.len > search.len) {
+  }
+
+  if (self.len > 0 && self.len > search.len) {
     for (size_t i = 0; i < self.len - search.len + 1; i++) {
       if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) >= 0) {
         return true;

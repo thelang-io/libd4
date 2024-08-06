@@ -7,28 +7,20 @@
 #include <d4/string.h>
 #include "utils.h"
 
-static int unicode_len (unsigned char code) {
-  if (code < 0x80) {
-    return 1;
-  } else if (code < 0xE0) {
-    return 2;
-  } else if (code < 0xF0) {
-    return 3;
-  } else {
-    return 4;
-  }
+static int unicode_len (const unsigned char code) {
+  if (code < 0x80) return 1;
+  if (code < 0xE0) return 2;
+  if (code < 0xF0) return 3;
+
+  return 4;
 }
 
-static unsigned char unicode_mask (unsigned char code) {
-  if (code < 0x80) {
-    return 0x00;
-  } else if (code < 0xE0) {
-    return 0xC0;
-  } else if (code < 0xF0) {
-    return 0xE0;
-  } else {
-    return 0xF0;
-  }
+static unsigned char unicode_mask (const unsigned char code) {
+  if (code < 0x80) return 0x00;
+  if (code < 0xE0) return 0xC0;
+  if (code < 0xF0) return 0xE0;
+
+  return 0xF0;
 }
 
 d4_str_t read_unicode_file (const char *path) {
@@ -54,7 +46,7 @@ d4_str_t read_unicode_file (const char *path) {
   data = d4_safe_alloc((buf_len + 1) * sizeof(wchar_t));
 
   for (size_t i = 0; i < buf_len; len++) {
-    unsigned char code = buf[i++];
+    const unsigned char code = buf[i++];
     data[len] = code ^ unicode_mask(code);
 
     for (int j = unicode_len(code); j > 1; j--) {

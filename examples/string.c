@@ -27,7 +27,7 @@ int main (void) {
   wprintf(L"string a5 = %ls" D4_EOL, a5.data);
   wprintf(L"string a6 = %ls" D4_EOL, a6.data);
   wprintf(L"string a8 = %ls" D4_EOL, a8.data);
-  wprintf(L"string a1 at position 2 = %c" D4_EOL, c1);
+  wprintf(L"string a1 at position 2 = %lc" D4_EOL, c1);
 
   if (d4_str_contains(a2, a1)) {
     wprintf(L"string a2 contains string a1" D4_EOL);

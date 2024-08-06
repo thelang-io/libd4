@@ -15,7 +15,9 @@ d4_any_t d4_any_copy (const d4_any_t self) {
 bool d4_any_eq (const d4_any_t self, const d4_any_t rhs) {
   if (self.ctx == NULL || rhs.ctx == NULL) {
     return self.ctx == rhs.ctx;
-  } else if (self.type != rhs.type) {
+  }
+
+  if (self.type != rhs.type) {
     return false;
   }
 
