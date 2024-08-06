@@ -8,56 +8,56 @@
 #include "../src/string.h"
 
 static void test_safe_alloc (void) {
-  void *d2 = the_safe_alloc(64);
+  void *d2 = d4_safe_alloc(64);
   assert(((void) "Allocates 64", d2 != NULL));
-  the_safe_free(d2);
+  d4_safe_free(d2);
 }
 
 static void test_safe_calloc (void) {
-  void *d1 = the_safe_alloc(64);
-  void *d2 = the_safe_calloc(d1, sizeof(int));
+  void *d1 = d4_safe_alloc(64);
+  void *d2 = d4_safe_calloc(d1, sizeof(int));
 
   assert(((void) "Allocates 64", d1 != NULL));
   assert(((void) "Allocates 64", d2 != NULL));
 
-  the_safe_free(d2);
-  the_safe_free(d1);
+  d4_safe_free(d2);
+  d4_safe_free(d1);
 }
 
 static void test_safe_free (void) {
-  void *d2 = the_safe_alloc(64);
-  the_safe_free(d2);
+  void *d2 = d4_safe_alloc(64);
+  d4_safe_free(d2);
 }
 
 static void test_safe_realloc (void) {
   void *d = NULL;
 
-  d = the_safe_realloc(d, 64);
+  d = d4_safe_realloc(d, 64);
   assert(((void) "Reallocates from 0 to 64", d != NULL));
-  d = the_safe_realloc(d, 128);
+  d = d4_safe_realloc(d, 128);
   assert(((void) "Reallocates from 64 to 128", d != NULL));
 
-  the_safe_free(d);
+  d4_safe_free(d);
 }
 
 static void test_safe_swap (void) {
   int a = 1;
   int b = 2;
-  the_str_t c = the_str_alloc(L"test1");
-  the_str_t d = the_str_alloc(L"test2");
-  the_str_t e = the_str_alloc(L"test1");
-  the_str_t f = the_str_alloc(L"test2");
+  d4_str_t c = d4_str_alloc(L"test1");
+  d4_str_t d = d4_str_alloc(L"test2");
+  d4_str_t e = d4_str_alloc(L"test1");
+  d4_str_t f = d4_str_alloc(L"test2");
 
-  the_safe_swap(&a, &b, sizeof(int));
-  the_safe_swap(&c, &d, sizeof(the_str_t));
+  d4_safe_swap(&a, &b, sizeof(int));
+  d4_safe_swap(&c, &d, sizeof(d4_str_t));
 
   assert(((void) "Swaps integers", a == 2 && b == 1));
-  assert(((void) "Swaps strings", the_str_eq(c, f) && the_str_eq(d, e)));
+  assert(((void) "Swaps strings", d4_str_eq(c, f) && d4_str_eq(d, e)));
 
-  the_str_free(c);
-  the_str_free(d);
-  the_str_free(e);
-  the_str_free(f);
+  d4_str_free(c);
+  d4_str_free(d);
+  d4_str_free(e);
+  d4_str_free(f);
 }
 
 int main (void) {

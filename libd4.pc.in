@@ -5,7 +5,7 @@ libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
 
 Name: @PROJECT_NAME@
 Description: @CMAKE_PROJECT_DESCRIPTION@
-URL: https://github.com/thelang-io/helpers
+URL: https://github.com/thelang-io/libd4
 Version: @PROJECT_VERSION@
 Cflags: -I${includedir}
-Libs: -L${libdir} -lthe
+Libs: -L${libdir} -ld4

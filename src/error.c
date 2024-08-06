@@ -4,25 +4,25 @@
  */
 
 #include "error.h"
-#include <the/safe.h>
+#include <d4/safe.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "string.h"
 
-the_err_state_t the_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};
+d4_err_state_t d4_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};
 
 // LCOV_EXCL_START
-void the_error_alloc (the_err_state_t *state, size_t size) {
+void d4_error_alloc (d4_err_state_t *state, size_t size) {
   wchar_t d[4096];
-  the_str_t stack = (the_str_t) {d, sizeof(d) / sizeof(d[0]), true};
-  the_error_stack_str(state, &stack, stack.len);
-  fwprintf(stderr, L"Allocation Error: failed to allocate %zu bytes%s" THE_EOL, size, d);
+  d4_str_t stack = (d4_str_t) {d, sizeof(d) / sizeof(d[0]), true};
+  d4_error_stack_str(state, &stack, stack.len);
+  fwprintf(stderr, L"Allocation Error: failed to allocate %zu bytes%s" D4_EOL, size, d);
   exit(EXIT_FAILURE);
 }
 // LCOV_EXCL_STOP
 
-void the_error_assign (the_err_state_t *state, int line, int col, int id, void *ctx, the_err_state_free_cb free_cb) {
-  the_Error_t *err = (the_Error_t *) ctx;
+void d4_error_assign (d4_err_state_t *state, int line, int col, int id, void *ctx, d4_err_state_free_cb free_cb) {
+  d4_Error_t *err = (d4_Error_t *) ctx;
 
   state->id = id;
   state->ctx = ctx;
@@ -30,27 +30,27 @@ void the_error_assign (the_err_state_t *state, int line, int col, int id, void *
   if (line != 0) state->stack_last->line = line;
   if (col != 0) state->stack_last->col = col;
 
-  err->stack = the_str_realloc(err->stack, err->message);
-  the_error_stack_str(state, &err->stack, 0);
+  err->stack = d4_str_realloc(err->stack, err->message);
+  d4_error_stack_str(state, &err->stack, 0);
 }
 
-void the_error_assign_generic (the_err_state_t *state, int line, int col, the_str_t message) {
-  the_error_assign(state, line, col, TYPE_Error, the_Error_alloc(message), the_Error_free);
+void d4_error_assign_generic (d4_err_state_t *state, int line, int col, d4_str_t message) {
+  d4_error_assign(state, line, col, TYPE_Error, d4_Error_alloc(message), d4_Error_free);
 }
 
-void the_error_buf_decrease (the_err_state_t *state) {
-  the_err_buf_t *buf = state->buf_last;
+void d4_error_buf_decrease (d4_err_state_t *state) {
+  d4_err_buf_t *buf = state->buf_last;
   state->buf_last = buf->prev;
 
   if (state->buf_last == NULL) {
     state->buf_first = NULL;
   }
 
-  the_safe_free(buf);
+  d4_safe_free(buf);
 }
 
-the_err_buf_t *the_error_buf_increase (the_err_state_t *state) {
-  the_err_buf_t *buf = the_safe_alloc(sizeof(the_err_buf_t));
+d4_err_buf_t *d4_error_buf_increase (d4_err_state_t *state) {
+  d4_err_buf_t *buf = d4_safe_alloc(sizeof(d4_err_buf_t));
   buf->next = NULL;
   buf->prev = state->buf_last;
   if (state->buf_first == NULL) state->buf_first = buf;
@@ -59,12 +59,12 @@ the_err_buf_t *the_error_buf_increase (the_err_state_t *state) {
   return state->buf_last;
 }
 
-void the_error_stack_pop (the_err_state_t *state) {
-  the_err_stack_t *stack = state->stack_last;
+void d4_error_stack_pop (d4_err_state_t *state) {
+  d4_err_stack_t *stack = state->stack_last;
   bool was_last = state->stack_last == state->stack_first;
 
   state->stack_last = stack->prev;
-  the_safe_free(stack);
+  d4_safe_free(stack);
 
   if (was_last) {
     state->stack_first = NULL;
@@ -72,11 +72,11 @@ void the_error_stack_pop (the_err_state_t *state) {
   }
 }
 
-void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wchar_t *name, int line, int col) {
-  the_err_stack_t *stack;
+void d4_error_stack_push (d4_err_state_t *state, const wchar_t *file, const wchar_t *name, int line, int col) {
+  d4_err_stack_t *stack;
   if (line != 0) state->stack_last->line = line;
   if (col != 0) state->stack_last->col = col;
-  stack = the_safe_alloc(sizeof(the_err_stack_t));
+  stack = d4_safe_alloc(sizeof(d4_err_stack_t));
   stack->file = file;
   stack->name = name;
   stack->line = 0;
@@ -88,24 +88,24 @@ void the_error_stack_push (the_err_state_t *state, const wchar_t *file, const wc
   state->stack_last = stack;
 }
 
-void the_error_stack_str (the_err_state_t *state, the_str_t *err, size_t max_len) {
-  for (the_err_stack_t *it = state->stack_last; it != NULL; it = it->prev) {
+void d4_error_stack_str (d4_err_state_t *state, d4_str_t *err, size_t max_len) {
+  for (d4_err_stack_t *it = state->stack_last; it != NULL; it = it->prev) {
     wchar_t *fmt;
     size_t z;
 
     if (it->col == 0 && it->line == 0) {
-      fmt = THE_EOL L"  at %ls (%ls)";
+      fmt = D4_EOL L"  at %ls (%ls)";
       z = (size_t) snwprintf(fmt, it->name, it->file);
     } else if (it->col == 0) {
-      fmt = THE_EOL L"  at %ls (%ls:%d)";
+      fmt = D4_EOL L"  at %ls (%ls:%d)";
       z = (size_t) snwprintf(fmt, it->name, it->file, it->line);
     } else {
-      fmt = THE_EOL L"  at %ls (%ls:%d:%d)";
+      fmt = D4_EOL L"  at %ls (%ls:%d:%d)";
       z = (size_t) snwprintf(fmt, it->name, it->file, it->line, it->col);
     }
 
     if (max_len == 0) {
-      err->data = the_safe_realloc(err->data, (err->len + z + 1) * sizeof(wchar_t));
+      err->data = d4_safe_realloc(err->data, (err->len + z + 1) * sizeof(wchar_t));
     } else if (err->len + z >= max_len) {
       break; // LCOV_EXCL_LINE
     }
@@ -122,21 +122,21 @@ void the_error_stack_str (the_err_state_t *state, the_str_t *err, size_t max_len
   }
 }
 
-void the_error_unset (the_err_state_t *state) {
+void d4_error_unset (d4_err_state_t *state) {
   state->id = -1;
   state->free_cb = NULL;
 }
 
-the_Error_t *the_Error_alloc (the_str_t message) {
-  the_Error_t *err = the_safe_alloc(sizeof(the_Error_t));
-  err->message = the_str_copy(message);
-  err->stack = the_str_empty_val;
+d4_Error_t *d4_Error_alloc (d4_str_t message) {
+  d4_Error_t *err = d4_safe_alloc(sizeof(d4_Error_t));
+  err->message = d4_str_copy(message);
+  err->stack = d4_str_empty_val;
   return err;
 }
 
-void the_Error_free (void *self) {
-  the_Error_t *err = self;
-  the_str_free(err->message);
-  the_str_free(err->stack);
-  the_safe_free(self);
+void d4_Error_free (void *self) {
+  d4_Error_t *err = self;
+  d4_str_free(err->message);
+  d4_str_free(err->stack);
+  d4_safe_free(self);
 }

@@ -15,7 +15,7 @@ WORKDIR /app
 COPY . .
 
 RUN mkdir -p build
-RUN cmake . -B ./build -G Ninja -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
+RUN cmake . -B ./build -G Ninja -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
 RUN cmake --build build --config Debug
 RUN cmake --install build
 

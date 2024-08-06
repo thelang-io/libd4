@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#ifndef THE_RAND_H
-#define THE_RAND_H
+#ifndef D4_RAND_H
+#define D4_RAND_H
 
 /* See https://www.openssl.org/docs/man3.2/man3/RAND_bytes.html for reference. */
 

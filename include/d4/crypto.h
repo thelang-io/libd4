@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#ifndef THE_CRYPTO_H
-#define THE_CRYPTO_H
+#ifndef D4_CRYPTO_H
+#define D4_CRYPTO_H
 
 /* See https://www.openssl.org/docs/man3.2/man7/crypto.html for reference. */
 

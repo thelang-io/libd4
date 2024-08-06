@@ -43,6 +43,6 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path build
       - if: runner.os != 'Windows'
         run: mkdir -p build
-      - run: cmake . -B ./build -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
+      - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
       - run: cmake --build build --config Debug
       - run: ${{ matrix.config['install-prefix'] }} cmake --install build

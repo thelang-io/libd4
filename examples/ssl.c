@@ -3,14 +3,14 @@
  * Licensed under the MIT License
  */
 
-#include <the/macro.h>
-#include <the/ssl.h>
+#include <d4/macro.h>
+#include <d4/ssl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <wchar.h>
 
-#if defined(THE_OS_WINDOWS)
+#if defined(D4_OS_WINDOWS)
   #include <winsock2.h>
   #include <ws2tcpip.h>
   #include <windows.h>
@@ -21,7 +21,7 @@
   #include <unistd.h>
 #endif
 
-#if !defined(THE_OS_WINDOWS)
+#if !defined(D4_OS_WINDOWS)
   #define INVALID_SOCKET (-1)
   #define SOCKET_ERROR (-1)
 #endif
@@ -38,7 +38,7 @@ int main (void) {
   SSL_CTX *ctx = NULL;
   SSL *ssl = NULL;
 
-  #if defined(THE_OS_WINDOWS)
+  #if defined(D4_OS_WINDOWS)
     WSADATA w;
 
     if (WSAStartup(MAKEWORD(2, 2), &w) != 0) {
@@ -101,7 +101,7 @@ L4:
   SSL_free(ssl);
   SSL_CTX_free(ctx);
 L3:
-  #if defined(THE_OS_WINDOWS)
+  #if defined(D4_OS_WINDOWS)
     closesocket(fd);
   #else
     close(fd);

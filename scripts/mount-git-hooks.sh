@@ -11,7 +11,7 @@ cat > .git/hooks/pre-commit << EOF
 #!/usr/bin/env bash
 
 mkdir -p build
-cmake . -B ./build -DLIBTHE_BUILD_EXAMPLES=ON -DLIBTHE_BUILD_TESTS=ON
+cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
 cmake --build build --config Debug
 cmake --install build
 ctest --output-on-failure --test-dir build

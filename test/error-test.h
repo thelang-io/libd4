@@ -13,22 +13,22 @@
 #define TYPE_CustomError 1
 
 typedef struct {
-  the_str_t message;
-  the_str_t stack;
+  d4_str_t message;
+  d4_str_t stack;
 } CustomError_t;
 
-static CustomError_t *the_CustomError_alloc (the_str_t message) {
-  CustomError_t *err = the_safe_alloc(sizeof(CustomError_t));
-  err->message = the_str_copy(message);
-  err->stack = the_str_empty_val;
+static CustomError_t *d4_CustomError_alloc (d4_str_t message) {
+  CustomError_t *err = d4_safe_alloc(sizeof(CustomError_t));
+  err->message = d4_str_copy(message);
+  err->stack = d4_str_empty_val;
   return err;
 }
 
-static void the_CustomError_free (void *self) {
+static void d4_CustomError_free (void *self) {
   CustomError_t *err = self;
-  the_str_free(err->message);
-  the_str_free(err->stack);
-  the_safe_free(self);
+  d4_str_free(err->message);
+  d4_str_free(err->stack);
+  d4_safe_free(self);
 }
 
 #endif

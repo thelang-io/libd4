@@ -6,15 +6,15 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(
-  libthe
-  VERSION 0.1.0
+  libd4
+  VERSION 0.2.0
   LANGUAGES C
-  DESCRIPTION "Collection of utilities for core of The programming language."
+  DESCRIPTION "A library specifically designed for The programming language"
 )
 
-option(LIBTHE_BUILD_EXAMPLES "Build example programs" OFF)
-option(LIBTHE_BUILD_TESTS "Build test programs" OFF)
-option(LIBTHE_COVERAGE "Build programs with support for coverage" OFF)
+option(LIBD4_BUILD_EXAMPLES "Build example programs" OFF)
+option(LIBD4_BUILD_TESTS "Build test programs" OFF)
+option(LIBD4_COVERAGE "Build programs with support for coverage" OFF)
 
 include(cmake/Policies.cmake)
 set_policies()
@@ -39,9 +39,9 @@ set(
   src/string.c
 )
 
-add_library(the ${sources})
-target_include_directories(the PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(the PUBLIC ${THE_LIBRARIES})
+add_library(d4 ${sources})
+target_include_directories(d4 PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+target_link_libraries(d4 PUBLIC ${LIBD4_LIBRARIES})
 
 include(cmake/Install.cmake)
 include(cmake/Examples.cmake)

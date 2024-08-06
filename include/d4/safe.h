@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#ifndef THE_SAFE_H
-#define THE_SAFE_H
+#ifndef D4_SAFE_H
+#define D4_SAFE_H
 
-/* See https://github.com/thelang-io/helpers for reference. */
+/* See https://github.com/thelang-io/libd4 for reference. */
 
 #include <stddef.h>
 
@@ -15,7 +15,7 @@
  * @param size Amount of bytes to allocate.
  * @return Pointer to address in memory where allocated bytes reside.
  */
-void *the_safe_alloc (size_t size);
+void *d4_safe_alloc (size_t size);
 
 /**
  * Safely allocates X amount of bytes and copies pointer. Sets the error in case allocation fails.
@@ -23,20 +23,21 @@ void *the_safe_alloc (size_t size);
  * @param size Size of the pointer.
  * @return Pointer to address in memory where allocated bytes reside.
  */
-void *the_safe_calloc (const void *ptr, size_t size);
+void *d4_safe_calloc (const void *ptr, size_t size);
 
 /**
  * Safely deallocates pointer.
  * @param self Pointer to deallocate.
  */
-void the_safe_free (void *self);
+void d4_safe_free (void *self);
 
 /**
  * Safely reallocates pointer with X amount of bytes. Sets the error in case reallocation fails.
+ * @param self Pointer to reallocate.
  * @param size Amount of bytes to reallocate.
  * @return Pointer to address in memory where reallocated bytes reside.
  */
-void *the_safe_realloc (void *self, size_t size);
+void *d4_safe_realloc (void *self, size_t size);
 
 /**
  * Safely swaps two pointers.
@@ -44,6 +45,6 @@ void *the_safe_realloc (void *self, size_t size);
  * @param b Second pointer to make a swap for.
  * @param size Size of pointer `a`. Both pointers `a` and `b` should have same size.
  */
-void the_safe_swap (void *a, void *b, size_t size);
+void d4_safe_swap (void *a, void *b, size_t size);
 
 #endif

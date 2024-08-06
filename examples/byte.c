@@ -3,18 +3,18 @@
  * Licensed under the MIT License
  */
 
-#include <the/byte.h>
-#include <the/string.h>
+#include <d4/byte.h>
+#include <d4/string.h>
 
 int main (void) {
-  the_str_t a_str = the_byte_str(0x0);
-  the_str_t b_str = the_byte_str(0xFF);
+  d4_str_t a_str = d4_byte_str(0x0);
+  d4_str_t b_str = d4_byte_str(0xFF);
 
   wprintf(L"0x00 as string = %ls\n", a_str.data);
   wprintf(L"0xFF as string = %ls\n", b_str.data);
 
-  the_str_free(b_str);
-  the_str_free(a_str);
+  d4_str_free(b_str);
+  d4_str_free(a_str);
 
   return 0;
 }

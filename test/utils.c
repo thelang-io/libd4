@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <the/safe.h>
-#include <the/string.h>
+#include <d4/safe.h>
+#include <d4/string.h>
 #include "utils.h"
 
 static int unicode_len (unsigned char code) {
@@ -31,7 +31,7 @@ static unsigned char unicode_mask (unsigned char code) {
   }
 }
 
-the_str_t read_unicode_file (const char *path) {
+d4_str_t read_unicode_file (const char *path) {
   FILE *f = fopen(path, "rb");
   char *buf = NULL;
   size_t buf_len;
@@ -42,16 +42,16 @@ the_str_t read_unicode_file (const char *path) {
     fseek(f, 0, SEEK_END);
     buf_len = ftell(f);
     fseek(f, 0, SEEK_SET);
-    buf = the_safe_alloc(buf_len);
+    buf = d4_safe_alloc(buf_len);
     fread(buf, 1, buf_len, f);
     fclose(f);
   }
 
   if (buf == NULL) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
-  data = the_safe_alloc((buf_len + 1) * sizeof(wchar_t));
+  data = d4_safe_alloc((buf_len + 1) * sizeof(wchar_t));
 
   for (size_t i = 0; i < buf_len; len++) {
     unsigned char code = buf[i++];
@@ -64,5 +64,5 @@ the_str_t read_unicode_file (const char *path) {
   }
 
   data[len] = L'\0';
-  return (the_str_t) {data, len, false};
+  return (d4_str_t) {data, len, false};
 }

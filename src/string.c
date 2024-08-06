@@ -4,16 +4,16 @@
  */
 
 #include "string.h"
-#include <the/array.h>
-#include <the/macro.h>
+#include <d4/array.h>
+#include <d4/macro.h>
 #include <ctype.h>
 #include <float.h>
 #include <limits.h>
 #include <string.h>
 
-THE_ARRAY_DEFINE(str, the_str_t, the_str_t, the_str_copy(element), the_str_eq(lhs_element, rhs_element), the_str_free(element), the_str_copy(element))
+D4_ARRAY_DEFINE(str, d4_str_t, d4_str_t, d4_str_copy(element), d4_str_eq(lhs_element, rhs_element), d4_str_free(element), d4_str_copy(element))
 
-the_str_t the_str_empty_val = {NULL, 0, false};
+d4_str_t d4_str_empty_val = {NULL, 0, false};
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
@@ -28,7 +28,7 @@ int snwprintf (const wchar_t *fmt, ...) {
 
 int vsnwprintf (const wchar_t *fmt, va_list args) {
   unsigned long long buf_size = 1024;
-  wchar_t *buffer = the_safe_alloc(buf_size * sizeof(wchar_t));
+  wchar_t *buffer = d4_safe_alloc(buf_size * sizeof(wchar_t));
   int fmt_size = -1;
   va_list args_copy;
   int y;
@@ -44,65 +44,65 @@ int vsnwprintf (const wchar_t *fmt, va_list args) {
     }
 
     buf_size *= 2;
-    buffer = the_safe_realloc(buffer, buf_size * sizeof(wchar_t));
+    buffer = d4_safe_realloc(buffer, buf_size * sizeof(wchar_t));
   }
 
-  the_safe_free(buffer);
+  d4_safe_free(buffer);
   return fmt_size;
 }
 
-the_str_t the_str_alloc (const wchar_t *fmt, ...) {
+d4_str_t d4_str_alloc (const wchar_t *fmt, ...) {
   wchar_t *d;
   size_t l;
   va_list args;
 
   if (fmt == NULL) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
   va_start(args, fmt);
   l = (size_t) vsnwprintf(fmt, args);
-  d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+  d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
   vswprintf(d, l + 1, fmt, args);
   va_end(args);
 
-  return (the_str_t) {d, l, false};
+  return (d4_str_t) {d, l, false};
 }
 
-the_str_t the_str_calloc (const wchar_t *self, size_t length) {
+d4_str_t d4_str_calloc (const wchar_t *self, size_t length) {
   wchar_t *d;
 
   if (length == 0) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
-  d = the_safe_alloc((length + 1) * sizeof(wchar_t));
+  d = d4_safe_alloc((length + 1) * sizeof(wchar_t));
   wmemcpy(d, self, length);
   d[length] = L'\0';
-  return (the_str_t) {d, length, false};
+  return (d4_str_t) {d, length, false};
 }
 
-wchar_t *the_str_at (the_err_state_t *state, int line, int col, const the_str_t self, int32_t index) {
+wchar_t *d4_str_at (d4_err_state_t *state, int line, int col, const d4_str_t self, int32_t index) {
   if ((index >= 0 && (size_t) index >= self.len) || (index < 0 && index < -((int32_t) self.len))) {
-    the_str_t message = the_str_alloc(L"index %" PRId32 L" out of string bounds", index);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"index %" PRId32 L" out of string bounds", index);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
   return index < 0 ? &self.data[self.len + (size_t) index] : &self.data[index];
 }
 
-the_str_t the_str_concat (const the_str_t self, const the_str_t other) {
+d4_str_t d4_str_concat (const d4_str_t self, const d4_str_t other) {
   size_t l = self.len + other.len;
-  wchar_t *d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+  wchar_t *d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
   wmemcpy(d, self.data, self.len);
   wmemcpy(&d[self.len], other.data, other.len);
   d[l] = L'\0';
-  return (the_str_t) {d, l, false};
+  return (d4_str_t) {d, l, false};
 }
 
-bool the_str_contains (const the_str_t self, const the_str_t search) {
+bool d4_str_contains (const d4_str_t self, const d4_str_t search) {
   if (self.len == search.len) {
     return memcmp(self.data, search.data, self.len * sizeof(wchar_t)) >= 0;
   } else if (self.len > 0 && self.len > search.len) {
@@ -116,23 +116,23 @@ bool the_str_contains (const the_str_t self, const the_str_t search) {
   return false;
 }
 
-the_str_t the_str_copy (const the_str_t self) {
-  wchar_t *d = the_safe_alloc((self.len + 1) * sizeof(wchar_t));
+d4_str_t d4_str_copy (const d4_str_t self) {
+  wchar_t *d = d4_safe_alloc((self.len + 1) * sizeof(wchar_t));
   wmemcpy(d, self.data, self.len);
   d[self.len] = L'\0';
-  return (the_str_t) {d, self.len, false};
+  return (d4_str_t) {d, self.len, false};
 }
 
-bool the_str_empty (const the_str_t self) {
+bool d4_str_empty (const d4_str_t self) {
   return self.len == 0;
 }
 
-bool the_str_eq (const the_str_t self, const the_str_t rhs) {
+bool d4_str_eq (const d4_str_t self, const d4_str_t rhs) {
   return self.len == rhs.len && memcmp(self.data, rhs.data, self.len * sizeof(wchar_t)) == 0;
 }
 
-the_str_t the_str_escape (const the_str_t self) {
-  wchar_t *d = the_safe_alloc((self.len + 1) * sizeof(wchar_t));
+d4_str_t d4_str_escape (const d4_str_t self) {
+  wchar_t *d = d4_safe_alloc((self.len + 1) * sizeof(wchar_t));
   size_t l = 0;
 
   for (size_t i = 0; i < self.len; i++) {
@@ -140,7 +140,7 @@ the_str_t the_str_escape (const the_str_t self) {
 
     if (c == L'\f' || c == L'\n' || c == L'\r' || c == L'\t' || c == L'\v' || c == L'"') {
       if (l + 3 > self.len) {
-        d = the_safe_realloc(d, (l + 3) * sizeof(wchar_t));
+        d = d4_safe_realloc(d, (l + 3) * sizeof(wchar_t));
       }
 
       d[l++] = L'\\';
@@ -156,17 +156,17 @@ the_str_t the_str_escape (const the_str_t self) {
     }
 
     if (l + 2 > self.len) {
-      d = the_safe_realloc(d, (l + 2) * sizeof(wchar_t));
+      d = d4_safe_realloc(d, (l + 2) * sizeof(wchar_t));
     }
 
     d[l++] = c;
   }
 
   d[l] = L'\0';
-  return (the_str_t) {d, l, false};
+  return (d4_str_t) {d, l, false};
 }
 
-int32_t the_str_find (const the_str_t self, const the_str_t search) {
+int32_t d4_str_find (const d4_str_t self, const d4_str_t search) {
   if (search.len == 0) {
     return 0;
   }
@@ -180,58 +180,58 @@ int32_t the_str_find (const the_str_t self, const the_str_t search) {
   return -1;
 }
 
-void the_str_free (the_str_t self) {
-  if (!self.is_static) the_safe_free(self.data);
+void d4_str_free (d4_str_t self) {
+  if (!self.is_static) d4_safe_free(self.data);
 }
 
-bool the_str_ge (const the_str_t self, const the_str_t rhs) {
+bool d4_str_ge (const d4_str_t self, const d4_str_t rhs) {
   return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) >= 0;
 }
 
-bool the_str_gt (const the_str_t self, const the_str_t rhs) {
+bool d4_str_gt (const d4_str_t self, const d4_str_t rhs) {
   return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) > 0;
 }
 
-bool the_str_le (const the_str_t self, const the_str_t rhs) {
+bool d4_str_le (const d4_str_t self, const d4_str_t rhs) {
   return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) <= 0;
 }
 
-bool the_str_lt (const the_str_t self, const the_str_t rhs) {
+bool d4_str_lt (const d4_str_t self, const d4_str_t rhs) {
   return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) < 0;
 }
 
-the_str_t the_str_quoted_escape (the_str_t self) {
-  the_str_t q = (the_str_t) {L"\"", 1, true};
-  the_str_t escaped = the_str_escape(self);
-  the_str_t left_result = the_str_concat(q, escaped);
-  the_str_t result = the_str_concat(left_result, q);
+d4_str_t d4_str_quoted_escape (d4_str_t self) {
+  d4_str_t q = (d4_str_t) {L"\"", 1, true};
+  d4_str_t escaped = d4_str_escape(self);
+  d4_str_t left_result = d4_str_concat(q, escaped);
+  d4_str_t result = d4_str_concat(left_result, q);
 
-  the_str_free(escaped);
-  the_str_free(left_result);
+  d4_str_free(escaped);
+  d4_str_free(left_result);
 
   return result;
 }
 
-the_str_t the_str_realloc (the_str_t self, const the_str_t rhs) {
+d4_str_t d4_str_realloc (d4_str_t self, const d4_str_t rhs) {
   if (self.len == 0) {
-    self.data = the_safe_alloc((rhs.len + 1) * sizeof(wchar_t));
+    self.data = d4_safe_alloc((rhs.len + 1) * sizeof(wchar_t));
   } else {
-    self.data = the_safe_realloc(self.data, (rhs.len + 1) * sizeof(wchar_t));
+    self.data = d4_safe_realloc(self.data, (rhs.len + 1) * sizeof(wchar_t));
   }
 
   wmemcpy(self.data, rhs.data, rhs.len);
   self.data[rhs.len] = L'\0';
-  return (the_str_t) {self.data, rhs.len, false};
+  return (d4_str_t) {self.data, rhs.len, false};
 }
 
-the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLineBreaks) {
+d4_arr_str_t d4_str_lines (const d4_str_t self, unsigned char o1, bool keepLineBreaks) {
   bool k = o1 == 0 ? false : keepLineBreaks;
-  the_str_t *result = NULL;
+  d4_str_t *result = NULL;
   size_t len = 0;
   size_t start = 0;
 
   if (self.len != 0) {
-    return (the_arr_str_t) {NULL, 0};
+    return (d4_arr_str_t) {NULL, 0};
   }
 
   for (size_t j = 0; j < self.len; j++) {
@@ -244,23 +244,23 @@ the_arr_str_t the_str_lines (const the_str_t self, unsigned char o1, bool keepLi
         j++;
       }
 
-      result = the_safe_realloc(result, ++len * sizeof(the_str_t));
-      result[len - 1] = the_str_calloc(&self.data[start], (k ? j + 1 : beforeLineBreak) - start);
+      result = d4_safe_realloc(result, ++len * sizeof(d4_str_t));
+      result[len - 1] = d4_str_calloc(&self.data[start], (k ? j + 1 : beforeLineBreak) - start);
 
       start = j + 1;
     }
   }
 
   if (start != self.len) {
-    result = the_safe_realloc(result, ++len * sizeof(the_str_t));
-    result[len - 1] = the_str_calloc(&self.data[start], self.len - start);
+    result = d4_safe_realloc(result, ++len * sizeof(d4_str_t));
+    result[len - 1] = d4_str_calloc(&self.data[start], self.len - start);
   }
 
-  return (the_arr_str_t) {result, len};
+  return (d4_arr_str_t) {result, len};
 }
 
-the_str_t the_str_lower (const the_str_t self) {
-  the_str_t d = the_str_copy(self);
+d4_str_t d4_str_lower (const d4_str_t self) {
+  d4_str_t d = d4_str_copy(self);
 
   if (self.len == 0) {
     return d;
@@ -273,8 +273,8 @@ the_str_t the_str_lower (const the_str_t self) {
   return d;
 }
 
-the_str_t the_str_lowerFirst (const the_str_t self) {
-  the_str_t d = the_str_copy(self);
+d4_str_t d4_str_lowerFirst (const d4_str_t self) {
+  d4_str_t d = d4_str_copy(self);
 
   if (self.len == 0) {
     return d;
@@ -284,11 +284,11 @@ the_str_t the_str_lowerFirst (const the_str_t self) {
   return d;
 }
 
-bool the_str_not (const the_str_t self) {
+bool d4_str_not (const d4_str_t self) {
   return self.len == 0;
 }
 
-the_str_t the_str_replace (const the_str_t self, const the_str_t search, const the_str_t replacement, THE_UNUSED unsigned char o3, int32_t count) {
+d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_str_t replacement, D4_UNUSED unsigned char o3, int32_t count) {
   size_t l = 0;
   wchar_t *d = NULL;
   int32_t k = 0;
@@ -296,7 +296,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
 
   if (search.len == 0 && replacement.len > 0) {
     l = self.len + (count > 0 && (size_t) count <= self.len ? (size_t) count : self.len + 1) * replacement.len;
-    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+    d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
     wmemcpy(d, replacement.data, replacement.len);
     j = replacement.len;
 
@@ -311,15 +311,15 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
   } else if (self.len == search.len && search.len > 0) {
     if (memcmp(self.data, search.data, search.len * sizeof(wchar_t)) != 0) {
       l = self.len;
-      d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+      d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
       wmemcpy(d, self.data, l);
     } else if (replacement.len > 0) {
       l = replacement.len;
-      d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+      d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
       wmemcpy(d, replacement.data, l);
     }
   } else if (self.len > search.len && search.len > 0 && replacement.len == 0) {
-    d = the_safe_alloc((self.len + 1) * sizeof(wchar_t));
+    d = d4_safe_alloc((self.len + 1) * sizeof(wchar_t));
 
     for (size_t i = 0; i < self.len; i++) {
       if (
@@ -334,14 +334,14 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
     }
 
     if (l == 0) {
-      the_safe_free(d);
+      d4_safe_free(d);
       d = NULL;
     } else if (l != self.len) {
-      d = the_safe_realloc(d, (l + 1) * sizeof(wchar_t));
+      d = d4_safe_realloc(d, (l + 1) * sizeof(wchar_t));
     }
   } else if (self.len > search.len && search.len > 0 && replacement.len > 0) {
     l = self.len;
-    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+    d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
 
     for (size_t i = 0; i < self.len; i++) {
       if (
@@ -353,7 +353,7 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
           l += replacement.len - search.len;
 
           if (l > self.len) {
-            d = the_safe_realloc(d, (l + 1) * sizeof(wchar_t));
+            d = d4_safe_realloc(d, (l + 1) * sizeof(wchar_t));
           }
         } else if (search.len > replacement.len) {
           l -= search.len - replacement.len;
@@ -367,10 +367,10 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
       }
     }
 
-    d = the_safe_realloc(d, (l + 1) * sizeof(wchar_t));
+    d = d4_safe_realloc(d, (l + 1) * sizeof(wchar_t));
   } else if (self.len > 0) {
     l = self.len;
-    d = the_safe_alloc((l + 1) * sizeof(wchar_t));
+    d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
     wmemcpy(d, self.data, l);
   }
 
@@ -378,10 +378,10 @@ the_str_t the_str_replace (const the_str_t self, const the_str_t search, const t
     d[l] = '\0';
   }
 
-  return (the_str_t) {d, l, false};
+  return (d4_str_t) {d, l, false};
 }
 
-the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, unsigned char o2, int32_t end) {
+d4_str_t d4_str_slice (const d4_str_t self, unsigned char o1, int32_t start, unsigned char o2, int32_t end) {
   int32_t i = 0;
   int32_t j = 0;
   size_t l;
@@ -401,47 +401,47 @@ the_str_t the_str_slice (const the_str_t self, unsigned char o1, int32_t start, 
   }
 
   if (i >= j || (size_t) i >= self.len) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
   l = (size_t) (j - i);
-  return the_str_calloc(&self.data[i], l);
+  return d4_str_calloc(&self.data[i], l);
 }
 
-the_arr_str_t the_str_split (const the_str_t self, THE_UNUSED unsigned char o1, const the_str_t delimiter) {
-  the_str_t *r = NULL;
+d4_arr_str_t d4_str_split (const d4_str_t self, D4_UNUSED unsigned char o1, const d4_str_t delimiter) {
+  d4_str_t *r = NULL;
   size_t l = 0;
 
   if (self.len > 0 && delimiter.len == 0) {
     l = self.len;
-    r = the_safe_alloc(l * sizeof(the_str_t));
+    r = d4_safe_alloc(l * sizeof(d4_str_t));
 
     for (size_t i = 0; i < l; i++) {
-      r[i] = the_str_calloc(&self.data[i], 1);
+      r[i] = d4_str_calloc(&self.data[i], 1);
     }
   } else if (self.len < delimiter.len) {
-    r = the_safe_realloc(r, ++l * sizeof(the_str_t));
-    r[0] = the_str_calloc(self.data, self.len);
+    r = d4_safe_realloc(r, ++l * sizeof(d4_str_t));
+    r[0] = d4_str_calloc(self.data, self.len);
   } else if (delimiter.len > 0) {
     size_t i = 0;
 
     for (size_t j = 0; j <= self.len - delimiter.len; j++) {
       if (memcmp(&self.data[j], delimiter.data, delimiter.len * sizeof(wchar_t)) == 0) {
-        r = the_safe_realloc(r, ++l * sizeof(the_str_t));
-        r[l - 1] = the_str_calloc(&self.data[i], j - i);
+        r = d4_safe_realloc(r, ++l * sizeof(d4_str_t));
+        r[l - 1] = d4_str_calloc(&self.data[i], j - i);
         j += delimiter.len;
         i = j;
       }
     }
 
-    r = the_safe_realloc(r, ++l * sizeof(the_str_t));
-    r[l - 1] = the_str_calloc(&self.data[i], self.len - i);
+    r = d4_safe_realloc(r, ++l * sizeof(d4_str_t));
+    r[l - 1] = d4_str_calloc(&self.data[i], self.len - i);
   }
 
-  return (the_arr_str_t) {r, l};
+  return (d4_arr_str_t) {r, l};
 }
 
-double the_str_toFloat (the_err_state_t *state, int line, int col, const the_str_t self) {
+double d4_str_toFloat (d4_err_state_t *state, int line, int col, const d4_str_t self) {
   wchar_t *e = NULL;
   double r;
 
@@ -449,20 +449,20 @@ double the_str_toFloat (the_err_state_t *state, int line, int col, const the_str
   r = wcstod(self.data, &e);
 
   if (errno == ERANGE || r < -DBL_MAX || DBL_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return r;
 }
 
-float the_str_toF32 (the_err_state_t *state, int line, int col, const the_str_t self) {
+float d4_str_toF32 (d4_err_state_t *state, int line, int col, const d4_str_t self) {
   wchar_t *e = NULL;
   float r;
 
@@ -470,20 +470,20 @@ float the_str_toF32 (the_err_state_t *state, int line, int col, const the_str_t 
   r = wcstof(self.data, &e);
 
   if (errno == ERANGE || r < -FLT_MAX || FLT_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return r;
 }
 
-double the_str_toF64 (the_err_state_t *state, int line, int col, const the_str_t self) {
+double d4_str_toF64 (d4_err_state_t *state, int line, int col, const d4_str_t self) {
   wchar_t *e = NULL;
   double r;
 
@@ -491,27 +491,27 @@ double the_str_toF64 (the_err_state_t *state, int line, int col, const the_str_t
   r = wcstod(self.data, &e);
 
   if (errno == ERANGE || r < -DBL_MAX || DBL_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return r;
 }
 
-ptrdiff_t the_str_toIsize (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+ptrdiff_t d4_str_toIsize (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -519,27 +519,27 @@ ptrdiff_t the_str_toIsize (the_err_state_t *state, int line, int col, const the_
   r = wcstoll(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < PTRDIFF_MIN || PTRDIFF_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (ptrdiff_t) r;
 }
 
-int8_t the_str_toI8 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+int8_t d4_str_toI8 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -547,27 +547,27 @@ int8_t the_str_toI8 (the_err_state_t *state, int line, int col, const the_str_t 
   r = wcstol(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT8_MIN || INT8_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (int8_t) r;
 }
 
-int16_t the_str_toI16 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+int16_t d4_str_toI16 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -575,27 +575,27 @@ int16_t the_str_toI16 (the_err_state_t *state, int line, int col, const the_str_
   r = wcstol(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT16_MIN || INT16_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (int16_t) r;
 }
 
-int32_t the_str_toI32 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+int32_t d4_str_toI32 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -603,27 +603,27 @@ int32_t the_str_toI32 (the_err_state_t *state, int line, int col, const the_str_
   r = wcstol(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT32_MIN || INT32_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (int32_t) r;
 }
 
-int64_t the_str_toI64 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+int64_t d4_str_toI64 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -631,27 +631,27 @@ int64_t the_str_toI64 (the_err_state_t *state, int line, int col, const the_str_
   r = wcstoll(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || r < INT64_MIN || INT64_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0) {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (int64_t) r;
 }
 
-size_t the_str_toUsize (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+size_t d4_str_toUsize (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   unsigned long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -659,27 +659,27 @@ size_t the_str_toUsize (the_err_state_t *state, int line, int col, const the_str
   r = wcstoull(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || SIZE_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (size_t) r;
 }
 
-uint8_t the_str_toU8 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {\
+uint8_t d4_str_toU8 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {\
   wchar_t *e = NULL;
   unsigned long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -687,27 +687,27 @@ uint8_t the_str_toU8 (the_err_state_t *state, int line, int col, const the_str_t
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT8_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (uint8_t) r;
 }
 
-uint16_t the_str_toU16 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+uint16_t d4_str_toU16 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   unsigned long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -715,27 +715,27 @@ uint16_t the_str_toU16 (the_err_state_t *state, int line, int col, const the_str
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT16_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (uint16_t) r;
 }
 
-uint32_t the_str_toU32 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+uint32_t d4_str_toU32 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   unsigned long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -743,27 +743,27 @@ uint32_t the_str_toU32 (the_err_state_t *state, int line, int col, const the_str
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT32_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (uint32_t) r;
 }
 
-uint64_t the_str_toU64 (the_err_state_t *state, int line, int col, const the_str_t self, unsigned char o1, int32_t radix) {
+uint64_t d4_str_toU64 (d4_err_state_t *state, int line, int col, const d4_str_t self, unsigned char o1, int32_t radix) {
   wchar_t *e = NULL;
   unsigned long long r;
 
   if (o1 == 1 && (radix < 2 || radix > 36) && radix != 0) {
-    the_str_t message = the_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"radix %" PRId32 L" is invalid, must be >= 2 and <= 36, or 0", radix);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
     longjmp(state->buf_last->buf, state->id);
   }
 
@@ -771,20 +771,20 @@ uint64_t the_str_toU64 (the_err_state_t *state, int line, int col, const the_str
   r = wcstoull(self.data, &e, o1 == 0 ? 10 : radix);
 
   if (errno == ERANGE || UINT64_MAX < r) {
-    the_str_t message = the_str_alloc(L"value `%ls` out of range", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
-    the_str_t message = the_str_alloc(L"value `%ls` has invalid syntax", self.data);
-    the_error_assign_generic(state, line, col, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
+    d4_error_assign_generic(state, line, col, message);
+    d4_str_free(message);
   }
 
   if (state->id != -1) longjmp(state->buf_last->buf, state->id);
   return (uint64_t) r;
 }
 
-the_str_t the_str_trim (const the_str_t self) {
+d4_str_t d4_str_trim (const d4_str_t self) {
   size_t i = 0;
   size_t j = self.len;
   size_t l;
@@ -803,14 +803,14 @@ the_str_t the_str_trim (const the_str_t self) {
   }
 
   if (i >= j) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
   l = j - i;
-  return the_str_calloc(&self.data[i], l);
+  return d4_str_calloc(&self.data[i], l);
 }
 
-the_str_t the_str_trimEnd (const the_str_t self) {
+d4_str_t d4_str_trimEnd (const d4_str_t self) {
   size_t l = self.len;
   if (self.len == 0) return self;
 
@@ -818,14 +818,14 @@ the_str_t the_str_trimEnd (const the_str_t self) {
     l--;
 
     if (l == 0) {
-      return the_str_empty_val;
+      return d4_str_empty_val;
     }
   }
 
-  return the_str_calloc(self.data, l);
+  return d4_str_calloc(self.data, l);
 }
 
-the_str_t the_str_trimStart (const the_str_t self) {
+d4_str_t d4_str_trimStart (const d4_str_t self) {
   size_t i = 0;
   size_t l;
 
@@ -838,15 +838,15 @@ the_str_t the_str_trimStart (const the_str_t self) {
   }
 
   if (i >= self.len) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
   l = self.len - i;
-  return the_str_calloc(&self.data[i], l);
+  return d4_str_calloc(&self.data[i], l);
 }
 
-the_str_t the_str_upper (const the_str_t self) {
-  the_str_t d = the_str_copy(self);
+d4_str_t d4_str_upper (const d4_str_t self) {
+  d4_str_t d = d4_str_copy(self);
 
   if (self.len == 0) {
     return d;
@@ -859,8 +859,8 @@ the_str_t the_str_upper (const the_str_t self) {
   return d;
 }
 
-the_str_t the_str_upperFirst (const the_str_t self) {
-  the_str_t d = the_str_copy(self);
+d4_str_t d4_str_upperFirst (const d4_str_t self) {
+  d4_str_t d = d4_str_copy(self);
 
   if (self.len == 0) {
     return d;

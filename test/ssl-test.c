@@ -3,15 +3,15 @@
  * Licensed under the MIT License
  */
 
-#include <the/macro.h>
-#include <the/safe.h>
-#include <the/ssl.h>
+#include <d4/macro.h>
+#include <d4/safe.h>
+#include <d4/ssl.h>
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include "../src/string.h"
 
-#if defined(THE_OS_WINDOWS)
+#if defined(D4_OS_WINDOWS)
   #include <winsock2.h>
   #include <ws2tcpip.h>
   #include <windows.h>
@@ -22,12 +22,12 @@
   #include <unistd.h>
 #endif
 
-#if !defined(THE_OS_WINDOWS)
+#if !defined(D4_OS_WINDOWS)
   #define INVALID_SOCKET (-1)
   #define SOCKET_ERROR (-1)
 #endif
 
-static the_str_t request (char *hostname, const char *request, size_t request_len) {
+static d4_str_t request (char *hostname, const char *request, size_t request_len) {
   struct addrinfo *addr = NULL;
   struct addrinfo hints;
   int fd;
@@ -36,9 +36,9 @@ static the_str_t request (char *hostname, const char *request, size_t request_le
   char *buf = NULL;
   int read_bytes;
   wchar_t *wide_buf;
-  the_str_t result;
+  d4_str_t result;
 
-  #if defined(THE_OS_WINDOWS)
+  #if defined(D4_OS_WINDOWS)
     WSADATA w;
 
     if (WSAStartup(MAKEWORD(2, 2), &w) != 0) {
@@ -90,11 +90,11 @@ static the_str_t request (char *hostname, const char *request, size_t request_le
   SSL_write(ssl, request, (int) request_len);
   SSL_shutdown(ssl);
 
-  buf = the_safe_alloc(1024);
+  buf = d4_safe_alloc(1024);
 
   if ((read_bytes = SSL_read(ssl, buf, 1024)) < 0) {
     fwprintf(stderr, L"Failed to read from socket with SSL.\n");
-    the_safe_free(buf);
+    d4_safe_free(buf);
     buf = NULL;
     goto L4;
   }
@@ -103,7 +103,7 @@ L4:
   SSL_free(ssl);
   SSL_CTX_free(ctx);
 L3:
-  #if defined(THE_OS_WINDOWS)
+  #if defined(D4_OS_WINDOWS)
     closesocket(fd);
   #else
     close(fd);
@@ -113,25 +113,25 @@ L2:
 L1:
 
   if (buf == NULL) {
-    return the_str_empty_val;
+    return d4_str_empty_val;
   }
 
-  wide_buf = the_safe_alloc((read_bytes + 1) * sizeof(wchar_t));
+  wide_buf = d4_safe_alloc((read_bytes + 1) * sizeof(wchar_t));
 
   for (int i = 0; i < read_bytes; i++) {
     wide_buf[i] = (wchar_t) buf[i];
   }
 
   wide_buf[read_bytes] = L'\0';
-  result = the_str_alloc(wide_buf);
+  result = d4_str_alloc(wide_buf);
 
-  the_safe_free(buf);
-  the_safe_free(wide_buf);
+  d4_safe_free(buf);
+  d4_safe_free(wide_buf);
 
   return result;
 }
 
-static the_str_t request_data (const the_str_t response) {
+static d4_str_t request_data (const d4_str_t response) {
   size_t data_start = 0;
   size_t data_check_end = response.len > 4 ? response.len - 3 : 0;
 
@@ -146,7 +146,7 @@ static the_str_t request_data (const the_str_t response) {
     }
   }
 
-  return the_str_alloc(&response.data[data_start]);
+  return d4_str_alloc(&response.data[data_start]);
 }
 
 static void test_ssl (void) {
@@ -158,15 +158,15 @@ static void test_ssl (void) {
     "\r\n"
     "field1=value1&field2=value2\r\n";
 
-  the_str_t a = request("ci.thelang.io", template, sizeof(template) / sizeof(template[0]));
-  the_str_t s = request_data(a);
-  the_str_t s_cmp = the_str_alloc(L"field1=value1&field2=value2");
+  d4_str_t a = request("ci.thelang.io", template, sizeof(template) / sizeof(template[0]));
+  d4_str_t s = request_data(a);
+  d4_str_t s_cmp = d4_str_alloc(L"field1=value1&field2=value2");
 
-  assert(((void) "SSL works", the_str_eq(s, s_cmp)));
+  assert(((void) "SSL works", d4_str_eq(s, s_cmp)));
 
-  the_str_free(a);
-  the_str_free(s);
-  the_str_free(s_cmp);
+  d4_str_free(a);
+  d4_str_free(s);
+  d4_str_free(s_cmp);
 }
 
 int main (void) {

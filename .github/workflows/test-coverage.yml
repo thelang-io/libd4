@@ -25,7 +25,7 @@ jobs:
           key: coverage-cmake-openssl-macos-14-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
       - run: brew install lcov
       - run: mkdir -p coverage
-      - run: cmake . -B ./coverage -DLIBTHE_BUILD_TESTS=ON -DLIBTHE_COVERAGE=ON
+      - run: cmake . -B ./coverage -D LIBD4_BUILD_TESTS=ON -D LIBD4_COVERAGE=ON
       - run: cmake --build coverage --config Debug
       - run: ctest --output-on-failure --test-dir coverage
       - run: lcov --capture -d coverage -o coverage/test.info --exclude 'test/*'

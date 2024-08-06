@@ -3,38 +3,38 @@
  * Licensed under the MIT License
  */
 
-#include <the/any.h>
-#include <the/number.h>
-#include <the/string.h>
+#include <d4/any.h>
+#include <d4/number.h>
+#include <d4/string.h>
 
 #define TYPE_u64 1
 
-THE_ANY_DECLARE(u64, uint64_t)
-THE_ANY_DEFINE(TYPE_u64, u64, uint64_t, val, lhs_val == rhs_val, (void) val, the_u64_str(val))
+D4_ANY_DECLARE(u64, uint64_t)
+D4_ANY_DEFINE(TYPE_u64, u64, uint64_t, val, lhs_val == rhs_val, (void) val, d4_u64_str(val))
 
 int main (void) {
-  the_any_t a = the_any_u64_alloc(10);
-  the_any_t b = the_any_u64_alloc(20);
-  the_any_t c = the_any_copy(b);
+  d4_any_t a = d4_any_u64_alloc(10);
+  d4_any_t b = d4_any_u64_alloc(20);
+  d4_any_t c = d4_any_copy(b);
 
-  the_str_t a_str;
-  the_str_t b_str;
+  d4_str_t a_str;
+  d4_str_t b_str;
 
-  a = the_any_realloc(a, b);
+  a = d4_any_realloc(a, b);
 
-  a_str = the_any_str(a);
-  b_str = the_any_str(b);
+  a_str = d4_any_str(a);
+  b_str = d4_any_str(b);
 
-  if (the_any_eq(a, b)) {
+  if (d4_any_eq(a, b)) {
     wprintf(L"a = %ls\n", a_str.data);
   }
 
-  the_str_free(b_str);
-  the_str_free(a_str);
+  d4_str_free(b_str);
+  d4_str_free(a_str);
 
-  the_any_free(c);
-  the_any_free(b);
-  the_any_free(a);
+  d4_any_free(c);
+  d4_any_free(b);
+  d4_any_free(a);
 
   return 0;
 }

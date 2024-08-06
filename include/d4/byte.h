@@ -3,18 +3,18 @@
  * Licensed under the MIT License
  */
 
-#ifndef THE_ENUM_H
-#define THE_ENUM_H
+#ifndef D4_BYTE_H
+#define D4_BYTE_H
 
-/* See https://github.com/thelang-io/helpers for reference. */
+/* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <the/string-type.h>
+#include <d4/string-type.h>
 
 /**
  * Generates string representation of the object.
  * @param self Object to generate string representation for.
  * @return String representation of the object.
  */
-the_str_t the_enum_str (int self);
+d4_str_t d4_byte_str (unsigned char self);
 
 #endif

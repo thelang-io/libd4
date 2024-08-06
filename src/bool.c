@@ -4,8 +4,8 @@
  */
 
 #include "bool.h"
-#include <the/string.h>
+#include <d4/string.h>
 
-the_str_t the_bool_str (bool self) {
-  return the_str_alloc(self ? L"true" : L"false");
+d4_str_t d4_bool_str (bool self) {
+  return d4_str_alloc(self ? L"true" : L"false");
 }

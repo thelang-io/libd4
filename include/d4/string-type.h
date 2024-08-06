@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#ifndef THE_STRING_TYPE_H
-#define THE_STRING_TYPE_H
+#ifndef D4_STRING_TYPE_H
+#define D4_STRING_TYPE_H
 
-/* See https://github.com/thelang-io/helpers for reference. */
+/* See https://github.com/thelang-io/libd4 for reference. */
 
 #include <stdbool.h>
 #include <stddef.h>
@@ -22,6 +22,6 @@ typedef struct {
 
   /** Whether or not string is static. */
   bool is_static;
-} the_str_t;
+} d4_str_t;
 
 #endif

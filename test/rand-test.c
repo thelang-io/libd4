@@ -3,7 +3,7 @@
  * Licensed under the MIT License
  */
 
-#include <the/rand.h>
+#include <d4/rand.h>
 #include <assert.h>
 
 static int rand_int (void) {

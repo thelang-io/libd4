@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <the/error.h>
-#include <the/macro.h>
-#include <the/string.h>
+#include <d4/error.h>
+#include <d4/macro.h>
+#include <d4/string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,59 +14,59 @@ const char GATE[4] = "GATE";
 
 static void pay_debt (int pay_amount, int debt_amount) {
   if (debt_amount != pay_amount) {
-    the_str_t message = the_str_alloc(L"Not enough funds.");
-    the_error_assign_generic(&the_err_state, 10, 10, message);
-    the_str_free(message);
+    d4_str_t message = d4_str_alloc(L"Not enough funds.");
+    d4_error_assign_generic(&d4_err_state, 10, 10, message);
+    d4_str_free(message);
   }
 
-  if (the_err_state.id != -1) longjmp(the_err_state.buf_last->buf, the_err_state.id);
+  if (d4_err_state.id != -1) longjmp(d4_err_state.buf_last->buf, d4_err_state.id);
 }
 
 static void lend_debt (int bank_amount, int debt_amount) {
-  the_str_t t1 = {NULL, 0, false};
+  d4_str_t t1 = {NULL, 0, false};
 
   if (debt_amount > bank_amount) {
-    the_error_assign(
-      &the_err_state,
+    d4_error_assign(
+      &d4_err_state,
       10,
       10,
       TYPE_Error,
-      (void *) the_Error_alloc(t1 = the_str_alloc(L"Not enough funds.")),
-      (the_err_state_free_cb) the_Error_free
+      (void *) d4_Error_alloc(t1 = d4_str_alloc(L"Not enough funds.")),
+      (d4_err_state_free_cb) d4_Error_free
     );
   }
 
-  the_str_free(t1);
-  if (the_err_state.id != -1) longjmp(the_err_state.buf_last->buf, the_err_state.id);
+  d4_str_free(t1);
+  if (d4_err_state.id != -1) longjmp(d4_err_state.buf_last->buf, d4_err_state.id);
 }
 
 int main (void) {
-  the_error_stack_push(&the_err_state, L"/test", L"main", 0, 0);
+  d4_error_stack_push(&d4_err_state, L"/test", L"main", 0, 0);
 
-  if (setjmp(the_error_buf_increase(&the_err_state)->buf) != 0) goto L1;
+  if (setjmp(d4_error_buf_increase(&d4_err_state)->buf) != 0) goto L1;
   lend_debt(200, 100);
 
-  if (setjmp(the_err_state.buf_last->buf) != 0) goto L1;
+  if (setjmp(d4_err_state.buf_last->buf) != 0) goto L1;
   lend_debt(100, 100);
 
   if (memcmp(GATE, "GATE", 4) == 0) {
-    if (setjmp(the_error_buf_increase(&the_err_state)->buf) != 0) goto L2;
+    if (setjmp(d4_error_buf_increase(&d4_err_state)->buf) != 0) goto L2;
     pay_debt(100, 100);
 
 L2:
-    the_error_buf_decrease(&the_err_state);
-    if (the_err_state.id != -1) goto L1;
+    d4_error_buf_decrease(&d4_err_state);
+    if (d4_err_state.id != -1) goto L1;
   }
 
 L1:
-  the_error_buf_decrease(&the_err_state);
-  the_error_stack_pop(&the_err_state);
+  d4_error_buf_decrease(&d4_err_state);
+  d4_error_stack_pop(&d4_err_state);
 
-  if (the_err_state.id != -1) {
-    the_Error_t *error = the_err_state.ctx;
+  if (d4_err_state.id != -1) {
+    d4_Error_t *error = d4_err_state.ctx;
 
-    fwprintf(stderr, L"Uncaught Error: %ls" THE_EOL, error->stack.data);
-    the_err_state.free_cb(the_err_state.ctx);
+    fwprintf(stderr, L"Uncaught Error: %ls" D4_EOL, error->stack.data);
+    d4_err_state.free_cb(d4_err_state.ctx);
     exit(EXIT_FAILURE);
   }
 

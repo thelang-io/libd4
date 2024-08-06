@@ -3,11 +3,11 @@
  * Licensed under the MIT License
  */
 
-#include <the/array.h>
+#include <d4/array.h>
 #include <assert.h>
 
-THE_ARRAY_DECLARE(arr_str, the_arr_str_t)
-THE_ARRAY_DEFINE(arr_str, the_arr_str_t, the_arr_str_t, the_arr_str_copy(element), the_arr_str_eq(lhs_element, rhs_element), the_arr_str_free(element), the_arr_str_str(element))
+D4_ARRAY_DECLARE(arr_str, d4_arr_str_t)
+D4_ARRAY_DEFINE(arr_str, d4_arr_str_t, d4_arr_str_t, d4_arr_str_copy(element), d4_arr_str_eq(lhs_element, rhs_element), d4_arr_str_free(element), d4_arr_str_str(element))
 
 static void test_array_alloc (void) {
   // todo

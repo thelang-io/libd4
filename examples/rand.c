@@ -3,7 +3,7 @@
  * Licensed under the MIT License
  */
 
-#include <the/rand.h>
+#include <d4/rand.h>
 #include <stdio.h>
 #include <wchar.h>
 
