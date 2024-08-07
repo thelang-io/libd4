@@ -39,7 +39,7 @@
     for (size_t i = 0; i < len; i++) { \
       const key_type key = va_arg(args, key_alloc_type); \
       const value_type value = va_arg(args, value_alloc_type); \
-      d4_str_t id = d4_i32_str(key); \
+      d4_str_t id = d4_i32_str(key); /* todo problem here */ \
       d4_map_##key_type_name##MS##value_type_name##ME_place(self, id, key, value); \
       d4_str_free(id); \
     } \
@@ -101,7 +101,7 @@
         } \
         if (it2 == NULL) return false; \
         rhs_val = it2->value; \
-        if (!value_eq_block) return false; \
+        if (!(value_eq_block)) return false; \
         it1 = it1->next; \
       } \
     } \
@@ -158,7 +158,7 @@
     return r; \
   } \
   \
-  d4_arr_int_t d4_map_##key_type_name##MS##value_type_name##ME_keys (const d4_map_##key_type_name##MS##value_type_name##ME_t self) { \
+  d4_arr_##key_type_name##_t d4_map_##key_type_name##MS##value_type_name##ME_keys (const d4_map_##key_type_name##MS##value_type_name##ME_t self) { \
     key_type *data = d4_safe_alloc(self.len * sizeof(key_type)); \
     size_t j = 0; \
     for (size_t i = 0; i < self.cap; i++) { \
@@ -169,7 +169,7 @@
         it = it->next; \
       } \
     } \
-    return (d4_arr_int_t) {data, self.len}; \
+    return (d4_arr_##key_type_name##_t) {data, self.len}; \
   } \
   \
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_merge (d4_map_##key_type_name##MS##value_type_name##ME_t *self, const d4_map_##key_type_name##MS##value_type_name##ME_t other) { \
@@ -229,7 +229,7 @@
       it = it->next; \
     } \
     if (it == NULL) { \
-      d4_str_t message = d4_str_alloc(L"failed to find key '%ls'", id.data); \
+      d4_str_t message = d4_str_alloc(L"failed to remove key '%ls'", id.data); \
       d4_error_assign_generic(state, line, col, message); \
       d4_str_free(message); \
     } \
@@ -334,7 +334,7 @@
     return result; \
   } \
   \
-  d4_arr_str_t d4_map_##key_type_name##MS##value_type_name##ME_values (const d4_map_##key_type_name##MS##value_type_name##ME_t self) { \
+  d4_arr_##value_type_name##_t d4_map_##key_type_name##MS##value_type_name##ME_values (const d4_map_##key_type_name##MS##value_type_name##ME_t self) { \
     value_type *data = d4_safe_alloc(self.len * sizeof(value_type)); \
     size_t j = 0; \
     for (size_t i = 0; i < self.cap; i++) { \
@@ -345,7 +345,7 @@
         it = it->next; \
       } \
     } \
-    return (d4_arr_str_t) {data, self.len}; \
+    return (d4_arr_##value_type_name##_t) {data, self.len}; \
   }
 
 /**

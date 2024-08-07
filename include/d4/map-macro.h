@@ -71,7 +71,7 @@
   bool d4_map_##key_type_name##MS##value_type_name##ME_has (const d4_map_##key_type_name##MS##value_type_name##ME_t self, const key_type key); \
   \
   /* todo */ \
-  d4_arr_int_t d4_map_##key_type_name##MS##value_type_name##ME_keys (const d4_map_##key_type_name##MS##value_type_name##ME_t self); \
+  d4_arr_##key_type_name##_t d4_map_##key_type_name##MS##value_type_name##ME_keys (const d4_map_##key_type_name##MS##value_type_name##ME_t self); \
   \
   /* todo */ \
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_merge (d4_map_##key_type_name##MS##value_type_name##ME_t *self, const d4_map_##key_type_name##MS##value_type_name##ME_t other); \
