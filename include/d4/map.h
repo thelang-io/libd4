@@ -19,6 +19,7 @@
  * @param key_copy_block Block that is used for copy method of key.
  * @param key_eq_block Block that is used for equals method of key.
  * @param key_free_block Block that is used for free method of key.
+ * @param key_hash_block Block that is used to hash key.
  * @param key_str_block Block that is used for str method of key.
  * @param value_type_name Type name of the value.
  * @param value_type Value type of the array object.
@@ -28,7 +29,7 @@
  * @param value_free_block Block that is used for free method of value.
  * @param value_str_block Block that is used for str method of value.
  */
-#define D4_MAP_DEFINE(key_type_name, key_type, key_alloc_type, key_copy_block, key_eq_block, key_free_block, key_str_block, value_type_name, value_type, value_alloc_type, value_copy_block, value_eq_block, value_free_block, value_str_block) \
+#define D4_MAP_DEFINE(key_type_name, key_type, key_alloc_type, key_copy_block, key_eq_block, key_free_block, key_hash_block, key_str_block, value_type_name, value_type, value_alloc_type, value_copy_block, value_eq_block, value_free_block, value_str_block) \
   d4_map_##key_type_name##MS##value_type_name##ME_t d4_map_##key_type_name##MS##value_type_name##ME_alloc (size_t len, ...) { \
     size_t cap = d4_map_calc_cap(0x0F, len); \
     d4_map_##key_type_name##MS##value_type_name##ME_t self = {d4_safe_alloc(cap * sizeof(d4_map_##key_type_name##MS##value_type_name##ME_pair_t *)), cap, len}; \
@@ -39,7 +40,7 @@
     for (size_t i = 0; i < len; i++) { \
       const key_type key = va_arg(args, key_alloc_type); \
       const value_type value = va_arg(args, value_alloc_type); \
-      d4_str_t id = d4_i32_str(key); /* todo problem here */ \
+      d4_str_t id = key_hash_block; \
       d4_map_##key_type_name##MS##value_type_name##ME_place(self, id, key, value); \
       d4_str_free(id); \
     } \
@@ -125,7 +126,7 @@
   } \
   \
   value_type d4_map_##key_type_name##MS##value_type_name##ME_get (d4_err_state_t *state, int line, int col, const d4_map_##key_type_name##MS##value_type_name##ME_t self, const key_type key) { \
-    d4_str_t id = d4_i32_str(key); \
+    d4_str_t id = key_hash_block; \
     size_t index = d4_map_hash(id, self.cap); \
     value_type val; \
     d4_map_##key_type_name##MS##value_type_name##ME_pair_t *it = self.data[index]; \
@@ -145,7 +146,7 @@
   } \
   \
   bool d4_map_##key_type_name##MS##value_type_name##ME_has (const d4_map_##key_type_name##MS##value_type_name##ME_t self, const key_type key) { \
-    d4_str_t id = d4_i32_str(key); \
+    d4_str_t id = key_hash_block; \
     size_t index = d4_map_hash(id, self.cap); \
     d4_map_##key_type_name##MS##value_type_name##ME_pair_t *it = self.data[index]; \
     bool r = false; \
@@ -174,7 +175,7 @@
   \
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_merge (d4_map_##key_type_name##MS##value_type_name##ME_t *self, const d4_map_##key_type_name##MS##value_type_name##ME_t other) { \
     self->len += other.len; \
-    if (d4_map_should_calc_cap(self->cap, self->len)) { \
+    if (d4_map_should_reserve(self->cap, self->len)) { \
       size_t new_cap = d4_map_calc_cap(self->cap, self->len); \
       d4_map_##key_type_name##MS##value_type_name##ME_reserve(self, (int32_t) new_cap); \
     } \
@@ -217,12 +218,18 @@
   } \
   \
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_remove (d4_err_state_t *state, int line, int col, d4_map_##key_type_name##MS##value_type_name##ME_t *self, const key_type search_key) { \
-    d4_str_t id = d4_i32_str(search_key); \
-    size_t index = d4_map_hash(id, self->cap); \
+    d4_str_t id; \
+    size_t index; \
     d4_map_##key_type_name##MS##value_type_name##ME_pair_t *prev = NULL; \
-    d4_map_##key_type_name##MS##value_type_name##ME_pair_t *it = self->data[index]; \
+    d4_map_##key_type_name##MS##value_type_name##ME_pair_t *it; \
     key_type key; \
     value_type val; \
+    { \
+      key_type key = search_key; \
+      id = key_hash_block; \
+    } \
+    index = d4_map_hash(id, self->cap); \
+    it = self->data[index]; \
     while (it != NULL) { \
       if (d4_str_eq(it->id, id)) break; \
       prev = it; \
@@ -274,11 +281,12 @@
   } \
   \
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_set (d4_map_##key_type_name##MS##value_type_name##ME_t *self, const key_type key, const value_type value) { \
-    d4_str_t id = d4_i32_str(key); \
+    bool existed = d4_map_##key_type_name##MS##value_type_name##ME_has(*self, key); \
+    d4_str_t id = key_hash_block; \
     d4_map_##key_type_name##MS##value_type_name##ME_place(*self, id, key, value); \
     d4_str_free(id); \
-    self->len += 1; \
-    if (d4_map_should_calc_cap(self->cap, self->len)) { \
+    if (!existed) self->len += 1; \
+    if (d4_map_should_reserve(self->cap, self->len)) { \
       size_t new_cap = d4_map_calc_cap(self->cap, self->len); \
       d4_map_##key_type_name##MS##value_type_name##ME_reserve(self, (int32_t) new_cap); \
     } \
@@ -291,6 +299,7 @@
   } \
   \
   d4_str_t d4_map_##key_type_name##MS##value_type_name##ME_str (const d4_map_##key_type_name##MS##value_type_name##ME_t self) { \
+    /* todo need better strategy to sort ASC */ \
     d4_str_t s = d4_str_alloc(L": "); \
     d4_str_t c = d4_str_alloc(L", "); \
     d4_str_t b = d4_str_alloc(L"}"); \
@@ -370,6 +379,6 @@ size_t d4_map_hash (d4_str_t id, size_t cap);
  * @param len Current map length.
  * @return Whether map needs to reallocate.
  */
-bool d4_map_should_calc_cap (size_t cap, size_t len);
+bool d4_map_should_reserve (size_t cap, size_t len);
 
 #endif

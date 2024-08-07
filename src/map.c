@@ -8,7 +8,7 @@
 const double D4_MAP_LOAD_FACTOR = 0.75;
 
 size_t d4_map_calc_cap (size_t cap, size_t len) {
-  while (d4_map_should_calc_cap(cap, len)) {
+  while (d4_map_should_reserve(cap, len)) {
     cap *= 2;
   }
 
@@ -25,6 +25,6 @@ size_t d4_map_hash (d4_str_t id, size_t cap) {
   return result % cap;
 }
 
-bool d4_map_should_calc_cap (size_t cap, size_t len) {
+bool d4_map_should_reserve (size_t cap, size_t len) {
   return len >= (size_t) ((double) cap * D4_MAP_LOAD_FACTOR);
 }

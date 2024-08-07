@@ -10,7 +10,7 @@ D4_ARRAY_DECLARE(int, int32_t)
 D4_ARRAY_DEFINE(int, int32_t, int, element, lhs_element == rhs_element, (void) element, d4_i32_str(element))
 
 D4_MAP_DECLARE(int, int32_t, str, d4_str_t)
-D4_MAP_DEFINE(int, int32_t, int, key, lhs_key == rhs_key, (void) key, d4_i32_str(key), str, d4_str_t, d4_str_t, d4_str_copy(val), d4_str_eq(lhs_val, rhs_val), d4_str_free(val), d4_str_quoted_escape(val))
+D4_MAP_DEFINE(int, int32_t, int, key, lhs_key == rhs_key, (void) key, d4_i32_str(key), d4_i32_str(key), str, d4_str_t, d4_str_t, d4_str_copy(val), d4_str_eq(lhs_val, rhs_val), d4_str_free(val), d4_str_quoted_escape(val))
 
 int main (void) {
   d4_str_t val = d4_str_alloc(L"string");
