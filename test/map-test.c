@@ -482,7 +482,7 @@ static void test_map_str (void) {
 
   d4_str_t s1 = d4_str_alloc(L"{}");
   d4_str_t s2 = d4_str_alloc(L"{\"1\": 10}");
-  d4_str_t s3 = d4_str_alloc(L"{\"2\": \"val\", \"3\": \"val\"}");
+  d4_str_t s3 = d4_str_alloc(L"{\"3\": \"val\", \"2\": \"val\"}");
   d4_str_t s4 = d4_str_alloc(L"{\"key\": \"val\"}");
 
   d4_map_intMSintME_t m1 = d4_map_intMSintME_alloc(0);
@@ -498,7 +498,7 @@ static void test_map_str (void) {
   assert(((void) "Int/Int map stringifies correctly with zero pairs", d4_str_eq(s1, s1_cmp)));
   assert(((void) "Int/Int map stringifies correctly with one pair", d4_str_eq(s2, s2_cmp)));
   assert(((void) "Str/Str map stringifies correctly with one pair", d4_str_eq(s4, s4_cmp)));
-  // assert(((void) "Int/Str map stringifies correctly with two pairs", d4_str_eq(s3, s3_cmp))); // todo
+  assert(((void) "Int/Str map stringifies correctly with two pairs", d4_str_eq(s3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);

@@ -299,7 +299,6 @@
   } \
   \
   d4_str_t d4_map_##key_type_name##MS##value_type_name##ME_str (const d4_map_##key_type_name##MS##value_type_name##ME_t self) { \
-    /* todo need better strategy to sort ASC */ \
     d4_str_t s = d4_str_alloc(L": "); \
     d4_str_t c = d4_str_alloc(L", "); \
     d4_str_t b = d4_str_alloc(L"}"); \
