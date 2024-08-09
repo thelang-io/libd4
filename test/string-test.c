@@ -272,43 +272,263 @@ static void test_string_free (void) {
 }
 
 static void test_string_ge (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"AARON");
+  d4_str_t s5 = d4_str_alloc(L"12345");
+
+  assert(((void) "Same strings >= same stirng", d4_str_ge(s4, s4)));
+  assert(((void) "Empty string not >= single char string", !d4_str_ge(s1, s2)));
+  assert(((void) "Empty string not >= multi char string", !d4_str_ge(s1, s3)));
+  assert(((void) "One letter string not >= than similar string", !d4_str_ge(s2, s3)));
+  assert(((void) "Lowercase single char string >= uppercase string", d4_str_ge(s2, s4)));
+  assert(((void) "Lowercase single char string >= digits string", d4_str_ge(s2, s5)));
+  assert(((void) "Lowercase multi char string >= uppercase string", d4_str_ge(s3, s4)));
+  assert(((void) "Lowercase multi char string >= uppercase string", d4_str_ge(s3, s5)));
+  assert(((void) "Uppercase string >= digits string", d4_str_ge(s4, s5)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
 }
 
 static void test_string_gt (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"AARON");
+  d4_str_t s5 = d4_str_alloc(L"12345");
+
+  assert(((void) "Same strings not > same string", !d4_str_gt(s4, s4)));
+  assert(((void) "Empty string not > single char string", !d4_str_gt(s1, s2)));
+  assert(((void) "Empty string not > multi char string", !d4_str_gt(s1, s3)));
+  assert(((void) "One letter string not > than similar string", !d4_str_gt(s2, s3)));
+  assert(((void) "Lowercase single char string > uppercase string", d4_str_gt(s2, s4)));
+  assert(((void) "Lowercase single char string > digits string", d4_str_gt(s2, s5)));
+  assert(((void) "Lowercase multi char string > uppercase string", d4_str_gt(s3, s4)));
+  assert(((void) "Lowercase multi char string > uppercase string", d4_str_gt(s3, s5)));
+  assert(((void) "Uppercase string > digits string", d4_str_gt(s4, s5)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
 }
 
 static void test_string_le (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"AARON");
+  d4_str_t s5 = d4_str_alloc(L"12345");
+
+  assert(((void) "Same strings <= same string", d4_str_le(s4, s4)));
+  assert(((void) "Empty string <= single char string", d4_str_le(s1, s2)));
+  assert(((void) "Empty string <= multi char string", d4_str_le(s1, s3)));
+  assert(((void) "One letter string <= than similar string", d4_str_le(s2, s3)));
+  assert(((void) "Lowercase single char string not <= uppercase string", !d4_str_le(s2, s4)));
+  assert(((void) "Lowercase single char string not <= digits string", !d4_str_le(s2, s5)));
+  assert(((void) "Lowercase multi char string not <= uppercase string", !d4_str_le(s3, s4)));
+  assert(((void) "Lowercase multi char string not <= uppercase string", !d4_str_le(s3, s5)));
+  assert(((void) "Uppercase string not <= digits string", !d4_str_le(s4, s5)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
 }
 
 static void test_string_lines (void) {
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"\n");
+  d4_str_t s3 = d4_str_alloc(L"t");
+  d4_str_t s4 = d4_str_alloc(L"test");
+  d4_str_t s5 = d4_str_alloc(L"test\r\n");
+  d4_str_t s6 = d4_str_alloc(L"\ntest");
+  d4_str_t s7 = d4_str_alloc(L"\ntest\n");
+  d4_str_t s8 = d4_str_alloc(L"\ntest\r\n\n");
+  d4_str_t s9 = d4_str_alloc(L"hello\rworld");
+  d4_str_t s10 = d4_str_alloc(L"\nhello\rworld");
+  d4_str_t s11 = d4_str_alloc(L"hello\rworld\r\n");
+  d4_str_t s12 = d4_str_alloc(L"\nhello\rworld\r\n");
+
   // todo
 }
 
 static void test_string_lower (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"A");
+  d4_str_t s5 = d4_str_alloc(L"AARON");
+  d4_str_t s6 = d4_str_alloc(L"0");
+  d4_str_t s7 = d4_str_alloc(L"12345");
+
+  d4_str_t s4_cmp = d4_str_alloc(L"a");
+  d4_str_t s5_cmp = d4_str_alloc(L"aaron");
+
+  d4_str_t r1 = d4_str_lower(s1);
+  d4_str_t r2 = d4_str_lower(s2);
+  d4_str_t r3 = d4_str_lower(s3);
+  d4_str_t r4 = d4_str_lower(s4);
+  d4_str_t r5 = d4_str_lower(s5);
+  d4_str_t r6 = d4_str_lower(s6);
+  d4_str_t r7 = d4_str_lower(s7);
+
+  assert(((void) "Lowers empty string", d4_str_eq(s1, r1)));
+  assert(((void) "Lowers single char lowercase string", d4_str_eq(s2, r2)));
+  assert(((void) "Lowers multi char lowercase string", d4_str_eq(s3, r3)));
+  assert(((void) "Lowers single char uppercase string", d4_str_eq(s4_cmp, r4)));
+  assert(((void) "Lowers multi char uppercase string", d4_str_eq(s5_cmp, r5)));
+  assert(((void) "Lowers single digit string", d4_str_eq(s6, r6)));
+  assert(((void) "Lowers multi digit string", d4_str_eq(s7, r7)));
+
+  d4_str_free(r1);
+  d4_str_free(r2);
+  d4_str_free(r3);
+  d4_str_free(r4);
+  d4_str_free(r5);
+  d4_str_free(r6);
+  d4_str_free(r7);
+
+  d4_str_free(s4_cmp);
+  d4_str_free(s5_cmp);
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
 }
 
 static void test_string_lowerFirst (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"A");
+  d4_str_t s5 = d4_str_alloc(L"AARON");
+  d4_str_t s6 = d4_str_alloc(L"0");
+  d4_str_t s7 = d4_str_alloc(L"12345");
+
+  d4_str_t s4_cmp = d4_str_alloc(L"a");
+  d4_str_t s5_cmp = d4_str_alloc(L"aARON");
+
+  d4_str_t r1 = d4_str_lowerFirst(s1);
+  d4_str_t r2 = d4_str_lowerFirst(s2);
+  d4_str_t r3 = d4_str_lowerFirst(s3);
+  d4_str_t r4 = d4_str_lowerFirst(s4);
+  d4_str_t r5 = d4_str_lowerFirst(s5);
+  d4_str_t r6 = d4_str_lowerFirst(s6);
+  d4_str_t r7 = d4_str_lowerFirst(s7);
+
+  assert(((void) "Lowers first empty string", d4_str_eq(s1, r1)));
+  assert(((void) "Lowers first single char lowercase string", d4_str_eq(s2, r2)));
+  assert(((void) "Lowers first multi char lowercase string", d4_str_eq(s3, r3)));
+  assert(((void) "Lowers first single char uppercase string", d4_str_eq(s4_cmp, r4)));
+  assert(((void) "Lowers first multi char uppercase string", d4_str_eq(s5_cmp, r5)));
+  assert(((void) "Lowers first single digit string", d4_str_eq(s6, r6)));
+  assert(((void) "Lowers first multi digit string", d4_str_eq(s7, r7)));
+
+  d4_str_free(r1);
+  d4_str_free(r2);
+  d4_str_free(r3);
+  d4_str_free(r4);
+  d4_str_free(r5);
+  d4_str_free(r6);
+  d4_str_free(r7);
+
+  d4_str_free(s4_cmp);
+  d4_str_free(s5_cmp);
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
 }
 
 static void test_string_lt (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"AARON");
+  d4_str_t s5 = d4_str_alloc(L"12345");
+
+  assert(((void) "Same strings not < same string", !d4_str_lt(s4, s4)));
+  assert(((void) "Empty string < single char string", d4_str_lt(s1, s2)));
+  assert(((void) "Empty string < multi char string", d4_str_lt(s1, s3)));
+  assert(((void) "One letter string < than similar string", d4_str_lt(s2, s3)));
+  assert(((void) "Lowercase single char string not < uppercase string", !d4_str_lt(s2, s4)));
+  assert(((void) "Lowercase single char string not < digits string", !d4_str_lt(s2, s5)));
+  assert(((void) "Lowercase multi char string not < uppercase string", !d4_str_lt(s3, s4)));
+  assert(((void) "Lowercase multi char string not < uppercase string", !d4_str_lt(s3, s5)));
+  assert(((void) "Uppercase string not < digits string", !d4_str_lt(s4, s5)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
 }
 
 static void test_string_not (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"0");
+
+  assert(((void) "NOT on empty string", d4_str_not(s1)));
+  assert(((void) "NOT on single char string", !d4_str_not(s2)));
+  assert(((void) "NOT on multi char string", !d4_str_not(s3)));
+  assert(((void) "NOT on zero digit string", !d4_str_not(s4)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
 }
 
 static void test_string_quoted_escape (void) {
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"\"");
+  d4_str_t s4 = d4_str_alloc(L"\"t");
+  d4_str_t s5 = d4_str_alloc(L"t\"");
+  d4_str_t s6 = d4_str_alloc(L"\"t\"");
+  d4_str_t s7 = d4_str_alloc(L"test");
+  d4_str_t s8 = d4_str_alloc(L"\"test");
+  d4_str_t s9 = d4_str_alloc(L"test\"");
+  d4_str_t s10 = d4_str_alloc(L"\"test\"");
+
   // todo
 }
 
 static void test_string_realloc (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"test");
+  d4_str_t s3 = d4_str_alloc(L"");
+
+  s3 = d4_str_realloc(s3, s1);
+  assert(((void) "Reallocates empty string with empty string", d4_str_eq(s1, s3)));
+
+  s3 = d4_str_realloc(s3, s2);
+  assert(((void) "Reallocates empty string with non-empty string", d4_str_eq(s2, s3)));
+
+  s3 = d4_str_realloc(s3, s1);
+  assert(((void) "Reallocates non-empty string with empty string", d4_str_eq(s1, s3)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
 }
 
 static void test_string_replace (void) {
@@ -316,11 +536,11 @@ static void test_string_replace (void) {
 }
 
 static void test_string_slice (void) {
-  // todo
+  // todo test negative numbers
 }
 
 static void test_string_split (void) {
-  // todo
+  // todo test multi char delimiter
 }
 
 static void test_string_toFloat (void) {
@@ -376,6 +596,20 @@ static void test_string_toU64 (void) {
 }
 
 static void test_string_trim (void) {
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"t ");
+  d4_str_t s4 = d4_str_alloc(L"\ft");
+  d4_str_t s5 = d4_str_alloc(L"\ft\r");
+  d4_str_t s6 = d4_str_alloc(L"test");
+  d4_str_t s7 = d4_str_alloc(L"\ntest");
+  d4_str_t s8 = d4_str_alloc(L"test\t");
+  d4_str_t s9 = d4_str_alloc(L"\vtest\r");
+  d4_str_t s10 = d4_str_alloc(L"multiple words");
+  d4_str_t s11 = d4_str_alloc(L"\nmultiple words");
+  d4_str_t s12 = d4_str_alloc(L"multiple words\n");
+  d4_str_t s13 = d4_str_alloc(L"\nmultiple words\n");
+
   // todo
 }
 
@@ -388,11 +622,99 @@ static void test_string_trimStart (void) {
 }
 
 static void test_string_upper (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"A");
+  d4_str_t s5 = d4_str_alloc(L"AARON");
+  d4_str_t s6 = d4_str_alloc(L"0");
+  d4_str_t s7 = d4_str_alloc(L"12345");
+
+  d4_str_t s2_cmp = d4_str_alloc(L"T");
+  d4_str_t s3_cmp = d4_str_alloc(L"TEST");
+
+  d4_str_t r1 = d4_str_upper(s1);
+  d4_str_t r2 = d4_str_upper(s2);
+  d4_str_t r3 = d4_str_upper(s3);
+  d4_str_t r4 = d4_str_upper(s4);
+  d4_str_t r5 = d4_str_upper(s5);
+  d4_str_t r6 = d4_str_upper(s6);
+  d4_str_t r7 = d4_str_upper(s7);
+
+  assert(((void) "Uppers empty string", d4_str_eq(s1, r1)));
+  assert(((void) "Uppers single char lowercase string", d4_str_eq(s2_cmp, r2)));
+  assert(((void) "Uppers multi char lowercase string", d4_str_eq(s3_cmp, r3)));
+  assert(((void) "Uppers single char uppercase string", d4_str_eq(s4, r4)));
+  assert(((void) "Uppers multi char uppercase string", d4_str_eq(s5, r5)));
+  assert(((void) "Uppers single digit string", d4_str_eq(s6, r6)));
+  assert(((void) "Uppers multi digit string", d4_str_eq(s7, r7)));
+
+  d4_str_free(r1);
+  d4_str_free(r2);
+  d4_str_free(r3);
+  d4_str_free(r4);
+  d4_str_free(r5);
+  d4_str_free(r6);
+  d4_str_free(r7);
+
+  d4_str_free(s2_cmp);
+  d4_str_free(s3_cmp);
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
 }
 
 static void test_string_upperFirst (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"");
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"A");
+  d4_str_t s5 = d4_str_alloc(L"AARON");
+  d4_str_t s6 = d4_str_alloc(L"0");
+  d4_str_t s7 = d4_str_alloc(L"12345");
+
+  d4_str_t s2_cmp = d4_str_alloc(L"T");
+  d4_str_t s3_cmp = d4_str_alloc(L"Test");
+
+  d4_str_t r1 = d4_str_upperFirst(s1);
+  d4_str_t r2 = d4_str_upperFirst(s2);
+  d4_str_t r3 = d4_str_upperFirst(s3);
+  d4_str_t r4 = d4_str_upperFirst(s4);
+  d4_str_t r5 = d4_str_upperFirst(s5);
+  d4_str_t r6 = d4_str_upperFirst(s6);
+  d4_str_t r7 = d4_str_upperFirst(s7);
+
+  assert(((void) "Uppers first empty string", d4_str_eq(s1, r1)));
+  assert(((void) "Uppers first single char lowercase string", d4_str_eq(s2_cmp, r2)));
+  assert(((void) "Uppers first multi char lowercase string", d4_str_eq(s3_cmp, r3)));
+  assert(((void) "Uppers first single char uppercase string", d4_str_eq(s4, r4)));
+  assert(((void) "Uppers first multi char uppercase string", d4_str_eq(s5, r5)));
+  assert(((void) "Uppers first single digit string", d4_str_eq(s6, r6)));
+  assert(((void) "Uppers first multi digit string", d4_str_eq(s7, r7)));
+
+  d4_str_free(r1);
+  d4_str_free(r2);
+  d4_str_free(r3);
+  d4_str_free(r4);
+  d4_str_free(r5);
+  d4_str_free(r6);
+  d4_str_free(r7);
+
+  d4_str_free(s2_cmp);
+  d4_str_free(s3_cmp);
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
 }
 
 int main (void) {
