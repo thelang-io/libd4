@@ -232,7 +232,7 @@ d4_arr_str_t d4_str_lines (const d4_str_t self, unsigned char o1, bool keepLineB
   size_t len = 0;
   size_t start = 0;
 
-  if (self.len != 0) {
+  if (self.len == 0) {
     return (d4_arr_str_t) {NULL, 0};
   }
 
@@ -386,7 +386,6 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
 d4_str_t d4_str_slice (const d4_str_t self, unsigned char o1, int32_t start, unsigned char o2, int32_t end) {
   int32_t i = 0;
   int32_t j = 0;
-  size_t l;
 
   if (o1 != 0 && start < 0 && start >= -((int32_t) self.len)) {
     i = (int32_t) ((size_t) start + self.len);
@@ -406,8 +405,7 @@ d4_str_t d4_str_slice (const d4_str_t self, unsigned char o1, int32_t start, uns
     return d4_str_empty_val;
   }
 
-  l = (size_t) (j - i);
-  return d4_str_calloc(&self.data[i], l);
+  return d4_str_calloc(&self.data[i], (size_t) (j - i));
 }
 
 d4_arr_str_t d4_str_split (const d4_str_t self, D4_UNUSED unsigned char o1, const d4_str_t delimiter) {
@@ -792,7 +790,7 @@ d4_str_t d4_str_trim (const d4_str_t self) {
   size_t l;
 
   if (self.len == 0) {
-    return self;
+    return d4_str_empty_val;
   }
 
   while (i < self.len && isspace(self.data[i])) {
@@ -814,7 +812,7 @@ d4_str_t d4_str_trim (const d4_str_t self) {
 
 d4_str_t d4_str_trimEnd (const d4_str_t self) {
   size_t l = self.len;
-  if (self.len == 0) return self;
+  if (self.len == 0) return d4_str_empty_val;
 
   while (isspace(self.data[l - 1])) {
     l--;
@@ -829,10 +827,9 @@ d4_str_t d4_str_trimEnd (const d4_str_t self) {
 
 d4_str_t d4_str_trimStart (const d4_str_t self) {
   size_t i = 0;
-  size_t l;
 
   if (self.len == 0) {
-    return self;
+    return d4_str_empty_val;
   }
 
   while (i < self.len && isspace(self.data[i])) {
@@ -843,8 +840,7 @@ d4_str_t d4_str_trimStart (const d4_str_t self) {
     return d4_str_empty_val;
   }
 
-  l = self.len - i;
-  return d4_str_calloc(&self.data[i], l);
+  return d4_str_calloc(&self.data[i], self.len - i);
 }
 
 d4_str_t d4_str_upper (const d4_str_t self) {
