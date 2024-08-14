@@ -658,11 +658,11 @@ size_t d4_str_toUsize (d4_err_state_t *state, int line, int col, const d4_str_t 
   errno = 0;
   r = wcstoull(self.data, &e, o1 == 0 ? 10 : radix);
 
-  if (errno == ERANGE || SIZE_MAX < r) {
+  if (errno == ERANGE || SIZE_MAX < r || self.data[0] == L'-') {
     d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
-  } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
+  } else if (errno != 0 || e == self.data || *e != 0) {
     d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
@@ -686,11 +686,11 @@ uint8_t d4_str_toU8 (d4_err_state_t *state, int line, int col, const d4_str_t se
   errno = 0;
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
-  if (errno == ERANGE || UINT8_MAX < r) {
+  if (errno == ERANGE || UINT8_MAX < r || self.data[0] == L'-') {
     d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
-  } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
+  } else if (errno != 0 || e == self.data || *e != 0) {
     d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
@@ -714,11 +714,11 @@ uint16_t d4_str_toU16 (d4_err_state_t *state, int line, int col, const d4_str_t 
   errno = 0;
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
-  if (errno == ERANGE || UINT16_MAX < r) {
+  if (errno == ERANGE || UINT16_MAX < r || self.data[0] == L'-') {
     d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
-  } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
+  } else if (errno != 0 || e == self.data || *e != 0) {
     d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
@@ -742,11 +742,11 @@ uint32_t d4_str_toU32 (d4_err_state_t *state, int line, int col, const d4_str_t 
   errno = 0;
   r = wcstoul(self.data, &e, o1 == 0 ? 10 : radix);
 
-  if (errno == ERANGE || UINT32_MAX < r) {
+  if (errno == ERANGE || UINT32_MAX < r || self.data[0] == L'-') {
     d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
-  } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
+  } else if (errno != 0 || e == self.data || *e != 0) {
     d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
@@ -770,11 +770,11 @@ uint64_t d4_str_toU64 (d4_err_state_t *state, int line, int col, const d4_str_t 
   errno = 0;
   r = wcstoull(self.data, &e, o1 == 0 ? 10 : radix);
 
-  if (errno == ERANGE || UINT64_MAX < r) {
+  if (errno == ERANGE || UINT64_MAX < r || self.data[0] == L'-') {
     d4_str_t message = d4_str_alloc(L"value `%ls` out of range", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);
-  } else if (errno != 0 || e == self.data || *e != 0 || self.data[0] == L'-') {
+  } else if (errno != 0 || e == self.data || *e != 0) {
     d4_str_t message = d4_str_alloc(L"value `%ls` has invalid syntax", self.data);
     d4_error_assign_generic(state, line, col, message);
     d4_str_free(message);

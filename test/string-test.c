@@ -1162,55 +1162,1112 @@ static void test_string_split (void) {
 }
 
 static void test_string_toFloat (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"1.23");
+  d4_str_t s4 = d4_str_alloc(L"1.7976931348623157e+308");
+  d4_str_t s5 = d4_str_alloc(L"3e+38");
+  d4_str_t s6 = d4_str_alloc(L"2.2250738585072014e-308");
+  d4_str_t s7 = d4_str_alloc(L"1E-38");
+  d4_str_t s8 = d4_str_alloc(L"-1.7976931348623157e+308");
+
+  d4_str_t s10 = d4_str_alloc(L"1e+500");
+  d4_str_t s11 = d4_str_alloc(L"1e-500");
+  d4_str_t s12 = d4_str_alloc(L"");
+  d4_str_t s13 = d4_str_alloc(L" 1.23 ");
+  d4_str_t s14 = d4_str_alloc(L"1.23f");
+  d4_str_t s15 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_FLOAT1, {
+    assert(((void) "Converts to float zero", d4_str_toFloat(&d4_err_state, 0, 0, s1) == 0));
+    assert(((void) "Converts to float single digit", d4_str_toFloat(&d4_err_state, 0, 0, s2) == 1));
+    assert(((void) "Converts to float with floating point", d4_str_toFloat(&d4_err_state, 0, 0, s3) == 1.23));
+    assert(((void) "Converts to float max value", d4_str_toFloat(&d4_err_state, 0, 0, s4) == 1.7976931348623157e+308));
+    assert(((void) "Converts to float only positive exponent", d4_str_toFloat(&d4_err_state, 0, 0, s5) == 3e+38));
+    assert(((void) "Converts to float smallest value", d4_str_toFloat(&d4_err_state, 0, 0, s6) == 2.2250738585072014e-308));
+    assert(((void) "Converts to float only negative exponent", d4_str_toFloat(&d4_err_state, 0, 0, s7) == 1E-38));
+    assert(((void) "Converts to float min value", d4_str_toFloat(&d4_err_state, 0, 0, s8) == -1.7976931348623157e+308));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT2, {
+    d4_str_toFloat(&d4_err_state, 0, 0, s10);
+  }, L"value `1e+500` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT3, {
+    d4_str_toFloat(&d4_err_state, 0, 0, s11);
+  }, L"value `1e-500` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT4, {
+    d4_str_toFloat(&d4_err_state, 0, 0, s12);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT5, {
+    d4_str_toFloat(&d4_err_state, 0, 0, s13);
+  }, L"value ` 1.23 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT6, {
+    d4_str_toFloat(&d4_err_state, 0, 0, s14);
+  }, L"value `1.23f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT7, {
+    d4_str_toFloat(&d4_err_state, 0, 0, s15);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
+  d4_str_free(s8);
+  d4_str_free(s10);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s14);
+  d4_str_free(s15);
 }
 
 static void test_string_toF32 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"1.23");
+  d4_str_t s4 = d4_str_alloc(L"3.40282347e+38");
+  d4_str_t s5 = d4_str_alloc(L"3e+38");
+  d4_str_t s6 = d4_str_alloc(L"1.17549435e-38");
+  d4_str_t s7 = d4_str_alloc(L"1E-37");
+  d4_str_t s8 = d4_str_alloc(L"-3.40282347e+38");
+
+  d4_str_t s10 = d4_str_alloc(L"1e+500");
+  d4_str_t s11 = d4_str_alloc(L"1e-500");
+  d4_str_t s12 = d4_str_alloc(L"");
+  d4_str_t s13 = d4_str_alloc(L" 1.23 ");
+  d4_str_t s14 = d4_str_alloc(L"1.23f");
+  d4_str_t s15 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_FLOAT32_1, {
+    assert(((void) "Converts to f32 zero", d4_str_toF32(&d4_err_state, 0, 0, s1) == 0.0f));
+    assert(((void) "Converts to f32 single digit", d4_str_toF32(&d4_err_state, 0, 0, s2) == 1.0f));
+    assert(((void) "Converts to f32 with floating point", d4_str_toF32(&d4_err_state, 0, 0, s3) == 1.23f));
+    assert(((void) "Converts to f32 max value", d4_str_toF32(&d4_err_state, 0, 0, s4) == 3.40282347e+38f));
+    assert(((void) "Converts to f32 only positive exponent", d4_str_toF32(&d4_err_state, 0, 0, s5) == 3e+38f));
+    assert(((void) "Converts to f32 smallest value", d4_str_toF32(&d4_err_state, 0, 0, s6) == 1.17549435e-38f));
+    assert(((void) "Converts to f32 only negative exponent", d4_str_toF32(&d4_err_state, 0, 0, s7) == 1E-37f));
+    assert(((void) "Converts to f32 min value", d4_str_toF32(&d4_err_state, 0, 0, s8) == -3.40282347e+38f));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_2, {
+    d4_str_toF32(&d4_err_state, 0, 0, s10);
+  }, L"value `1e+500` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_3, {
+    d4_str_toF32(&d4_err_state, 0, 0, s11);
+  }, L"value `1e-500` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_4, {
+    d4_str_toF32(&d4_err_state, 0, 0, s12);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_5, {
+    d4_str_toF32(&d4_err_state, 0, 0, s13);
+  }, L"value ` 1.23 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_6, {
+    d4_str_toF32(&d4_err_state, 0, 0, s14);
+  }, L"value `1.23f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_7, {
+    d4_str_toF32(&d4_err_state, 0, 0, s15);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
+  d4_str_free(s8);
+  d4_str_free(s10);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s14);
+  d4_str_free(s15);
 }
 
 static void test_string_toF64 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"1.23");
+  d4_str_t s4 = d4_str_alloc(L"1.7976931348623157e+308");
+  d4_str_t s5 = d4_str_alloc(L"3e+38");
+  d4_str_t s6 = d4_str_alloc(L"2.2250738585072014e-308");
+  d4_str_t s7 = d4_str_alloc(L"1E-38");
+  d4_str_t s8 = d4_str_alloc(L"-1.7976931348623157e+308");
+
+  d4_str_t s10 = d4_str_alloc(L"1e+500");
+  d4_str_t s11 = d4_str_alloc(L"1e-500");
+  d4_str_t s12 = d4_str_alloc(L"");
+  d4_str_t s13 = d4_str_alloc(L" 1.23 ");
+  d4_str_t s14 = d4_str_alloc(L"1.23f");
+  d4_str_t s15 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_FLOAT64_1, {
+    assert(((void) "Converts to f64 zero", d4_str_toF64(&d4_err_state, 0, 0, s1) == 0));
+    assert(((void) "Converts to f64 single digit", d4_str_toF64(&d4_err_state, 0, 0, s2) == 1));
+    assert(((void) "Converts to f64 with floating point", d4_str_toF64(&d4_err_state, 0, 0, s3) == 1.23));
+    assert(((void) "Converts to f64 max value", d4_str_toF64(&d4_err_state, 0, 0, s4) == 1.7976931348623157e+308));
+    assert(((void) "Converts to f64 only positive exponent", d4_str_toF64(&d4_err_state, 0, 0, s5) == 3e+38));
+    assert(((void) "Converts to f64 smallest value", d4_str_toF64(&d4_err_state, 0, 0, s6) == 2.2250738585072014e-308));
+    assert(((void) "Converts to f64 only negative exponent", d4_str_toF64(&d4_err_state, 0, 0, s7) == 1E-38));
+    assert(((void) "Converts to f64 min value", d4_str_toF64(&d4_err_state, 0, 0, s8) == -1.7976931348623157e+308));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_2, {
+    d4_str_toF64(&d4_err_state, 0, 0, s10);
+  }, L"value `1e+500` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_3, {
+    d4_str_toF64(&d4_err_state, 0, 0, s11);
+  }, L"value `1e-500` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_4, {
+    d4_str_toF64(&d4_err_state, 0, 0, s12);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_5, {
+    d4_str_toF64(&d4_err_state, 0, 0, s13);
+  }, L"value ` 1.23 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_6, {
+    d4_str_toF64(&d4_err_state, 0, 0, s14);
+  }, L"value `1.23f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_7, {
+    d4_str_toF64(&d4_err_state, 0, 0, s15);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+  d4_str_free(s7);
+  d4_str_free(s8);
+  d4_str_free(s10);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s14);
+  d4_str_free(s15);
 }
 
 static void test_string_toIsize (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"9223372036854775807");
+  d4_str_t s5 = d4_str_alloc(L"-9223372036854775808");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"10223372036854775807");
+  d4_str_t s51 = d4_str_alloc(L"-10223372036854775808");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_ISIZE1, {
+    assert(((void) "Converts to isize zero", d4_str_toIsize(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to isize single digit", d4_str_toIsize(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to isize multiples digits", d4_str_toIsize(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to isize max value", d4_str_toIsize(&d4_err_state, 0, 0, s4, 0, 0) == 9223372036854775807));
+    assert(((void) "Converts to isize min value", d4_str_toIsize(&d4_err_state, 0, 0, s5, 0, 0) == (ptrdiff_t) (-9223372036854775808U)));
+
+    assert(((void) "Converts to isize binary zero", d4_str_toIsize(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to isize binary single digit", d4_str_toIsize(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to isize binary multiples digits", d4_str_toIsize(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to isize octal zero", d4_str_toIsize(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to isize octal single digit", d4_str_toIsize(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to isize octal multiples digits", d4_str_toIsize(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to isize hexadecimal zero", d4_str_toIsize(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to isize hexadecimal single digit", d4_str_toIsize(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to isize hexadecimal multiples digits", d4_str_toIsize(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE2, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `10223372036854775807` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE3, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-10223372036854775808` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE4, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE5, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE6, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE7, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toI8 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"127");
+  d4_str_t s5 = d4_str_alloc(L"-128");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"128");
+  d4_str_t s51 = d4_str_alloc(L"-129");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_I8_1, {
+    assert(((void) "Converts to i8 zero", d4_str_toI8(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to i8 single digit", d4_str_toI8(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to i8 multiples digits", d4_str_toI8(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to i8 max value", d4_str_toI8(&d4_err_state, 0, 0, s4, 0, 0) == 127));
+    assert(((void) "Converts to i8 min value", d4_str_toI8(&d4_err_state, 0, 0, s5, 0, 0) == -128));
+
+    assert(((void) "Converts to i8 binary zero", d4_str_toI8(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to i8 binary single digit", d4_str_toI8(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to i8 binary multiples digits", d4_str_toI8(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to i8 octal zero", d4_str_toI8(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to i8 octal single digit", d4_str_toI8(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to i8 octal multiples digits", d4_str_toI8(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to i8 hexadecimal zero", d4_str_toI8(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to i8 hexadecimal single digit", d4_str_toI8(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to i8 hexadecimal multiples digits", d4_str_toI8(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_2, {
+    d4_str_toI8(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `128` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_3, {
+    d4_str_toI8(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-129` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_4, {
+    d4_str_toI8(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_5, {
+    d4_str_toI8(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_6, {
+    d4_str_toI8(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_7, {
+    d4_str_toI8(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toI16 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"32767");
+  d4_str_t s5 = d4_str_alloc(L"-32768");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"32768");
+  d4_str_t s51 = d4_str_alloc(L"-32769");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_I16_1, {
+    assert(((void) "Converts to i16 zero", d4_str_toI16(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to i16 single digit", d4_str_toI16(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to i16 multiples digits", d4_str_toI16(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to i16 max value", d4_str_toI16(&d4_err_state, 0, 0, s4, 0, 0) == 32767));
+    assert(((void) "Converts to i16 min value", d4_str_toI16(&d4_err_state, 0, 0, s5, 0, 0) == -32768));
+
+    assert(((void) "Converts to i16 binary zero", d4_str_toI16(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to i16 binary single digit", d4_str_toI16(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to i16 binary multiples digits", d4_str_toI16(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to i16 octal zero", d4_str_toI16(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to i16 octal single digit", d4_str_toI16(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to i16 octal multiples digits", d4_str_toI16(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to i16 hexadecimal zero", d4_str_toI16(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to i16 hexadecimal single digit", d4_str_toI16(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to i16 hexadecimal multiples digits", d4_str_toI16(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_2, {
+    d4_str_toI16(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `32768` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_3, {
+    d4_str_toI16(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-32769` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_4, {
+    d4_str_toI16(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_5, {
+    d4_str_toI16(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_6, {
+    d4_str_toI16(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_7, {
+    d4_str_toI16(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toI32 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"2147483647");
+  d4_str_t s5 = d4_str_alloc(L"-2147483648");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"2147483648");
+  d4_str_t s51 = d4_str_alloc(L"-2147483649");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_I32_1, {
+    assert(((void) "Converts to i32 zero", d4_str_toI32(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to i32 single digit", d4_str_toI32(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to i32 multiples digits", d4_str_toI32(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to i32 max value", d4_str_toI32(&d4_err_state, 0, 0, s4, 0, 0) == 2147483647));
+    assert(((void) "Converts to i32 min value", d4_str_toI32(&d4_err_state, 0, 0, s5, 0, 0) == -2147483648));
+
+    assert(((void) "Converts to i32 binary zero", d4_str_toI32(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to i32 binary single digit", d4_str_toI32(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to i32 binary multiples digits", d4_str_toI32(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to i32 octal zero", d4_str_toI32(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to i32 octal single digit", d4_str_toI32(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to i32 octal multiples digits", d4_str_toI32(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to i32 hexadecimal zero", d4_str_toI32(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to i32 hexadecimal single digit", d4_str_toI32(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to i32 hexadecimal multiples digits", d4_str_toI32(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_2, {
+    d4_str_toI32(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `2147483648` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_3, {
+    d4_str_toI32(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-2147483649` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_4, {
+    d4_str_toI32(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_5, {
+    d4_str_toI32(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_6, {
+    d4_str_toI32(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_7, {
+    d4_str_toI32(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toI64 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"9223372036854775807");
+  d4_str_t s5 = d4_str_alloc(L"-9223372036854775808");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"9223372036854775808");
+  d4_str_t s51 = d4_str_alloc(L"-9223372036854775809");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_I64_1, {
+    assert(((void) "Converts to i64 zero", d4_str_toI64(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to i64 single digit", d4_str_toI64(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to i64 multiples digits", d4_str_toI64(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to i64 max value", d4_str_toI64(&d4_err_state, 0, 0, s4, 0, 0) == 9223372036854775807));
+    assert(((void) "Converts to i64 min value", d4_str_toI64(&d4_err_state, 0, 0, s5, 0, 0) == (int64_t) (-9223372036854775808U)));
+
+    assert(((void) "Converts to i64 binary zero", d4_str_toI64(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to i64 binary single digit", d4_str_toI64(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to i64 binary multiples digits", d4_str_toI64(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to i64 octal zero", d4_str_toI64(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to i64 octal single digit", d4_str_toI64(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to i64 octal multiples digits", d4_str_toI64(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to i64 hexadecimal zero", d4_str_toI64(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to i64 hexadecimal single digit", d4_str_toI64(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to i64 hexadecimal multiples digits", d4_str_toI64(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_2, {
+    d4_str_toI64(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `9223372036854775808` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_3, {
+    d4_str_toI64(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-9223372036854775809` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_4, {
+    d4_str_toI64(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_5, {
+    d4_str_toI64(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_6, {
+    d4_str_toI64(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_7, {
+    d4_str_toI64(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toUsize (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"18446744073709551615");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"20446744073709551615");
+  d4_str_t s51 = d4_str_alloc(L"-1");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_USIZE1, {
+    assert(((void) "Converts to usize zero", d4_str_toUsize(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to usize single digit", d4_str_toUsize(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to usize multiples digits", d4_str_toUsize(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to usize max value", d4_str_toUsize(&d4_err_state, 0, 0, s4, 0, 0) == 18446744073709551615U));
+
+    assert(((void) "Converts to usize binary zero", d4_str_toUsize(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to usize binary single digit", d4_str_toUsize(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to usize binary multiples digits", d4_str_toUsize(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to usize octal zero", d4_str_toUsize(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to usize octal single digit", d4_str_toUsize(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to usize octal multiples digits", d4_str_toUsize(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to usize hexadecimal zero", d4_str_toUsize(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to usize hexadecimal single digit", d4_str_toUsize(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to usize hexadecimal multiples digits", d4_str_toUsize(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE2, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `20446744073709551615` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE3, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-1` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE4, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE5, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE6, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE7, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toU8 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"255");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"256");
+  d4_str_t s51 = d4_str_alloc(L"-1");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_U8_1, {
+    assert(((void) "Converts to u8 zero", d4_str_toU8(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to u8 single digit", d4_str_toU8(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to u8 multiples digits", d4_str_toU8(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to u8 max value", d4_str_toU8(&d4_err_state, 0, 0, s4, 0, 0) == 255));
+
+    assert(((void) "Converts to u8 binary zero", d4_str_toU8(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to u8 binary single digit", d4_str_toU8(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to u8 binary multiples digits", d4_str_toU8(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to u8 octal zero", d4_str_toU8(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to u8 octal single digit", d4_str_toU8(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to u8 octal multiples digits", d4_str_toU8(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to u8 hexadecimal zero", d4_str_toU8(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to u8 hexadecimal single digit", d4_str_toU8(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to u8 hexadecimal multiples digits", d4_str_toU8(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_2, {
+    d4_str_toU8(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `256` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_3, {
+    d4_str_toU8(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-1` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_4, {
+    d4_str_toU8(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_5, {
+    d4_str_toU8(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_6, {
+    d4_str_toU8(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_7, {
+    d4_str_toU8(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toU16 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"65535");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"65536");
+  d4_str_t s51 = d4_str_alloc(L"-1");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_U16_1, {
+    assert(((void) "Converts to u16 zero", d4_str_toU16(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to u16 single digit", d4_str_toU16(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to u16 multiples digits", d4_str_toU16(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to u16 max value", d4_str_toU16(&d4_err_state, 0, 0, s4, 0, 0) == 65535));
+
+    assert(((void) "Converts to u16 binary zero", d4_str_toU16(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to u16 binary single digit", d4_str_toU16(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to u16 binary multiples digits", d4_str_toU16(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to u16 octal zero", d4_str_toU16(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to u16 octal single digit", d4_str_toU16(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to u16 octal multiples digits", d4_str_toU16(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to u16 hexadecimal zero", d4_str_toU16(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to u16 hexadecimal single digit", d4_str_toU16(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to u16 hexadecimal multiples digits", d4_str_toU16(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_2, {
+    d4_str_toU16(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `65536` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_3, {
+    d4_str_toU16(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-1` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_4, {
+    d4_str_toU16(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_5, {
+    d4_str_toU16(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_6, {
+    d4_str_toU16(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_7, {
+    d4_str_toU16(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toU32 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"4294967295");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"4294967296");
+  d4_str_t s51 = d4_str_alloc(L"-1");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_U32_1, {
+    assert(((void) "Converts to u32 zero", d4_str_toU32(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to u32 single digit", d4_str_toU32(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to u32 multiples digits", d4_str_toU32(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to u32 max value", d4_str_toU32(&d4_err_state, 0, 0, s4, 0, 0) == 4294967295));
+
+    assert(((void) "Converts to u32 binary zero", d4_str_toU32(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to u32 binary single digit", d4_str_toU32(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to u32 binary multiples digits", d4_str_toU32(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to u32 octal zero", d4_str_toU32(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to u32 octal single digit", d4_str_toU32(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to u32 octal multiples digits", d4_str_toU32(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to u32 hexadecimal zero", d4_str_toU32(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to u32 hexadecimal single digit", d4_str_toU32(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to u32 hexadecimal multiples digits", d4_str_toU32(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_2, {
+    d4_str_toU32(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `4294967296` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_3, {
+    d4_str_toU32(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-1` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_4, {
+    d4_str_toU32(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_5, {
+    d4_str_toU32(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_6, {
+    d4_str_toU32(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_7, {
+    d4_str_toU32(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_toU64 (void) {
-  // todo
+  d4_str_t s1 = d4_str_alloc(L"0");
+  d4_str_t s2 = d4_str_alloc(L"1");
+  d4_str_t s3 = d4_str_alloc(L"123");
+  d4_str_t s4 = d4_str_alloc(L"18446744073709551615");
+
+  d4_str_t s11 = d4_str_alloc(L"0");
+  d4_str_t s12 = d4_str_alloc(L"1");
+  d4_str_t s13 = d4_str_alloc(L"01111011");
+
+  d4_str_t s21 = d4_str_alloc(L"0");
+  d4_str_t s22 = d4_str_alloc(L"1");
+  d4_str_t s23 = d4_str_alloc(L"173");
+
+  d4_str_t s31 = d4_str_alloc(L"0");
+  d4_str_t s32 = d4_str_alloc(L"1");
+  d4_str_t s33 = d4_str_alloc(L"7B");
+
+  d4_str_t s50 = d4_str_alloc(L"18446744073709551616");
+  d4_str_t s51 = d4_str_alloc(L"-1");
+  d4_str_t s52 = d4_str_alloc(L"");
+  d4_str_t s53 = d4_str_alloc(L" 123 ");
+  d4_str_t s54 = d4_str_alloc(L"123f");
+  d4_str_t s55 = d4_str_alloc(L"test");
+
+  ASSERT_NO_THROW(TO_U64_1, {
+    assert(((void) "Converts to u64 zero", d4_str_toU64(&d4_err_state, 0, 0, s1, 0, 0) == 0));
+    assert(((void) "Converts to u64 single digit", d4_str_toU64(&d4_err_state, 0, 0, s2, 0, 0) == 1));
+    assert(((void) "Converts to u64 multiples digits", d4_str_toU64(&d4_err_state, 0, 0, s3, 0, 0) == 123));
+    assert(((void) "Converts to u64 max value", d4_str_toU64(&d4_err_state, 0, 0, s4, 0, 0) == 18446744073709551615U));
+
+    assert(((void) "Converts to u64 binary zero", d4_str_toU64(&d4_err_state, 0, 0, s11, 1, 2) == 0));
+    assert(((void) "Converts to u64 binary single digit", d4_str_toU64(&d4_err_state, 0, 0, s12, 1, 2) == 1));
+    assert(((void) "Converts to u64 binary multiples digits", d4_str_toU64(&d4_err_state, 0, 0, s13, 1, 2) == 123));
+
+    assert(((void) "Converts to u64 octal zero", d4_str_toU64(&d4_err_state, 0, 0, s21, 1, 8) == 0));
+    assert(((void) "Converts to u64 octal single digit", d4_str_toU64(&d4_err_state, 0, 0, s22, 1, 8) == 1));
+    assert(((void) "Converts to u64 octal multiples digits", d4_str_toU64(&d4_err_state, 0, 0, s23, 1, 8) == 123));
+
+    assert(((void) "Converts to u64 hexadecimal zero", d4_str_toU64(&d4_err_state, 0, 0, s31, 1, 16) == 0));
+    assert(((void) "Converts to u64 hexadecimal single digit", d4_str_toU64(&d4_err_state, 0, 0, s32, 1, 16) == 1));
+    assert(((void) "Converts to u64 hexadecimal multiples digits", d4_str_toU64(&d4_err_state, 0, 0, s33, 1, 16) == 123));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_2, {
+    d4_str_toU64(&d4_err_state, 0, 0, s50, 0, 0);
+  }, L"value `18446744073709551616` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_3, {
+    d4_str_toU64(&d4_err_state, 0, 0, s51, 0, 0);
+  }, L"value `-1` out of range");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_4, {
+    d4_str_toU64(&d4_err_state, 0, 0, s52, 0, 0);
+  }, L"value `` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_5, {
+    d4_str_toU64(&d4_err_state, 0, 0, s53, 0, 0);
+  }, L"value ` 123 ` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_6, {
+    d4_str_toU64(&d4_err_state, 0, 0, s54, 0, 0);
+  }, L"value `123f` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_7, {
+    d4_str_toU64(&d4_err_state, 0, 0, s55, 0, 0);
+  }, L"value `test` has invalid syntax");
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s11);
+  d4_str_free(s12);
+  d4_str_free(s13);
+  d4_str_free(s21);
+  d4_str_free(s22);
+  d4_str_free(s23);
+  d4_str_free(s31);
+  d4_str_free(s32);
+  d4_str_free(s33);
+  d4_str_free(s50);
+  d4_str_free(s51);
+  d4_str_free(s52);
+  d4_str_free(s53);
+  d4_str_free(s54);
+  d4_str_free(s55);
 }
 
 static void test_string_trim (void) {
