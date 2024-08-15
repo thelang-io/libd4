@@ -29,7 +29,9 @@ list(APPEND LIBD4_CMAKE_FLAGS "-Wvla")
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_COVERAGE)
   list(APPEND LIBD4_CMAKE_FLAGS "-O0")
+  list(APPEND LIBD4_CMAKE_FLAGS "-fcoverage-mapping")
   list(APPEND LIBD4_CMAKE_FLAGS "-fprofile-arcs")
+  list(APPEND LIBD4_CMAKE_FLAGS "-fprofile-instr-generate")
   list(APPEND LIBD4_CMAKE_FLAGS "-ftest-coverage")
 endif ()
 
