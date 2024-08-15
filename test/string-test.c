@@ -280,7 +280,7 @@ static void test_string_ge (void) {
   d4_str_t s4 = d4_str_alloc(L"AARON");
   d4_str_t s5 = d4_str_alloc(L"12345");
 
-  assert(((void) "Same strings >= same stirng", d4_str_ge(s4, s4)));
+  assert(((void) "Same string >= same string", d4_str_ge(s4, s4)));
   assert(((void) "Empty string not >= single char string", !d4_str_ge(s1, s2)));
   assert(((void) "Empty string not >= multi char string", !d4_str_ge(s1, s3)));
   assert(((void) "One letter string not >= than similar string", !d4_str_ge(s2, s3)));
@@ -289,6 +289,16 @@ static void test_string_ge (void) {
   assert(((void) "Lowercase multi char string >= uppercase string", d4_str_ge(s3, s4)));
   assert(((void) "Lowercase multi char string >= uppercase string", d4_str_ge(s3, s5)));
   assert(((void) "Uppercase string >= digits string", d4_str_ge(s4, s5)));
+
+  assert(((void) "Reverse same string >= same string", d4_str_ge(s4, s4)));
+  assert(((void) "Reverse empty string not >= single char string", d4_str_ge(s2, s1)));
+  assert(((void) "Reverse empty string not >= multi char string", d4_str_ge(s3, s1)));
+  assert(((void) "Reverse one letter string not >= than similar string", d4_str_ge(s3, s2)));
+  assert(((void) "Reverse lowercase single char string >= uppercase string", !d4_str_ge(s4, s2)));
+  assert(((void) "Reverse lowercase single char string >= digits string", !d4_str_ge(s5, s2)));
+  assert(((void) "Reverse lowercase multi char string >= uppercase string", !d4_str_ge(s4, s3)));
+  assert(((void) "Reverse lowercase multi char string >= uppercase string", !d4_str_ge(s5, s3)));
+  assert(((void) "Reverse uppercase string >= digits string", !d4_str_ge(s5, s4)));
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -304,7 +314,7 @@ static void test_string_gt (void) {
   d4_str_t s4 = d4_str_alloc(L"AARON");
   d4_str_t s5 = d4_str_alloc(L"12345");
 
-  assert(((void) "Same strings not > same string", !d4_str_gt(s4, s4)));
+  assert(((void) "Same string not > same string", !d4_str_gt(s4, s4)));
   assert(((void) "Empty string not > single char string", !d4_str_gt(s1, s2)));
   assert(((void) "Empty string not > multi char string", !d4_str_gt(s1, s3)));
   assert(((void) "One letter string not > than similar string", !d4_str_gt(s2, s3)));
@@ -313,6 +323,16 @@ static void test_string_gt (void) {
   assert(((void) "Lowercase multi char string > uppercase string", d4_str_gt(s3, s4)));
   assert(((void) "Lowercase multi char string > uppercase string", d4_str_gt(s3, s5)));
   assert(((void) "Uppercase string > digits string", d4_str_gt(s4, s5)));
+
+  assert(((void) "Reverse same string not > same string", !d4_str_gt(s4, s4)));
+  assert(((void) "Reverse empty string not > single char string", d4_str_gt(s2, s1)));
+  assert(((void) "Reverse empty string not > multi char string", d4_str_gt(s3, s1)));
+  assert(((void) "Reverse one letter string not > than similar string", d4_str_gt(s3, s2)));
+  assert(((void) "Reverse lowercase single char string > uppercase string", !d4_str_gt(s4, s2)));
+  assert(((void) "Reverse lowercase single char string > digits string", !d4_str_gt(s5, s2)));
+  assert(((void) "Reverse lowercase multi char string > uppercase string", !d4_str_gt(s4, s3)));
+  assert(((void) "Reverse lowercase multi char string > uppercase string", !d4_str_gt(s5, s3)));
+  assert(((void) "Reverse uppercase string > digits string", !d4_str_gt(s5, s4)));
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -328,7 +348,7 @@ static void test_string_le (void) {
   d4_str_t s4 = d4_str_alloc(L"AARON");
   d4_str_t s5 = d4_str_alloc(L"12345");
 
-  assert(((void) "Same strings <= same string", d4_str_le(s4, s4)));
+  assert(((void) "Same string <= same string", d4_str_le(s4, s4)));
   assert(((void) "Empty string <= single char string", d4_str_le(s1, s2)));
   assert(((void) "Empty string <= multi char string", d4_str_le(s1, s3)));
   assert(((void) "One letter string <= than similar string", d4_str_le(s2, s3)));
@@ -337,6 +357,16 @@ static void test_string_le (void) {
   assert(((void) "Lowercase multi char string not <= uppercase string", !d4_str_le(s3, s4)));
   assert(((void) "Lowercase multi char string not <= uppercase string", !d4_str_le(s3, s5)));
   assert(((void) "Uppercase string not <= digits string", !d4_str_le(s4, s5)));
+
+  assert(((void) "Reverse same string <= same string", d4_str_le(s4, s4)));
+  assert(((void) "Reverse empty string <= single char string", !d4_str_le(s2, s1)));
+  assert(((void) "Reverse empty string <= multi char string", !d4_str_le(s3, s1)));
+  assert(((void) "Reverse one letter string <= than similar string", !d4_str_le(s3, s2)));
+  assert(((void) "Reverse lowercase single char string not <= uppercase string", d4_str_le(s4, s2)));
+  assert(((void) "Reverse lowercase single char string not <= digits string", d4_str_le(s5, s2)));
+  assert(((void) "Reverse lowercase multi char string not <= uppercase string", d4_str_le(s4, s3)));
+  assert(((void) "Reverse lowercase multi char string not <= uppercase string", d4_str_le(s5, s3)));
+  assert(((void) "Reverse uppercase string not <= digits string", d4_str_le(s5, s4)));
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -766,7 +796,7 @@ static void test_string_lt (void) {
   d4_str_t s4 = d4_str_alloc(L"AARON");
   d4_str_t s5 = d4_str_alloc(L"12345");
 
-  assert(((void) "Same strings not < same string", !d4_str_lt(s4, s4)));
+  assert(((void) "Same string not < same string", !d4_str_lt(s4, s4)));
   assert(((void) "Empty string < single char string", d4_str_lt(s1, s2)));
   assert(((void) "Empty string < multi char string", d4_str_lt(s1, s3)));
   assert(((void) "One letter string < than similar string", d4_str_lt(s2, s3)));
@@ -775,6 +805,16 @@ static void test_string_lt (void) {
   assert(((void) "Lowercase multi char string not < uppercase string", !d4_str_lt(s3, s4)));
   assert(((void) "Lowercase multi char string not < uppercase string", !d4_str_lt(s3, s5)));
   assert(((void) "Uppercase string not < digits string", !d4_str_lt(s4, s5)));
+
+  assert(((void) "Reverse same string not < same string", !d4_str_lt(s4, s4)));
+  assert(((void) "Reverse empty string < single char string", !d4_str_lt(s2, s1)));
+  assert(((void) "Reverse empty string < multi char string", !d4_str_lt(s3, s1)));
+  assert(((void) "Reverse one letter string < than similar string", !d4_str_lt(s3, s2)));
+  assert(((void) "Reverse lowercase single char string not < uppercase string", d4_str_lt(s4, s2)));
+  assert(((void) "Reverse lowercase single char string not < digits string", d4_str_lt(s5, s2)));
+  assert(((void) "Reverse lowercase multi char string not < uppercase string", d4_str_lt(s4, s3)));
+  assert(((void) "Reverse lowercase multi char string not < uppercase string", d4_str_lt(s5, s3)));
+  assert(((void) "Reverse uppercase string not < digits string", d4_str_lt(s5, s4)));
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -993,7 +1033,6 @@ static void test_string_replace (void) {
   d4_str_t r106 = d4_str_replace(s4, search1, replacement3, 1, 2);
   d4_str_t r107 = d4_str_replace(s4, search2, replacement3, 1, 2);
   d4_str_t r108 = d4_str_replace(s4, search3, replacement3, 1, 2);
-
   d4_str_t r109 = d4_str_replace(s2, replacement2, replacement2, 0, 0);
   d4_str_t r110 = d4_str_replace(s5, search2, replacement1, 0, 0);
 
@@ -1024,14 +1063,13 @@ static void test_string_replace (void) {
   d4_str_t cmp25 = d4_str_alloc(L"green");
   d4_str_t cmp26 = d4_str_alloc(L"");
   d4_str_t cmp27 = d4_str_alloc(L"");
-
   d4_str_t cmp28 = d4_str_alloc(L"a");
   d4_str_t cmp29 = d4_str_alloc(L"");
   d4_str_t cmp30 = d4_str_alloc(L"a");
-  d4_str_t cmp31 = d4_str_alloc(L"oa");
+  d4_str_t cmp31 = d4_str_alloc(L"oao");
   d4_str_t cmp32 = d4_str_alloc(L"o");
   d4_str_t cmp33 = d4_str_alloc(L"a");
-  d4_str_t cmp34 = d4_str_alloc(L"greena");
+  d4_str_t cmp34 = d4_str_alloc(L"greenagreen");
   d4_str_t cmp35 = d4_str_alloc(L"green");
   d4_str_t cmp36 = d4_str_alloc(L"a");
   d4_str_t cmp37 = d4_str_alloc(L"a");
@@ -1046,20 +1084,19 @@ static void test_string_replace (void) {
   d4_str_t cmp46 = d4_str_alloc(L"a");
   d4_str_t cmp47 = d4_str_alloc(L"");
   d4_str_t cmp48 = d4_str_alloc(L"a");
-  d4_str_t cmp49 = d4_str_alloc(L"oa");
+  d4_str_t cmp49 = d4_str_alloc(L"oao");
   d4_str_t cmp50 = d4_str_alloc(L"o");
   d4_str_t cmp51 = d4_str_alloc(L"a");
-  d4_str_t cmp52 = d4_str_alloc(L"greena");
+  d4_str_t cmp52 = d4_str_alloc(L"greenagreen");
   d4_str_t cmp53 = d4_str_alloc(L"green");
   d4_str_t cmp54 = d4_str_alloc(L"a");
-
   d4_str_t cmp55 = d4_str_alloc(L"blackish string");
   d4_str_t cmp56 = d4_str_alloc(L"blckish string");
   d4_str_t cmp57 = d4_str_alloc(L"ish string");
-  d4_str_t cmp58 = d4_str_alloc(L"oblackish string");
+  d4_str_t cmp58 = d4_str_alloc(L"oboloaocokoiosoho osotoroionogo");
   d4_str_t cmp59 = d4_str_alloc(L"blockish string");
   d4_str_t cmp60 = d4_str_alloc(L"oish string");
-  d4_str_t cmp61 = d4_str_alloc(L"greenblackish string");
+  d4_str_t cmp61 = d4_str_alloc(L"greenbgreenlgreenagreencgreenkgreenigreensgreenhgreen greensgreentgreenrgreenigreenngreenggreen");
   d4_str_t cmp62 = d4_str_alloc(L"blgreenckish string");
   d4_str_t cmp63 = d4_str_alloc(L"greenish string");
   d4_str_t cmp64 = d4_str_alloc(L"blackish string");
@@ -1074,22 +1111,21 @@ static void test_string_replace (void) {
   d4_str_t cmp73 = d4_str_alloc(L"blackish string");
   d4_str_t cmp74 = d4_str_alloc(L"blckish string");
   d4_str_t cmp75 = d4_str_alloc(L"ish string");
-  d4_str_t cmp76 = d4_str_alloc(L"oblackish string");
+  d4_str_t cmp76 = d4_str_alloc(L"obolackish string");
   d4_str_t cmp77 = d4_str_alloc(L"blockish string");
   d4_str_t cmp78 = d4_str_alloc(L"oish string");
-  d4_str_t cmp79 = d4_str_alloc(L"greenblackish string");
+  d4_str_t cmp79 = d4_str_alloc(L"greenbgreenlackish string");
   d4_str_t cmp80 = d4_str_alloc(L"blgreenckish string");
   d4_str_t cmp81 = d4_str_alloc(L"greenish string");
-
   d4_str_t cmp82 = d4_str_alloc(L"Aaron has a black house and a black car");
-  d4_str_t cmp83 = d4_str_alloc(L"Aron has a black house and a black car");
-  d4_str_t cmp84 = d4_str_alloc(L"Aaron has a  house and a black car");
-  d4_str_t cmp85 = d4_str_alloc(L"oAaron has a black house and a black car");
-  d4_str_t cmp86 = d4_str_alloc(L"Aoron has a black house and a black car");
-  d4_str_t cmp87 = d4_str_alloc(L"Aaron has a o house and a black car");
-  d4_str_t cmp88 = d4_str_alloc(L"greenAaron has a black house and a black car");
-  d4_str_t cmp89 = d4_str_alloc(L"Agreenron has a black house and a black car");
-  d4_str_t cmp90 = d4_str_alloc(L"Aaron has a green house and a black car");
+  d4_str_t cmp83 = d4_str_alloc(L"Aron hs  blck house nd  blck cr");
+  d4_str_t cmp84 = d4_str_alloc(L"Aaron has a  house and a  car");
+  d4_str_t cmp85 = d4_str_alloc(L"oAoaorooono ohoaoso oao oboloaocoko ohooouosoeo oaonodo oao oboloaocoko ocoaoro");
+  d4_str_t cmp86 = d4_str_alloc(L"Aoron hos o block house ond o block cor");
+  d4_str_t cmp87 = d4_str_alloc(L"Aaron has a o house and a o car");
+  d4_str_t cmp88 = d4_str_alloc(L"greenAgreenagreenrgreenogreenngreen greenhgreenagreensgreen greenagreen greenbgreenlgreenagreencgreenkgreen greenhgreenogreenugreensgreenegreen greenagreenngreendgreen greenagreen greenbgreenlgreenagreencgreenkgreen greencgreenagreenrgreen");
+  d4_str_t cmp89 = d4_str_alloc(L"Agreenron hgreens green blgreenck house greennd green blgreenck cgreenr");
+  d4_str_t cmp90 = d4_str_alloc(L"Aaron has a green house and a green car");
   d4_str_t cmp91 = d4_str_alloc(L"Aaron has a black house and a black car");
   d4_str_t cmp92 = d4_str_alloc(L"Aron has a black house and a black car");
   d4_str_t cmp93 = d4_str_alloc(L"Aaron has a  house and a black car");
@@ -1100,126 +1136,125 @@ static void test_string_replace (void) {
   d4_str_t cmp98 = d4_str_alloc(L"Agreenron has a black house and a black car");
   d4_str_t cmp99 = d4_str_alloc(L"Aaron has a green house and a black car");
   d4_str_t cmp100 = d4_str_alloc(L"Aaron has a black house and a black car");
-  d4_str_t cmp101 = d4_str_alloc(L"Aron has a black house and a black car");
-  d4_str_t cmp102 = d4_str_alloc(L"Aaron has a  house and a black car");
-  d4_str_t cmp103 = d4_str_alloc(L"oAaron has a black house and a black car");
-  d4_str_t cmp104 = d4_str_alloc(L"Aoron has a black house and a black car");
-  d4_str_t cmp105 = d4_str_alloc(L"Aaron has a o house and a black car");
-  d4_str_t cmp106 = d4_str_alloc(L"greenAaron has a black house and a black car");
-  d4_str_t cmp107 = d4_str_alloc(L"Agreenron has a black house and a black car");
-  d4_str_t cmp108 = d4_str_alloc(L"Aaron has a green house and a black car");
-
+  d4_str_t cmp101 = d4_str_alloc(L"Aron hs a black house and a black car");
+  d4_str_t cmp102 = d4_str_alloc(L"Aaron has a  house and a  car");
+  d4_str_t cmp103 = d4_str_alloc(L"oAoaron has a black house and a black car");
+  d4_str_t cmp104 = d4_str_alloc(L"Aoron hos a black house and a black car");
+  d4_str_t cmp105 = d4_str_alloc(L"Aaron has a o house and a o car");
+  d4_str_t cmp106 = d4_str_alloc(L"greenAgreenaron has a black house and a black car");
+  d4_str_t cmp107 = d4_str_alloc(L"Agreenron hgreens a black house and a black car");
+  d4_str_t cmp108 = d4_str_alloc(L"Aaron has a green house and a green car");
   d4_str_t cmp109 = d4_str_alloc(L"a");
   d4_str_t cmp110 = d4_str_alloc(L"");
 
-  // assert(((void) "Replaces all empty with empty in s1", d4_str_eq(r1, cmp1)));
-  // assert(((void) "Replaces all letter 'a' with empty in s1", d4_str_eq(r2, cmp2)));
-  // assert(((void) "Replaces all word 'black' with empty in s1", d4_str_eq(r3, cmp3)));
-  // assert(((void) "Replaces all empty with letter 'o' in s1", d4_str_eq(r4, cmp4)));
-  // assert(((void) "Replaces all letter 'a' with letter 'o' in s1", d4_str_eq(r5, cmp5)));
-  // assert(((void) "Replaces all word 'black' with letter 'o' in s1", d4_str_eq(r6, cmp6)));
-  // assert(((void) "Replaces all empty with word 'green' in s1", d4_str_eq(r7, cmp7)));
-  // assert(((void) "Replaces all letter 'a' with word 'green' in s1", d4_str_eq(r8, cmp8)));
-  // assert(((void) "Replaces all word 'black' with word 'green' in s1", d4_str_eq(r9, cmp9)));
-  // assert(((void) "Replaces one empty with empty in s1", d4_str_eq(r10, cmp10)));
-  // assert(((void) "Replaces one letter 'a' with empty in s1", d4_str_eq(r11, cmp11)));
-  // assert(((void) "Replaces one word 'black' with empty in s1", d4_str_eq(r12, cmp12)));
-  // assert(((void) "Replaces one empty with letter 'o' in s1", d4_str_eq(r13, cmp13)));
-  // assert(((void) "Replaces one letter 'a' with letter 'o' in s1", d4_str_eq(r14, cmp14)));
-  // assert(((void) "Replaces one word 'black' with letter 'o' in s1", d4_str_eq(r15, cmp15)));
-  // assert(((void) "Replaces one empty with word 'green' in s1", d4_str_eq(r16, cmp16)));
-  // assert(((void) "Replaces one letter 'a' with word 'green' in s1", d4_str_eq(r17, cmp17)));
-  // assert(((void) "Replaces one words 'black' with word 'green' in s1", d4_str_eq(r18, cmp18)));
-  // assert(((void) "Replaces two empty with empty in s1", d4_str_eq(r19, cmp19)));
-  // assert(((void) "Replaces two letter 'a' with empty in s1", d4_str_eq(r20, cmp20)));
-  // assert(((void) "Replaces two words 'black' with empty in s1", d4_str_eq(r21, cmp21)));
-  // assert(((void) "Replaces two empty with letter 'o' in s1", d4_str_eq(r22, cmp22)));
-  // assert(((void) "Replaces two letter 'a' with letter 'o' in s1", d4_str_eq(r23, cmp23)));
-  // assert(((void) "Replaces two words 'black' with letter 'o' in s1", d4_str_eq(r24, cmp24)));
-  // assert(((void) "Replaces two empty with word 'green' in s1", d4_str_eq(r25, cmp25)));
-  // assert(((void) "Replaces two letter 'a' with word 'green' in s1", d4_str_eq(r26, cmp26)));
-  // assert(((void) "Replaces two words 'black' with word 'green' in s1", d4_str_eq(r27, cmp27)));
-  // assert(((void) "Replaces all empty with empty in s2", d4_str_eq(r28, cmp28)));
-  // assert(((void) "Replaces all letter 'a' with empty in s2", d4_str_eq(r29, cmp29)));
-  // assert(((void) "Replaces all word 'black' with empty in s2", d4_str_eq(r30, cmp30)));
-  // assert(((void) "Replaces all empty with letter 'o' in s2", d4_str_eq(r31, cmp31)));
-  // assert(((void) "Replaces all letter 'a' with letter 'o' in s2", d4_str_eq(r32, cmp32)));
-  // assert(((void) "Replaces all word 'black' with letter 'o' in s2", d4_str_eq(r33, cmp33)));
-  // assert(((void) "Replaces all empty with word 'green' in s2", d4_str_eq(r34, cmp34)));
-  // assert(((void) "Replaces all letter 'a' with word 'green' in s2", d4_str_eq(r35, cmp35)));
-  // assert(((void) "Replaces all word 'black' with word 'green' in s2", d4_str_eq(r36, cmp36)));
-  // assert(((void) "Replaces one empty with empty in s2", d4_str_eq(r37, cmp37)));
-  // assert(((void) "Replaces one letter 'a' with empty in s2", d4_str_eq(r38, cmp38)));
-  // assert(((void) "Replaces one word 'black' with empty in s2", d4_str_eq(r39, cmp39)));
-  // assert(((void) "Replaces one empty with letter 'o' in s2", d4_str_eq(r40, cmp40)));
-  // assert(((void) "Replaces one letter 'a' with letter 'o' in s2", d4_str_eq(r41, cmp41)));
-  // assert(((void) "Replaces one word 'black' with letter 'o' in s2", d4_str_eq(r42, cmp42)));
-  // assert(((void) "Replaces one empty with word 'green' in s2", d4_str_eq(r43, cmp43)));
-  // assert(((void) "Replaces one letter 'a' with word 'green' in s2", d4_str_eq(r44, cmp44)));
-  // assert(((void) "Replaces one words 'black' with word 'green' in s2", d4_str_eq(r45, cmp45)));
-  // assert(((void) "Replaces two empty with empty in s2", d4_str_eq(r46, cmp46)));
-  // assert(((void) "Replaces two letter 'a' with empty in s2", d4_str_eq(r47, cmp47)));
-  // assert(((void) "Replaces two words 'black' with empty in s2", d4_str_eq(r48, cmp48)));
-  // assert(((void) "Replaces two empty with letter 'o' in s2", d4_str_eq(r49, cmp49)));
-  // assert(((void) "Replaces two letter 'a' with letter 'o' in s2", d4_str_eq(r50, cmp50)));
-  // assert(((void) "Replaces two words 'black' with letter 'o' in s2", d4_str_eq(r51, cmp51)));
-  // assert(((void) "Replaces two empty with word 'green' in s2", d4_str_eq(r52, cmp52)));
-  // assert(((void) "Replaces two letter 'a' with word 'green' in s2", d4_str_eq(r53, cmp53)));
-  // assert(((void) "Replaces two words 'black' with word 'green' in s2", d4_str_eq(r54, cmp54)));
-  // assert(((void) "Replaces all empty with empty in s3", d4_str_eq(r55, cmp55)));
-  // assert(((void) "Replaces all letter 'a' with empty in s3", d4_str_eq(r56, cmp56)));
-  // assert(((void) "Replaces all word 'black' with empty in s3", d4_str_eq(r57, cmp57)));
-  // assert(((void) "Replaces all empty with letter 'o' in s3", d4_str_eq(r58, cmp58)));
-  // assert(((void) "Replaces all letter 'a' with letter 'o' in s3", d4_str_eq(r59, cmp59)));
-  // assert(((void) "Replaces all word 'black' with letter 'o' in s3", d4_str_eq(r60, cmp60)));
-  // assert(((void) "Replaces all empty with word 'green' in s3", d4_str_eq(r61, cmp61)));
-  // assert(((void) "Replaces all letter 'a' with word 'green' in s3", d4_str_eq(r62, cmp62)));
-  // assert(((void) "Replaces all word 'black' with word 'green' in s3", d4_str_eq(r63, cmp63)));
-  // assert(((void) "Replaces one empty with empty in s3", d4_str_eq(r64, cmp64)));
-  // assert(((void) "Replaces one letter 'a' with empty in s3", d4_str_eq(r65, cmp65)));
-  // assert(((void) "Replaces one word 'black' with empty in s3", d4_str_eq(r66, cmp66)));
-  // assert(((void) "Replaces one empty with letter 'o' in s3", d4_str_eq(r67, cmp67)));
-  // assert(((void) "Replaces one letter 'a' with letter 'o' in s3", d4_str_eq(r68, cmp68)));
-  // assert(((void) "Replaces one word 'black' with letter 'o' in s3", d4_str_eq(r69, cmp69)));
-  // assert(((void) "Replaces one empty with word 'green' in s3", d4_str_eq(r70, cmp70)));
-  // assert(((void) "Replaces one letter 'a' with word 'green' in s3", d4_str_eq(r71, cmp71)));
-  // assert(((void) "Replaces one words 'black' with word 'green' in s3", d4_str_eq(r72, cmp72)));
-  // assert(((void) "Replaces two empty with empty in s3", d4_str_eq(r73, cmp73)));
-  // assert(((void) "Replaces two letter 'a' with empty in s3", d4_str_eq(r74, cmp74)));
-  // assert(((void) "Replaces two words 'black' with empty in s3", d4_str_eq(r75, cmp75)));
-  // assert(((void) "Replaces two empty with letter 'o' in s3", d4_str_eq(r76, cmp76)));
-  // assert(((void) "Replaces two letter 'a' with letter 'o' in s3", d4_str_eq(r77, cmp77)));
-  // assert(((void) "Replaces two words 'black' with letter 'o' in s3", d4_str_eq(r78, cmp78)));
-  // assert(((void) "Replaces two empty with word 'green' in s3", d4_str_eq(r79, cmp79)));
-  // assert(((void) "Replaces two letter 'a' with word 'green' in s3", d4_str_eq(r80, cmp80)));
-  // assert(((void) "Replaces two words 'black' with word 'green' in s3", d4_str_eq(r81, cmp81)));
-  // assert(((void) "Replaces all empty with empty in s4", d4_str_eq(r82, cmp82)));
-  // assert(((void) "Replaces all letter 'a' with empty in s4", d4_str_eq(r83, cmp83)));
-  // assert(((void) "Replaces all word 'black' with empty in s4", d4_str_eq(r84, cmp84)));
-  // assert(((void) "Replaces all empty with letter 'o' in s4", d4_str_eq(r85, cmp85)));
-  // assert(((void) "Replaces all letter 'a' with letter 'o' in s4", d4_str_eq(r86, cmp86)));
-  // assert(((void) "Replaces all word 'black' with letter 'o' in s4", d4_str_eq(r87, cmp87)));
-  // assert(((void) "Replaces all empty with word 'green' in s4", d4_str_eq(r88, cmp88)));
-  // assert(((void) "Replaces all letter 'a' with word 'green' in s4", d4_str_eq(r89, cmp89)));
-  // assert(((void) "Replaces all word 'black' with word 'green' in s4", d4_str_eq(r90, cmp90)));
-  // assert(((void) "Replaces one empty with empty in s4", d4_str_eq(r91, cmp91)));
-  // assert(((void) "Replaces one letter 'a' with empty in s4", d4_str_eq(r92, cmp92)));
-  // assert(((void) "Replaces one word 'black' with empty in s4", d4_str_eq(r93, cmp93)));
-  // assert(((void) "Replaces one empty with letter 'o' in s4", d4_str_eq(r94, cmp94)));
-  // assert(((void) "Replaces one letter 'a' with letter 'o' in s4", d4_str_eq(r95, cmp95)));
-  // assert(((void) "Replaces one word 'black' with letter 'o' in s4", d4_str_eq(r96, cmp96)));
-  // assert(((void) "Replaces one empty with word 'green' in s4", d4_str_eq(r97, cmp97)));
-  // assert(((void) "Replaces one letter 'a' with word 'green' in s4", d4_str_eq(r98, cmp98)));
-  // assert(((void) "Replaces one words 'black' with word 'green' in s4", d4_str_eq(r99, cmp99)));
-  // assert(((void) "Replaces two empty with empty in s4", d4_str_eq(r100, cmp100)));
-  // assert(((void) "Replaces two letter 'a' with empty in s4", d4_str_eq(r101, cmp101)));
-  // assert(((void) "Replaces two words 'black' with empty in s4", d4_str_eq(r102, cmp102)));
-  // assert(((void) "Replaces two empty with letter 'o' in s4", d4_str_eq(r103, cmp103)));
-  // assert(((void) "Replaces two letter 'a' with letter 'o' in s4", d4_str_eq(r104, cmp104)));
-  // assert(((void) "Replaces two words 'black' with letter 'o' in s4", d4_str_eq(r105, cmp105)));
-  // assert(((void) "Replaces two empty with word 'green' in s4", d4_str_eq(r106, cmp106)));
-  // assert(((void) "Replaces two letter 'a' with word 'green' in s4", d4_str_eq(r107, cmp107)));
-  // assert(((void) "Replaces two words 'black' with word 'green' in s4", d4_str_eq(r108, cmp108)));
+  assert(((void) "Replaces all empty with empty in s1", d4_str_eq(r1, cmp1)));
+  assert(((void) "Replaces all letter 'a' with empty in s1", d4_str_eq(r2, cmp2)));
+  assert(((void) "Replaces all word 'black' with empty in s1", d4_str_eq(r3, cmp3)));
+  assert(((void) "Replaces all empty with letter 'o' in s1", d4_str_eq(r4, cmp4)));
+  assert(((void) "Replaces all letter 'a' with letter 'o' in s1", d4_str_eq(r5, cmp5)));
+  assert(((void) "Replaces all word 'black' with letter 'o' in s1", d4_str_eq(r6, cmp6)));
+  assert(((void) "Replaces all empty with word 'green' in s1", d4_str_eq(r7, cmp7)));
+  assert(((void) "Replaces all letter 'a' with word 'green' in s1", d4_str_eq(r8, cmp8)));
+  assert(((void) "Replaces all word 'black' with word 'green' in s1", d4_str_eq(r9, cmp9)));
+  assert(((void) "Replaces one empty with empty in s1", d4_str_eq(r10, cmp10)));
+  assert(((void) "Replaces one letter 'a' with empty in s1", d4_str_eq(r11, cmp11)));
+  assert(((void) "Replaces one word 'black' with empty in s1", d4_str_eq(r12, cmp12)));
+  assert(((void) "Replaces one empty with letter 'o' in s1", d4_str_eq(r13, cmp13)));
+  assert(((void) "Replaces one letter 'a' with letter 'o' in s1", d4_str_eq(r14, cmp14)));
+  assert(((void) "Replaces one word 'black' with letter 'o' in s1", d4_str_eq(r15, cmp15)));
+  assert(((void) "Replaces one empty with word 'green' in s1", d4_str_eq(r16, cmp16)));
+  assert(((void) "Replaces one letter 'a' with word 'green' in s1", d4_str_eq(r17, cmp17)));
+  assert(((void) "Replaces one words 'black' with word 'green' in s1", d4_str_eq(r18, cmp18)));
+  assert(((void) "Replaces two empty with empty in s1", d4_str_eq(r19, cmp19)));
+  assert(((void) "Replaces two letter 'a' with empty in s1", d4_str_eq(r20, cmp20)));
+  assert(((void) "Replaces two words 'black' with empty in s1", d4_str_eq(r21, cmp21)));
+  assert(((void) "Replaces two empty with letter 'o' in s1", d4_str_eq(r22, cmp22)));
+  assert(((void) "Replaces two letter 'a' with letter 'o' in s1", d4_str_eq(r23, cmp23)));
+  assert(((void) "Replaces two words 'black' with letter 'o' in s1", d4_str_eq(r24, cmp24)));
+  assert(((void) "Replaces two empty with word 'green' in s1", d4_str_eq(r25, cmp25)));
+  assert(((void) "Replaces two letter 'a' with word 'green' in s1", d4_str_eq(r26, cmp26)));
+  assert(((void) "Replaces two words 'black' with word 'green' in s1", d4_str_eq(r27, cmp27)));
+  assert(((void) "Replaces all empty with empty in s2", d4_str_eq(r28, cmp28)));
+  assert(((void) "Replaces all letter 'a' with empty in s2", d4_str_eq(r29, cmp29)));
+  assert(((void) "Replaces all word 'black' with empty in s2", d4_str_eq(r30, cmp30)));
+  assert(((void) "Replaces all empty with letter 'o' in s2", d4_str_eq(r31, cmp31)));
+  assert(((void) "Replaces all letter 'a' with letter 'o' in s2", d4_str_eq(r32, cmp32)));
+  assert(((void) "Replaces all word 'black' with letter 'o' in s2", d4_str_eq(r33, cmp33)));
+  assert(((void) "Replaces all empty with word 'green' in s2", d4_str_eq(r34, cmp34)));
+  assert(((void) "Replaces all letter 'a' with word 'green' in s2", d4_str_eq(r35, cmp35)));
+  assert(((void) "Replaces all word 'black' with word 'green' in s2", d4_str_eq(r36, cmp36)));
+  assert(((void) "Replaces one empty with empty in s2", d4_str_eq(r37, cmp37)));
+  assert(((void) "Replaces one letter 'a' with empty in s2", d4_str_eq(r38, cmp38)));
+  assert(((void) "Replaces one word 'black' with empty in s2", d4_str_eq(r39, cmp39)));
+  assert(((void) "Replaces one empty with letter 'o' in s2", d4_str_eq(r40, cmp40)));
+  assert(((void) "Replaces one letter 'a' with letter 'o' in s2", d4_str_eq(r41, cmp41)));
+  assert(((void) "Replaces one word 'black' with letter 'o' in s2", d4_str_eq(r42, cmp42)));
+  assert(((void) "Replaces one empty with word 'green' in s2", d4_str_eq(r43, cmp43)));
+  assert(((void) "Replaces one letter 'a' with word 'green' in s2", d4_str_eq(r44, cmp44)));
+  assert(((void) "Replaces one words 'black' with word 'green' in s2", d4_str_eq(r45, cmp45)));
+  assert(((void) "Replaces two empty with empty in s2", d4_str_eq(r46, cmp46)));
+  assert(((void) "Replaces two letter 'a' with empty in s2", d4_str_eq(r47, cmp47)));
+  assert(((void) "Replaces two words 'black' with empty in s2", d4_str_eq(r48, cmp48)));
+  assert(((void) "Replaces two empty with letter 'o' in s2", d4_str_eq(r49, cmp49)));
+  assert(((void) "Replaces two letter 'a' with letter 'o' in s2", d4_str_eq(r50, cmp50)));
+  assert(((void) "Replaces two words 'black' with letter 'o' in s2", d4_str_eq(r51, cmp51)));
+  assert(((void) "Replaces two empty with word 'green' in s2", d4_str_eq(r52, cmp52)));
+  assert(((void) "Replaces two letter 'a' with word 'green' in s2", d4_str_eq(r53, cmp53)));
+  assert(((void) "Replaces two words 'black' with word 'green' in s2", d4_str_eq(r54, cmp54)));
+  assert(((void) "Replaces all empty with empty in s3", d4_str_eq(r55, cmp55)));
+  assert(((void) "Replaces all letter 'a' with empty in s3", d4_str_eq(r56, cmp56)));
+  assert(((void) "Replaces all word 'black' with empty in s3", d4_str_eq(r57, cmp57)));
+  assert(((void) "Replaces all empty with letter 'o' in s3", d4_str_eq(r58, cmp58)));
+  assert(((void) "Replaces all letter 'a' with letter 'o' in s3", d4_str_eq(r59, cmp59)));
+  assert(((void) "Replaces all word 'black' with letter 'o' in s3", d4_str_eq(r60, cmp60)));
+  assert(((void) "Replaces all empty with word 'green' in s3", d4_str_eq(r61, cmp61)));
+  assert(((void) "Replaces all letter 'a' with word 'green' in s3", d4_str_eq(r62, cmp62)));
+  assert(((void) "Replaces all word 'black' with word 'green' in s3", d4_str_eq(r63, cmp63)));
+  assert(((void) "Replaces one empty with empty in s3", d4_str_eq(r64, cmp64)));
+  assert(((void) "Replaces one letter 'a' with empty in s3", d4_str_eq(r65, cmp65)));
+  assert(((void) "Replaces one word 'black' with empty in s3", d4_str_eq(r66, cmp66)));
+  assert(((void) "Replaces one empty with letter 'o' in s3", d4_str_eq(r67, cmp67)));
+  assert(((void) "Replaces one letter 'a' with letter 'o' in s3", d4_str_eq(r68, cmp68)));
+  assert(((void) "Replaces one word 'black' with letter 'o' in s3", d4_str_eq(r69, cmp69)));
+  assert(((void) "Replaces one empty with word 'green' in s3", d4_str_eq(r70, cmp70)));
+  assert(((void) "Replaces one letter 'a' with word 'green' in s3", d4_str_eq(r71, cmp71)));
+  assert(((void) "Replaces one words 'black' with word 'green' in s3", d4_str_eq(r72, cmp72)));
+  assert(((void) "Replaces two empty with empty in s3", d4_str_eq(r73, cmp73)));
+  assert(((void) "Replaces two letter 'a' with empty in s3", d4_str_eq(r74, cmp74)));
+  assert(((void) "Replaces two words 'black' with empty in s3", d4_str_eq(r75, cmp75)));
+  assert(((void) "Replaces two empty with letter 'o' in s3", d4_str_eq(r76, cmp76)));
+  assert(((void) "Replaces two letter 'a' with letter 'o' in s3", d4_str_eq(r77, cmp77)));
+  assert(((void) "Replaces two words 'black' with letter 'o' in s3", d4_str_eq(r78, cmp78)));
+  assert(((void) "Replaces two empty with word 'green' in s3", d4_str_eq(r79, cmp79)));
+  assert(((void) "Replaces two letter 'a' with word 'green' in s3", d4_str_eq(r80, cmp80)));
+  assert(((void) "Replaces two words 'black' with word 'green' in s3", d4_str_eq(r81, cmp81)));
+  assert(((void) "Replaces all empty with empty in s4", d4_str_eq(r82, cmp82)));
+  assert(((void) "Replaces all letter 'a' with empty in s4", d4_str_eq(r83, cmp83)));
+  assert(((void) "Replaces all word 'black' with empty in s4", d4_str_eq(r84, cmp84)));
+  assert(((void) "Replaces all empty with letter 'o' in s4", d4_str_eq(r85, cmp85)));
+  assert(((void) "Replaces all letter 'a' with letter 'o' in s4", d4_str_eq(r86, cmp86)));
+  assert(((void) "Replaces all word 'black' with letter 'o' in s4", d4_str_eq(r87, cmp87)));
+  assert(((void) "Replaces all empty with word 'green' in s4", d4_str_eq(r88, cmp88)));
+  assert(((void) "Replaces all letter 'a' with word 'green' in s4", d4_str_eq(r89, cmp89)));
+  assert(((void) "Replaces all word 'black' with word 'green' in s4", d4_str_eq(r90, cmp90)));
+  assert(((void) "Replaces one empty with empty in s4", d4_str_eq(r91, cmp91)));
+  assert(((void) "Replaces one letter 'a' with empty in s4", d4_str_eq(r92, cmp92)));
+  assert(((void) "Replaces one word 'black' with empty in s4", d4_str_eq(r93, cmp93)));
+  assert(((void) "Replaces one empty with letter 'o' in s4", d4_str_eq(r94, cmp94)));
+  assert(((void) "Replaces one letter 'a' with letter 'o' in s4", d4_str_eq(r95, cmp95)));
+  assert(((void) "Replaces one word 'black' with letter 'o' in s4", d4_str_eq(r96, cmp96)));
+  assert(((void) "Replaces one empty with word 'green' in s4", d4_str_eq(r97, cmp97)));
+  assert(((void) "Replaces one letter 'a' with word 'green' in s4", d4_str_eq(r98, cmp98)));
+  assert(((void) "Replaces one words 'black' with word 'green' in s4", d4_str_eq(r99, cmp99)));
+  assert(((void) "Replaces two empty with empty in s4", d4_str_eq(r100, cmp100)));
+  assert(((void) "Replaces two letter 'a' with empty in s4", d4_str_eq(r101, cmp101)));
+  assert(((void) "Replaces two words 'black' with empty in s4", d4_str_eq(r102, cmp102)));
+  assert(((void) "Replaces two empty with letter 'o' in s4", d4_str_eq(r103, cmp103)));
+  assert(((void) "Replaces two letter 'a' with letter 'o' in s4", d4_str_eq(r104, cmp104)));
+  assert(((void) "Replaces two words 'black' with letter 'o' in s4", d4_str_eq(r105, cmp105)));
+  assert(((void) "Replaces two empty with word 'green' in s4", d4_str_eq(r106, cmp106)));
+  assert(((void) "Replaces two letter 'a' with word 'green' in s4", d4_str_eq(r107, cmp107)));
+  assert(((void) "Replaces two words 'black' with word 'green' in s4", d4_str_eq(r108, cmp108)));
   assert(((void) "Does not replace same length strings if does not match", d4_str_eq(r109, cmp109)));
   assert(((void) "Replaces multiple times repeated with empty", d4_str_eq(r110, cmp110)));
 
@@ -2284,6 +2319,14 @@ static void test_string_toIsize (void) {
     d4_str_toIsize(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
 
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE8, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_ISIZE9, {
+    d4_str_toIsize(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
+
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
@@ -2375,6 +2418,14 @@ static void test_string_toI8 (void) {
   ASSERT_THROW_WITH_MESSAGE(TO_I8_7, {
     d4_str_toI8(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_8, {
+    d4_str_toI8(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I8_9, {
+    d4_str_toI8(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -2468,6 +2519,14 @@ static void test_string_toI16 (void) {
     d4_str_toI16(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
 
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_8, {
+    d4_str_toI16(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I16_9, {
+    d4_str_toI16(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
+
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
@@ -2559,6 +2618,14 @@ static void test_string_toI32 (void) {
   ASSERT_THROW_WITH_MESSAGE(TO_I32_7, {
     d4_str_toI32(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_8, {
+    d4_str_toI32(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I32_9, {
+    d4_str_toI32(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -2652,6 +2719,14 @@ static void test_string_toI64 (void) {
     d4_str_toI64(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
 
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_8, {
+    d4_str_toI64(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_I64_9, {
+    d4_str_toI64(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
+
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
@@ -2742,6 +2817,14 @@ static void test_string_toUsize (void) {
     d4_str_toUsize(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
 
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE8, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_USIZE9, {
+    d4_str_toUsize(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
+
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
@@ -2830,6 +2913,14 @@ static void test_string_toU8 (void) {
   ASSERT_THROW_WITH_MESSAGE(TO_U8_7, {
     d4_str_toU8(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_8, {
+    d4_str_toU8(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U8_9, {
+    d4_str_toU8(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -2920,6 +3011,14 @@ static void test_string_toU16 (void) {
     d4_str_toU16(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
 
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_8, {
+    d4_str_toU16(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U16_9, {
+    d4_str_toU16(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
+
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
@@ -3008,6 +3107,14 @@ static void test_string_toU32 (void) {
   ASSERT_THROW_WITH_MESSAGE(TO_U32_7, {
     d4_str_toU32(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_8, {
+    d4_str_toU32(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U32_9, {
+    d4_str_toU32(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -3098,6 +3205,14 @@ static void test_string_toU64 (void) {
     d4_str_toU64(&d4_err_state, 0, 0, s55, 0, 0);
   }, L"value `test` has invalid syntax");
 
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_8, {
+    d4_str_toU64(&d4_err_state, 0, 0, s55, 1, 1);
+  }, L"radix 1 is invalid, must be >= 2 and <= 36, or 0");
+
+  ASSERT_THROW_WITH_MESSAGE(TO_U64_9, {
+    d4_str_toU64(&d4_err_state, 0, 0, s55, 1, 40);
+  }, L"radix 40 is invalid, must be >= 2 and <= 36, or 0");
+
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
@@ -3133,6 +3248,7 @@ static void test_string_trim (void) {
   d4_str_t s11 = d4_str_alloc(L"\nmultiple words");
   d4_str_t s12 = d4_str_alloc(L"multiple words\n");
   d4_str_t s13 = d4_str_alloc(L"\nmultiple words\n");
+  d4_str_t s14 = d4_str_alloc(L"\n\n\n");
 
   d4_str_t r1 = d4_str_trim(s1);
   d4_str_t r2 = d4_str_trim(s2);
@@ -3147,6 +3263,7 @@ static void test_string_trim (void) {
   d4_str_t r11 = d4_str_trim(s11);
   d4_str_t r12 = d4_str_trim(s12);
   d4_str_t r13 = d4_str_trim(s13);
+  d4_str_t r14 = d4_str_trim(s14);
 
   d4_str_t r_empty = d4_str_alloc(L"");
   d4_str_t r_t = d4_str_alloc(L"t");
@@ -3166,6 +3283,7 @@ static void test_string_trim (void) {
   assert(((void) "Trims multi word string with trailing whitespace", d4_str_eq(r11, r_multiple_words)));
   assert(((void) "Trims multi word string with leading whitespace", d4_str_eq(r12, r_multiple_words)));
   assert(((void) "Trims multi word string with leading and trailing whitespaces", d4_str_eq(r13, r_multiple_words)));
+  assert(((void) "Trims only whitespaces string", d4_str_eq(r14, r_empty)));
 
   d4_str_free(r_empty);
   d4_str_free(r_t);
@@ -3185,6 +3303,7 @@ static void test_string_trim (void) {
   d4_str_free(s11);
   d4_str_free(s12);
   d4_str_free(s13);
+  d4_str_free(s14);
 
   d4_str_free(r1);
   d4_str_free(r2);
@@ -3199,6 +3318,7 @@ static void test_string_trim (void) {
   d4_str_free(r11);
   d4_str_free(r12);
   d4_str_free(r13);
+  d4_str_free(r14);
 }
 
 static void test_string_trimEnd (void) {
@@ -3215,6 +3335,7 @@ static void test_string_trimEnd (void) {
   d4_str_t s11 = d4_str_alloc(L"\nmultiple words");
   d4_str_t s12 = d4_str_alloc(L"multiple words\n");
   d4_str_t s13 = d4_str_alloc(L"\nmultiple words\n");
+  d4_str_t s14 = d4_str_alloc(L"\n\n\n");
 
   d4_str_t r1 = d4_str_trimEnd(s1);
   d4_str_t r2 = d4_str_trimEnd(s2);
@@ -3229,6 +3350,7 @@ static void test_string_trimEnd (void) {
   d4_str_t r11 = d4_str_trimEnd(s11);
   d4_str_t r12 = d4_str_trimEnd(s12);
   d4_str_t r13 = d4_str_trimEnd(s13);
+  d4_str_t r14 = d4_str_trimEnd(s14);
 
   d4_str_t r1_cmp = d4_str_alloc(L"");
   d4_str_t r2_cmp = d4_str_alloc(L"t");
@@ -3243,6 +3365,7 @@ static void test_string_trimEnd (void) {
   d4_str_t r11_cmp = d4_str_alloc(L"\nmultiple words");
   d4_str_t r12_cmp = d4_str_alloc(L"multiple words");
   d4_str_t r13_cmp = d4_str_alloc(L"\nmultiple words");
+  d4_str_t r14_cmp = d4_str_alloc(L"");
 
   assert(((void) "Trims end of empty string", d4_str_eq(r1, r1_cmp)));
   assert(((void) "Trims end of single char string", d4_str_eq(r2, r2_cmp)));
@@ -3257,6 +3380,7 @@ static void test_string_trimEnd (void) {
   assert(((void) "Trims end of multi word string with trailing whitespace", d4_str_eq(r11, r11_cmp)));
   assert(((void) "Trims end of multi word string with leading whitespace", d4_str_eq(r12, r12_cmp)));
   assert(((void) "Trims end of multi word string with leading and trailing whitespaces", d4_str_eq(r13, r13_cmp)));
+  assert(((void) "Trims end of only whitespaces string", d4_str_eq(r14, r14_cmp)));
 
   d4_str_free(r1_cmp);
   d4_str_free(r2_cmp);
@@ -3271,6 +3395,7 @@ static void test_string_trimEnd (void) {
   d4_str_free(r11_cmp);
   d4_str_free(r12_cmp);
   d4_str_free(r13_cmp);
+  d4_str_free(r14_cmp);
 
   d4_str_free(r1);
   d4_str_free(r2);
@@ -3285,6 +3410,7 @@ static void test_string_trimEnd (void) {
   d4_str_free(r11);
   d4_str_free(r12);
   d4_str_free(r13);
+  d4_str_free(r14);
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -3299,6 +3425,7 @@ static void test_string_trimEnd (void) {
   d4_str_free(s11);
   d4_str_free(s12);
   d4_str_free(s13);
+  d4_str_free(s14);
 }
 
 static void test_string_trimStart (void) {
@@ -3315,6 +3442,7 @@ static void test_string_trimStart (void) {
   d4_str_t s11 = d4_str_alloc(L"\nmultiple words");
   d4_str_t s12 = d4_str_alloc(L"multiple words\n");
   d4_str_t s13 = d4_str_alloc(L"\nmultiple words\n");
+  d4_str_t s14 = d4_str_alloc(L"\n\n\n");
 
   d4_str_t r1 = d4_str_trimStart(s1);
   d4_str_t r2 = d4_str_trimStart(s2);
@@ -3329,6 +3457,7 @@ static void test_string_trimStart (void) {
   d4_str_t r11 = d4_str_trimStart(s11);
   d4_str_t r12 = d4_str_trimStart(s12);
   d4_str_t r13 = d4_str_trimStart(s13);
+  d4_str_t r14 = d4_str_trimStart(s14);
 
   d4_str_t r1_cmp = d4_str_alloc(L"");
   d4_str_t r2_cmp = d4_str_alloc(L"t");
@@ -3343,6 +3472,7 @@ static void test_string_trimStart (void) {
   d4_str_t r11_cmp = d4_str_alloc(L"multiple words");
   d4_str_t r12_cmp = d4_str_alloc(L"multiple words\n");
   d4_str_t r13_cmp = d4_str_alloc(L"multiple words\n");
+  d4_str_t r14_cmp = d4_str_alloc(L"");
 
   assert(((void) "Trims start of empty string", d4_str_eq(r1, r1_cmp)));
   assert(((void) "Trims start of single char string", d4_str_eq(r2, r2_cmp)));
@@ -3357,6 +3487,7 @@ static void test_string_trimStart (void) {
   assert(((void) "Trims start of multi word string with trailing whitespace", d4_str_eq(r11, r11_cmp)));
   assert(((void) "Trims start of multi word string with leading whitespace", d4_str_eq(r12, r12_cmp)));
   assert(((void) "Trims start of multi word string with leading and trailing whitespaces", d4_str_eq(r13, r13_cmp)));
+  assert(((void) "Trims start of only whitespaces string", d4_str_eq(r14, r14_cmp)));
 
   d4_str_free(r1_cmp);
   d4_str_free(r2_cmp);
@@ -3371,6 +3502,7 @@ static void test_string_trimStart (void) {
   d4_str_free(r11_cmp);
   d4_str_free(r12_cmp);
   d4_str_free(r13_cmp);
+  d4_str_free(r14_cmp);
 
   d4_str_free(r1);
   d4_str_free(r2);
@@ -3385,6 +3517,7 @@ static void test_string_trimStart (void) {
   d4_str_free(r11);
   d4_str_free(r12);
   d4_str_free(r13);
+  d4_str_free(r14);
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -3399,6 +3532,7 @@ static void test_string_trimStart (void) {
   d4_str_free(s11);
   d4_str_free(s12);
   d4_str_free(s13);
+  d4_str_free(s14);
 }
 
 static void test_string_upper (void) {
