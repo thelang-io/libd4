@@ -128,7 +128,7 @@ bool d4_str_le (const d4_str_t self, const d4_str_t rhs);
 /**
  * Splits string by new line into array of strings.
  * @param self String to split into lines.
- * @param o1 Whether or not `keepLineBreaks` parameter is specified.
+ * @param o1 Whether `keepLineBreaks` parameter is specified.
  * @param keepLineBreaks Whether to keep line breaks in resulting array.
  * @return Split by new line array of strings.
  */
@@ -183,7 +183,7 @@ d4_str_t d4_str_realloc (d4_str_t self, const d4_str_t rhs);
  * @param self String to replace in.
  * @param search String to search for.
  * @param replacement String to replace with.
- * @param o3 Whether or not `count` parameter is specified.
+ * @param o3 Whether `count` parameter is specified.
  * @param count How many occurrences to replace. If less than or equal to zero - then it will act as if parameter was not passed.
  * @return String with replaced search pattern.
  */
@@ -192,9 +192,9 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
 /**
  * Creates and returns slice of the string.
  * @param self String to take slice of.
- * @param o1 Whether or not `start` parameter is specified.
+ * @param o1 Whether `start` parameter is specified.
  * @param start Start of the slice.
- * @param o2 Whether or not `end` parameter is specified.
+ * @param o2 Whether `end` parameter is specified.
  * @param end End of the slice.
  * @return Slice of the string provided.
  */
@@ -203,7 +203,7 @@ d4_str_t d4_str_slice (const d4_str_t self, unsigned char o1, int32_t start, uns
 /**
  * Splits string into array of string by provided delimiter.
  * @param self String to take slice of.
- * @param o1 Whether or not `delimiter` parameter is specified.
+ * @param o1 Whether `delimiter` parameter is specified.
  * @param delimiter Delimiter substring to split string by.
  * @return String split into array of string.
  */

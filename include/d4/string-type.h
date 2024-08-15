@@ -20,7 +20,7 @@ typedef struct {
   /** Length of the string object. */
   size_t len;
 
-  /** Whether or not string is static. */
+  /** Whether string is static. */
   bool is_static;
 } d4_str_t;
 
