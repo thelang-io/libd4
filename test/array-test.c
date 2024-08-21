@@ -6,6 +6,7 @@
 #include <d4/array.h>
 #include <d4/number.h>
 #include <assert.h>
+#include "./utils.h"
 
 D4_ARRAY_DECLARE(int, int32_t)
 D4_ARRAY_DEFINE(int, int32_t, int32_t, element, lhs_element == rhs_element, (void) element, d4_i32_str(element))
@@ -142,7 +143,31 @@ static void test_array_filter (void) {
 }
 
 static void test_array_first (void) {
-  // todo
+  d4_str_t v1 = d4_str_alloc(L"element1");
+  d4_str_t v2 = d4_str_alloc(L"element2");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v2, v1);
+
+  ASSERT_NO_THROW(FIRST1, {
+    d4_str_t *f1 = d4_arr_str_first(&d4_err_state, 0, 0, &a2);
+    d4_str_t *f2 = d4_arr_str_first(&d4_err_state, 0, 0, &a3);
+
+    assert(((void) "Gets first from array with one element", d4_str_eq(v1, *f1)));
+    assert(((void) "Gets first from array with two elements", d4_str_eq(v2, *f2)));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(FIRST2, {
+    d4_arr_str_first(&d4_err_state, 0, 0, &a1);
+  }, L"tried getting first element of empty array");
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
 }
 
 static void test_array_forEach (void) {
@@ -182,7 +207,31 @@ static void test_array_join (void) {
 }
 
 static void test_array_last (void) {
-  // todo
+  d4_str_t v1 = d4_str_alloc(L"element1");
+  d4_str_t v2 = d4_str_alloc(L"element2");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+
+  ASSERT_NO_THROW(LAST1, {
+    d4_str_t *l1 = d4_arr_str_last(&d4_err_state, 0, 0, &a2);
+    d4_str_t *l2 = d4_arr_str_last(&d4_err_state, 0, 0, &a3);
+
+    assert(((void) "Gets last from array with one element", d4_str_eq(v1, *l1)));
+    assert(((void) "Gets last from array with two elements", d4_str_eq(v2, *l2)));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(LAST2, {
+    d4_arr_str_last(&d4_err_state, 0, 0, &a1);
+  }, L"tried getting last element of empty array");
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
 }
 
 static void test_array_merge (void) {
@@ -190,11 +239,59 @@ static void test_array_merge (void) {
 }
 
 static void test_array_pop (void) {
-  // todo
+  d4_str_t v1 = d4_str_alloc(L"element1");
+  d4_str_t v2 = d4_str_alloc(L"element2");
+  d4_str_t v3;
+  d4_str_t v4;
+  d4_str_t v5;
+
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+
+  v3 = d4_arr_str_pop(&a2);
+  assert(((void) "Pops from array with one element", (a2.len == 0 && d4_str_eq(v3, v1))));
+  v4 = d4_arr_str_pop(&a3);
+  assert(((void) "Pops from array with two elements", (a3.len == 1 && d4_str_eq(v4, v2))));
+  v5 = d4_arr_str_pop(&a3);
+  assert(((void) "Pops from array with previously two elements", (a3.len == 0 && d4_str_eq(v5, v1))));
+
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
+  d4_str_free(v3);
+  d4_str_free(v4);
+  d4_str_free(v5);
 }
 
 static void test_array_push (void) {
-  // todo
+  d4_str_t v1 = d4_str_alloc(L"element1");
+  d4_str_t v2 = d4_str_alloc(L"element2");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+
+  d4_arr_str_push(&a1, 0);
+  assert(((void) "Pushes into empty array zero elements", a1.len == 0));
+  d4_arr_str_push(&a1, 1, v1);
+  assert(((void) "Pushes into empty array", a1.len == 1));
+  d4_arr_str_push(&a1, 1, v2);
+  assert(((void) "Pushes into previously empty array", a1.len == 2));
+  d4_arr_str_push(&a2, 1, v2);
+  assert(((void) "Pushes into array with one element", a2.len == 2));
+  d4_arr_str_push(&a3, 1, v2);
+  assert(((void) "Pushes into array with two elements", a3.len == 3));
+  d4_arr_str_push(&a3, 2, v1, v2);
+  assert(((void) "Pushes multiple into array with previously two elements", a3.len == 5));
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
 }
 
 static void test_array_realloc (void) {
@@ -227,11 +324,68 @@ static void test_array_realloc (void) {
 }
 
 static void test_array_remove (void) {
-  // todo
+  d4_str_t v1 = d4_str_alloc(L"element1");
+  d4_str_t v2 = d4_str_alloc(L"element2");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+
+  ASSERT_THROW_WITH_MESSAGE(REMOVE1, {
+    d4_arr_str_remove(&d4_err_state, 0, 0, &a3, 10);
+  }, L"index 10 out of array bounds");
+
+  ASSERT_NO_THROW(REMOVE2, {
+    d4_arr_str_remove(&d4_err_state, 0, 0, &a2, 0);
+    assert(((void) "Removes first element from one element array", a2.len == 0));
+    d4_arr_str_remove(&d4_err_state, 0, 0, &a3, 1);
+    assert(((void) "Removes seconds element from two elements array", a3.len == 1));
+    d4_arr_str_remove(&d4_err_state, 0, 0, &a3, 0);
+    assert(((void) "Removes first element from two elements array", a3.len == 0));
+  });
+
+  ASSERT_THROW_WITH_MESSAGE(REMOVE3, {
+    d4_arr_str_remove(&d4_err_state, 0, 0, &a1, 0);
+  }, L"index 0 out of array bounds");
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
 }
 
 static void test_array_reverse (void) {
-  // todo
+  d4_str_t v1 = d4_str_alloc(L"element1");
+  d4_str_t v2 = d4_str_alloc(L"element2");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+  d4_arr_str_t a4 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a5 = d4_arr_str_alloc(2, v2, v1);
+
+  d4_arr_str_t r1 = d4_arr_str_reverse(a1);
+  d4_arr_str_t r2 = d4_arr_str_reverse(a2);
+  d4_arr_str_t r3 = d4_arr_str_reverse(a3);
+
+  assert(((void) "Reverses empty array", d4_arr_str_eq(r1, a1)));
+  assert(((void) "Reverses array with one element", d4_arr_str_eq(r2, a4)));
+  assert(((void) "Reverses array with two elements", d4_arr_str_eq(r3, a5)));
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+  d4_arr_str_free(a4);
+  d4_arr_str_free(a5);
+
+  d4_arr_str_free(r1);
+  d4_arr_str_free(r2);
+  d4_arr_str_free(r3);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
 }
 
 static void test_array_slice (void) {

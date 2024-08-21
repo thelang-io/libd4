@@ -242,7 +242,7 @@
     data = d4_safe_alloc(self.len * sizeof(element_type)); \
     for (size_t i = 0; i < self.len; i++) { \
       const element_type element = self.data[i]; \
-      data[i] = copy_block; \
+      data[self.len - i - 1] = copy_block; \
     } \
     return (d4_arr_##element_type_name##_t) {data, self.len}; \
   } \
