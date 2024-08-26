@@ -14,6 +14,38 @@ D4_ARRAY_DEFINE(int, int32_t, int32_t, element, lhs_element == rhs_element, (voi
 D4_ARRAY_DECLARE(arr_str, d4_arr_str_t)
 D4_ARRAY_DEFINE(arr_str, d4_arr_str_t, d4_arr_str_t, d4_arr_str_copy(element), d4_arr_str_eq(lhs_element, rhs_element), d4_arr_str_free(element), d4_arr_str_str(element))
 
+typedef struct {
+  d4_str_t *var;
+} foreach_ctx_t;
+
+static bool filter_str (D4_UNUSED void *ctx, d4_fn_esFP3strFRboolFE_params_t *params) {
+  return params->n0.len > 2;
+}
+
+static void *foreach_ctx_copy (const foreach_ctx_t *ctx) {
+  foreach_ctx_t *result = d4_safe_alloc(sizeof(foreach_ctx_t));
+  *result->var = d4_str_copy(*ctx->var);
+  return result;
+}
+
+static void foreach_ctx_free (foreach_ctx_t *ctx) {
+  d4_safe_free(ctx);
+}
+
+static void foreach_str (foreach_ctx_t *ctx, d4_fn_esFP3strFRboolFE_params_t *params) {
+  d4_str_t t0;
+  *ctx->var = d4_str_realloc(*ctx->var, t0 = d4_str_concat(*ctx->var, params->n0));
+  d4_str_free(t0);
+}
+
+static int sort_asc_str (D4_UNUSED void *ctx, d4_fn_esFP3strFP3strFRintFE_params_t *params) {
+  return d4_str_gt(params->n0, params->n1);
+}
+
+static int sort_desc_str (D4_UNUSED void *ctx, d4_fn_esFP3strFP3strFRintFE_params_t *params) {
+  return d4_str_lt(params->n0, params->n1);
+}
+
 static void test_array_alloc (void) {
   d4_str_t v1 = d4_str_alloc(L"element1");
   d4_str_t v2 = d4_str_alloc(L"element2");
@@ -52,17 +84,17 @@ static void test_array_at (void) {
 
   ASSERT_NO_THROW(AT1, {
     r = d4_arr_str_at(&d4_err_state, 0, 0, a2, 0);
-    assert(((void) "Returns first element for one item element array", d4_str_eq(*r, v1)));
+    assert(((void) "Returns first element for one element array", d4_str_eq(*r, v1)));
     r = d4_arr_str_at(&d4_err_state, 0, 0, a3, 0);
-    assert(((void) "Returns first element for two items element array", d4_str_eq(*r, v2)));
+    assert(((void) "Returns first element for two elements array", d4_str_eq(*r, v2)));
     r = d4_arr_str_at(&d4_err_state, 0, 0, a3, 1);
-    assert(((void) "Returns second element for two items element array", d4_str_eq(*r, v1)));
+    assert(((void) "Returns second element for two elements array", d4_str_eq(*r, v1)));
     r = d4_arr_str_at(&d4_err_state, 0, 0, a2, -1);
-    assert(((void) "Returns last element for one item element array", d4_str_eq(*r, v1)));
+    assert(((void) "Returns last element for one element array", d4_str_eq(*r, v1)));
     r = d4_arr_str_at(&d4_err_state, 0, 0, a3, -1);
-    assert(((void) "Returns last element for two items element array", d4_str_eq(*r, v1)));
+    assert(((void) "Returns last element for two elements array", d4_str_eq(*r, v1)));
     r = d4_arr_str_at(&d4_err_state, 0, 0, a3, -2);
-    assert(((void) "Returns first element for two items element array from back", d4_str_eq(*r, v2)));
+    assert(((void) "Returns first element for two elements array from back", d4_str_eq(*r, v2)));
   });
 
   ASSERT_THROW_WITH_MESSAGE(AT2, {
@@ -283,7 +315,59 @@ static void test_array_eq (void) {
 }
 
 static void test_array_filter (void) {
-  // todo
+  d4_str_t filter_name = d4_str_alloc(L"filter");
+  d4_fn_esFP3strFRboolFE_t filter = d4_fn_esFP3strFRboolFE_alloc(filter_name, NULL, NULL, NULL, (bool (*) (void *, void *)) filter_str);
+
+  d4_str_t v1 = d4_str_alloc(L"");
+  d4_str_t v2 = d4_str_alloc(L"a");
+  d4_str_t v3 = d4_str_alloc(L"orange");
+  d4_str_t v4 = d4_str_alloc(L"lorem ipsum dolor sit amet");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+  d4_arr_str_t a4 = d4_arr_str_alloc(3, v1, v2, v3);
+  d4_arr_str_t a5 = d4_arr_str_alloc(4, v1, v2, v3, v4);
+
+  d4_arr_str_t cmp1 = d4_arr_str_alloc(1, v3);
+  d4_arr_str_t cmp2 = d4_arr_str_alloc(2, v3, v4);
+
+  ASSERT_NO_THROW(FILTER1, {
+    d4_arr_str_t r1 = d4_arr_str_filter(&d4_err_state, 0, 0, a1, filter);
+    d4_arr_str_t r2 = d4_arr_str_filter(&d4_err_state, 0, 0, a2, filter);
+    d4_arr_str_t r3 = d4_arr_str_filter(&d4_err_state, 0, 0, a3, filter);
+    d4_arr_str_t r4 = d4_arr_str_filter(&d4_err_state, 0, 0, a4, filter);
+    d4_arr_str_t r5 = d4_arr_str_filter(&d4_err_state, 0, 0, a5, filter);
+
+    assert(((void) "Filters empty array", d4_arr_str_eq(r1, a1)));
+    assert(((void) "Filters array with one element", d4_arr_str_eq(r2, a1)));
+    assert(((void) "Filters array with two elements", d4_arr_str_eq(r3, a1)));
+    assert(((void) "Filters array with three elements", d4_arr_str_eq(r4, cmp1)));
+    assert(((void) "Filters array with four elements", d4_arr_str_eq(r5, cmp2)));
+
+    d4_arr_str_free(r1);
+    d4_arr_str_free(r2);
+    d4_arr_str_free(r3);
+    d4_arr_str_free(r4);
+    d4_arr_str_free(r5);
+  });
+
+  d4_arr_str_free(cmp1);
+  d4_arr_str_free(cmp2);
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+  d4_arr_str_free(a4);
+  d4_arr_str_free(a5);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
+  d4_str_free(v3);
+  d4_str_free(v4);
+
+  d4_fn_esFP3strFRboolFE_free(filter);
+  d4_str_free(filter_name);
 }
 
 static void test_array_first (void) {
@@ -315,7 +399,96 @@ static void test_array_first (void) {
 }
 
 static void test_array_forEach (void) {
-  // todo
+  d4_str_t foreach_name = d4_str_alloc(L"foreach");
+
+  d4_str_t r1 = d4_str_alloc(L"");
+  d4_str_t r2 = d4_str_alloc(L"");
+  d4_str_t r3 = d4_str_alloc(L"");
+  d4_str_t r4 = d4_str_alloc(L"");
+
+  d4_fn_esFP3strFP3intFRvoidFE_t foreach1 = d4_fn_esFP3strFP3intFRvoidFE_alloc(
+    foreach_name,
+    d4_safe_calloc(&(foreach_ctx_t) {&r1}, sizeof(foreach_ctx_t)),
+    (void *(*) (const void *)) foreach_ctx_copy,
+    (void (*) (void *)) foreach_ctx_free,
+    (void (*) (void *, void *)) foreach_str
+  );
+
+  d4_fn_esFP3strFP3intFRvoidFE_t foreach2 = d4_fn_esFP3strFP3intFRvoidFE_alloc(
+    foreach_name,
+    d4_safe_calloc(&(foreach_ctx_t) {&r2}, sizeof(foreach_ctx_t)),
+    (void *(*) (const void *)) foreach_ctx_copy,
+    (void (*) (void *)) foreach_ctx_free,
+    (void (*) (void *, void *)) foreach_str
+  );
+
+  d4_fn_esFP3strFP3intFRvoidFE_t foreach3 = d4_fn_esFP3strFP3intFRvoidFE_alloc(
+    foreach_name,
+    d4_safe_calloc(&(foreach_ctx_t) {&r3}, sizeof(foreach_ctx_t)),
+    (void *(*) (const void *)) foreach_ctx_copy,
+    (void (*) (void *)) foreach_ctx_free,
+    (void (*) (void *, void *)) foreach_str
+  );
+
+  d4_fn_esFP3strFP3intFRvoidFE_t foreach4 = d4_fn_esFP3strFP3intFRvoidFE_alloc(
+    foreach_name,
+    d4_safe_calloc(&(foreach_ctx_t) {&r4}, sizeof(foreach_ctx_t)),
+    (void *(*) (const void *)) foreach_ctx_copy,
+    (void (*) (void *)) foreach_ctx_free,
+    (void (*) (void *, void *)) foreach_str
+  );
+
+  d4_str_t v1 = d4_str_alloc(L"");
+  d4_str_t v2 = d4_str_alloc(L"a");
+  d4_str_t v3 = d4_str_alloc(L"orange");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+  d4_arr_str_t a4 = d4_arr_str_alloc(3, v1, v2, v3);
+
+  d4_str_t cmp1 = d4_str_alloc(L"");
+  d4_str_t cmp2 = d4_str_alloc(L"");
+  d4_str_t cmp3 = d4_str_alloc(L"a");
+  d4_str_t cmp4 = d4_str_alloc(L"aorange");
+
+  ASSERT_NO_THROW(FOREACH1, {
+    d4_arr_str_forEach(&d4_err_state, 0, 0, a1, foreach1);
+    d4_arr_str_forEach(&d4_err_state, 0, 0, a2, foreach2);
+    d4_arr_str_forEach(&d4_err_state, 0, 0, a3, foreach3);
+    d4_arr_str_forEach(&d4_err_state, 0, 0, a4, foreach4);
+
+    assert(((void) "ForEach works with empty array", d4_str_eq(r1, cmp1)));
+    assert(((void) "ForEach works with one element array", d4_str_eq(r2, cmp2)));
+    assert(((void) "ForEach works with two elements array", d4_str_eq(r3, cmp3)));
+    assert(((void) "ForEach works with three elements array", d4_str_eq(r4, cmp4)));
+  });
+
+  d4_str_free(cmp1);
+  d4_str_free(cmp2);
+  d4_str_free(cmp3);
+  d4_str_free(cmp4);
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+  d4_arr_str_free(a4);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
+  d4_str_free(v3);
+
+  d4_fn_esFP3strFP3intFRvoidFE_free(foreach1);
+  d4_fn_esFP3strFP3intFRvoidFE_free(foreach2);
+  d4_fn_esFP3strFP3intFRvoidFE_free(foreach3);
+  d4_fn_esFP3strFP3intFRvoidFE_free(foreach4);
+
+  d4_str_free(r1);
+  d4_str_free(r2);
+  d4_str_free(r3);
+  d4_str_free(r4);
+
+  d4_str_free(foreach_name);
 }
 
 static void test_array_free (void) {
@@ -1132,7 +1305,106 @@ static void test_array_slice (void) {
 }
 
 static void test_array_sort (void) {
-  // todo
+  d4_str_t sort_asc_name = d4_str_alloc(L"asc");
+  d4_str_t sort_desc_name = d4_str_alloc(L"desc");
+
+  d4_fn_esFP3strFP3strFRintFE_t sort_asc = d4_fn_esFP3strFP3strFRintFE_alloc(
+    sort_asc_name,
+    NULL,
+    NULL,
+    NULL,
+    (int32_t (*) (void *, void *)) sort_asc_str
+  );
+
+  d4_fn_esFP3strFP3strFRintFE_t sort_desc = d4_fn_esFP3strFP3strFRintFE_alloc(
+    sort_desc_name,
+    NULL,
+    NULL,
+    NULL,
+    (int32_t (*) (void *, void *)) sort_desc_str
+  );
+
+  d4_str_t v1 = d4_str_alloc(L"");
+  d4_str_t v2 = d4_str_alloc(L"a");
+  d4_str_t v3 = d4_str_alloc(L"orange");
+  d4_str_t v4 = d4_str_alloc(L"lorem ipsum dolor sit amet");
+
+  d4_arr_str_t a1 = d4_arr_str_alloc(0);
+  d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+  d4_arr_str_t a4 = d4_arr_str_alloc(3, v1, v3, v2);
+  d4_arr_str_t a5 = d4_arr_str_alloc(4, v1, v3, v4, v2);
+  d4_arr_str_t a6 = d4_arr_str_alloc(8, v4, v1, v2, v3, v3, v2, v4, v1);
+
+  d4_arr_str_t cmp1 = d4_arr_str_alloc(0);
+  d4_arr_str_t cmp2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t cmp3 = d4_arr_str_alloc(2, v1, v2);
+  d4_arr_str_t cmp4 = d4_arr_str_alloc(3, v1, v2, v3);
+  d4_arr_str_t cmp5 = d4_arr_str_alloc(4, v1, v2, v4, v3);
+  d4_arr_str_t cmp6 = d4_arr_str_alloc(8, v1, v1, v2, v2, v4, v4, v3, v3);
+  d4_arr_str_t cmp7 = d4_arr_str_alloc(2, v2, v1);
+  d4_arr_str_t cmp8 = d4_arr_str_alloc(3, v3, v2, v1);
+  d4_arr_str_t cmp9 = d4_arr_str_alloc(4, v3, v4, v2, v1);
+  d4_arr_str_t cmp10 = d4_arr_str_alloc(8, v3, v3, v4, v4, v2, v2, v1, v1);
+
+  ASSERT_NO_THROW(FOREACH1, {
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a1, sort_asc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a2, sort_asc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a3, sort_asc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a4, sort_asc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a5, sort_asc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a6, sort_asc);
+
+    assert(((void) "Sorts ASC empty array", d4_arr_str_eq(a1, cmp1)));
+    assert(((void) "Sorts ASC one element array", d4_arr_str_eq(a2, cmp2)));
+    assert(((void) "Sorts ASC two elements array", d4_arr_str_eq(a3, cmp3)));
+    assert(((void) "Sorts ASC three elements array", d4_arr_str_eq(a4, cmp4)));
+    assert(((void) "Sorts ASC four elements array", d4_arr_str_eq(a5, cmp5)));
+    assert(((void) "Sorts ASC eight elements array", d4_arr_str_eq(a6, cmp6)));
+
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a1, sort_desc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a2, sort_desc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a3, sort_desc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a4, sort_desc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a5, sort_desc);
+    d4_arr_str_sort(&d4_err_state, 0, 0, &a6, sort_desc);
+
+    assert(((void) "Sorts DESC empty array", d4_arr_str_eq(a1, cmp1)));
+    assert(((void) "Sorts DESC one element array", d4_arr_str_eq(a2, cmp2)));
+    assert(((void) "Sorts DESC two elements array", d4_arr_str_eq(a3, cmp7)));
+    assert(((void) "Sorts DESC three elements array", d4_arr_str_eq(a4, cmp8)));
+    assert(((void) "Sorts DESC four elements array", d4_arr_str_eq(a5, cmp9)));
+    assert(((void) "Sorts DESC eight elements array", d4_arr_str_eq(a6, cmp10)));
+  });
+
+  d4_str_free(sort_asc_name);
+  d4_str_free(sort_desc_name);
+
+  d4_fn_esFP3strFP3strFRintFE_free(sort_asc);
+  d4_fn_esFP3strFP3strFRintFE_free(sort_desc);
+
+  d4_str_free(v1);
+  d4_str_free(v2);
+  d4_str_free(v3);
+  d4_str_free(v4);
+
+  d4_arr_str_free(a1);
+  d4_arr_str_free(a2);
+  d4_arr_str_free(a3);
+  d4_arr_str_free(a4);
+  d4_arr_str_free(a5);
+  d4_arr_str_free(a6);
+
+  d4_arr_str_free(cmp1);
+  d4_arr_str_free(cmp2);
+  d4_arr_str_free(cmp3);
+  d4_arr_str_free(cmp4);
+  d4_arr_str_free(cmp5);
+  d4_arr_str_free(cmp6);
+  d4_arr_str_free(cmp7);
+  d4_arr_str_free(cmp8);
+  d4_arr_str_free(cmp9);
+  d4_arr_str_free(cmp10);
 }
 
 static void test_array_str (void) {
