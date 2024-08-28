@@ -34,6 +34,7 @@ set(
   src/globals.c
   src/map.c
   src/number.c
+  src/object.c
   src/rune.c
   src/safe.c
   src/string.c

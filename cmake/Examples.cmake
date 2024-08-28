@@ -19,6 +19,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_EXAMPLES)
     macro
     map
     number
+    object
     optional
     reference
     rand

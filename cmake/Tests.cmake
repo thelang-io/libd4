@@ -31,6 +31,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_TESTS)
     globals
     map
     number
+    object
     optional
     rand
     reference
