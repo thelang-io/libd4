@@ -5,6 +5,7 @@
 
 #include "rune.h"
 #include <d4/safe.h>
+#include <ctype.h>
 #include "string.h"
 
 unsigned char d4_rune_byte (wchar_t self) {

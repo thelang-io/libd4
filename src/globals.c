@@ -39,7 +39,7 @@ static void print_func (D4_UNUSED void *ctx, void *params) {
 }
 
 d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_t d4_print = {
-  (d4_str_t) {L"print", 4, true},
+  {L"print", 4, true},
   NULL,
   NULL,
   NULL,

@@ -223,7 +223,7 @@
       d4_str_free(message); \
       longjmp(state->buf_last->buf, state->id); \
     } \
-    i = index < 0 ? index + self->len : index; \
+    i = index < 0 ? index + self->len : (size_t) index; \
     element = self->data[i]; \
     free_block; \
     if (i != self->len - 1) { \
