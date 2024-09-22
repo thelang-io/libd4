@@ -30,11 +30,17 @@
 static d4_str_t request (char *hostname, const char *request, size_t request_len) {
   struct addrinfo *addr = NULL;
   struct addrinfo hints;
-  int fd;
+
+  #if defined(D4_OS_WINDOWS)
+    SOCKET fd;
+  #else
+    int fd;
+  #endif
+
   SSL_CTX *ctx = NULL;
   SSL *ssl = NULL;
   char *buf = NULL;
-  int read_bytes;
+  int read_bytes = 0;
   wchar_t *wide_buf;
   d4_str_t result;
 

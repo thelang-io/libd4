@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char GATE[4] = "GATE";
+const char GATE[5] = "GATE";
 
 static void pay_debt (int pay_amount, int debt_amount) {
   if (debt_amount != pay_amount) {

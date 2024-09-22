@@ -34,7 +34,13 @@ int main (void) {
   bool failed = false;
   struct addrinfo *addr = NULL;
   struct addrinfo hints;
-  int fd;
+
+  #if defined(D4_OS_WINDOWS)
+    SOCKET fd;
+  #else
+    int fd;
+  #endif
+
   SSL_CTX *ctx = NULL;
   SSL *ssl = NULL;
 

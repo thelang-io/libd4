@@ -5,6 +5,7 @@
 
 #include <d4/safe.h>
 #include <d4/string.h>
+#include <stdio.h>
 #include "utils.h"
 
 static int unicode_len (const unsigned char code) {

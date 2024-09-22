@@ -6,6 +6,7 @@
 #include <d4/macro.h>
 #include <d4/number.h>
 #include <assert.h>
+#include <stdio.h>
 #include "../src/globals.h"
 #include "utils.h"
 

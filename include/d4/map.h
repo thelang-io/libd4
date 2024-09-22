@@ -218,18 +218,12 @@
   } \
   \
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_remove (d4_err_state_t *state, int line, int col, d4_map_##key_type_name##MS##value_type_name##ME_t *self, const key_type search_key) { \
-    d4_str_t id; \
-    size_t index; \
-    d4_map_##key_type_name##MS##value_type_name##ME_pair_t *prev = NULL; \
-    d4_map_##key_type_name##MS##value_type_name##ME_pair_t *it; \
-    key_type key; \
+    key_type key = search_key; \
     value_type val; \
-    { \
-      key_type key = search_key; \
-      id = key_hash_block; \
-    } \
-    index = d4_map_hash(id, self->cap); \
-    it = self->data[index]; \
+    d4_str_t id = key_hash_block; \
+    size_t index = d4_map_hash(id, self->cap); \
+    d4_map_##key_type_name##MS##value_type_name##ME_pair_t *prev = NULL; \
+    d4_map_##key_type_name##MS##value_type_name##ME_pair_t *it = self->data[index]; \
     while (it != NULL) { \
       if (d4_str_eq(it->id, id)) break; \
       prev = it; \
