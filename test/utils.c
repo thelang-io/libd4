@@ -27,7 +27,7 @@ static unsigned char unicode_mask (const unsigned char code) {
 d4_str_t read_unicode_file (const char *path) {
   FILE *f = fopen(path, "rb");
   char *buf = NULL;
-  size_t buf_len;
+  size_t buf_len = 0;
   wchar_t *data = NULL;
   size_t len = 0;
 

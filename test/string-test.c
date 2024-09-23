@@ -19,12 +19,16 @@ static void test_string_snwprintf_vsnwprintf (void) {
 
 static void test_string_alloc (void) {
   d4_str_t s1 = d4_str_alloc(NULL);
+  d4_str_t s5 = d4_str_alloc(L"");
   d4_str_t s2 = d4_str_alloc(L"Test");
   d4_str_t s3 = d4_str_alloc(L"%d", 10);
   d4_str_t s4 = d4_str_alloc(L"10");
 
   assert(((void) "Allocates empty", s1.data == NULL));
   assert(((void) "Allocates empty", s1.len == 0));
+
+  assert(((void) "Allocates zero length", s5.data == NULL));
+  assert(((void) "Allocates zero length", s5.len == 0));
 
   assert(((void) "Allocates non empty", s2.data != NULL));
   assert(((void) "Allocates non empty", s2.len == 4));
@@ -36,6 +40,7 @@ static void test_string_alloc (void) {
   d4_str_free(s2);
   d4_str_free(s3);
   d4_str_free(s4);
+  d4_str_free(s5);
 }
 
 static void test_string_calloc (void) {
@@ -895,9 +900,13 @@ static void test_string_realloc (void) {
   d4_str_t s1 = d4_str_alloc(L"");
   d4_str_t s2 = d4_str_alloc(L"test");
   d4_str_t s3 = d4_str_alloc(L"");
+  d4_str_t s4 = d4_str_alloc(L"test");
+
+  s4 = d4_str_realloc(s4, s1);
+  assert(((void) "Reallocates non-empty string with empty string", d4_str_eq(s1, s4) && s4.data == NULL));
 
   s3 = d4_str_realloc(s3, s1);
-  assert(((void) "Reallocates empty string with empty string", d4_str_eq(s1, s3)));
+  assert(((void) "Reallocates empty string with empty string", d4_str_eq(s1, s3) && s3.data == NULL));
 
   s3 = d4_str_realloc(s3, s2);
   assert(((void) "Reallocates empty string with non-empty string", d4_str_eq(s2, s3)));
@@ -908,6 +917,7 @@ static void test_string_realloc (void) {
   d4_str_free(s1);
   d4_str_free(s2);
   d4_str_free(s3);
+  d4_str_free(s4);
 }
 
 static void test_string_replace (void) {
