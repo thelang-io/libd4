@@ -144,6 +144,36 @@ static void test_globals_print (void) {
   d4_str_free(result);
 }
 
+static void print_custom (void) {
+}
+
+static void test_globals_print_custom (void) {
+  d4_str_t print_name = d4_str_alloc(L"print");
+
+  d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_t print = d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_alloc(
+    print_name,
+    NULL,
+    NULL,
+    NULL,
+    (void (*)(void *, void *)) print_custom
+  );
+
+  d4_str_t print_str = d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_str(print);
+
+  d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_t print2 = d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_copy(print);
+  print2 = d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_realloc(print2, print);
+
+  assert(((void) "Custom print functions are equal", d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_eq(print, print2)));
+  assert(((void) "Custom print str is its name", d4_str_eq(print_str, print_name)));
+
+  d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_free(print);
+  d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_free(print2);
+
+  d4_str_free(print_name);
+  d4_str_free(print_str);
+}
+
 int main (void) {
   test_globals_print();
+  test_globals_print_custom();
 }
