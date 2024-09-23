@@ -11,6 +11,6 @@ mkdir -p coverage
 cmake . -B ./coverage -D LIBD4_BUILD_TESTS=ON -D LIBD4_COVERAGE=ON
 cmake --build coverage --config Debug
 ctest --output-on-failure --test-dir coverage
-lcov --capture -d coverage -o coverage/test.info --exclude 'test/*'
+lcov --branch-coverage --capture -d coverage -o coverage/test.info --exclude 'test/*'
 genhtml -o coverage/html coverage/test.info
 open coverage/html/index.html
