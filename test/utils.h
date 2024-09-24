@@ -25,6 +25,7 @@ L##error_id: \
     if (setjmp(d4_error_buf_increase(&d4_err_state)->buf) != 0) goto L##error_id; \
     block \
 L##error_id: \
+    d4_error_buf_decrease(&d4_err_state); \
     d4_error_stack_pop(&d4_err_state); \
     assert(((void) "Throws error", d4_err_state.id != -1)); \
     error = d4_err_state.ctx; \

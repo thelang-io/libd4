@@ -112,18 +112,15 @@
     size_t len = 0; \
     element_type *data = d4_safe_alloc(self.len * sizeof(element_type)); \
     for (size_t i = 0; i < self.len; i++) { \
-      if ( \
-        predicate.func( \
-          predicate.ctx, \
-          d4_safe_calloc( \
-            &(d4_fn_esFP3##element_type_name##FRboolFE_params_t) {state, line, col, self.data[i]}, \
-            sizeof(d4_fn_esFP3##element_type_name##FRboolFE_params_t) \
-          ) \
-        ) \
-      ) { \
+      void *params = d4_safe_calloc( \
+        &(d4_fn_esFP3##element_type_name##FRboolFE_params_t) {state, line, col, self.data[i]}, \
+        sizeof(d4_fn_esFP3##element_type_name##FRboolFE_params_t) \
+      ); \
+      if (predicate.func(predicate.ctx, params)) { \
         const element_type element = self.data[i]; \
         data[len++] = copy_block; \
       } \
+      d4_safe_free(params); \
     } \
     return (d4_arr_##element_type_name##_t) {data, len}; \
   } \
@@ -140,13 +137,12 @@
   \
   void d4_arr_##element_type_name##_forEach (d4_err_state_t *state, int line, int col, const d4_arr_##element_type_name##_t self, const d4_fn_esFP3##element_type_name##FP3intFRvoidFE_t iterator) { \
     for (size_t i = 0; i < self.len; i++) { \
-      iterator.func( \
-        iterator.ctx, \
-        d4_safe_calloc( \
-          &(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) {state, line, col, self.data[i], i}, \
-          sizeof(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) \
-        ) \
+      void *params = d4_safe_calloc( \
+        &(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) {state, line, col, self.data[i], i}, \
+        sizeof(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) \
       ); \
+      iterator.func(iterator.ctx, params); \
+      d4_safe_free(params); \
     } \
   } \
   \
@@ -161,10 +157,15 @@
   d4_str_t d4_arr_##element_type_name##_join (const d4_arr_##element_type_name##_t self, unsigned char o1, const d4_str_t separator) { \
     d4_str_t x = o1 == 0 ? d4_str_alloc(L",") : separator; \
     d4_str_t result = (d4_str_t) {NULL, 0, false}; \
+    d4_str_t t1; \
     for (size_t i = 0; i < self.len; i++) { \
       const element_type element = self.data[i]; \
-      if (i != 0) result = d4_str_realloc(result, d4_str_concat(result, x)); \
-      result = d4_str_realloc(result, d4_str_concat(result, str_block)); \
+      if (i != 0) { \
+        result = d4_str_realloc(result, t1 = d4_str_concat(result, x)); \
+        d4_str_free(t1); \
+      } \
+      result = d4_str_realloc(result, t1 = d4_str_concat(result, str_block)); \
+      d4_str_free(t1); \
     } \
     if (o1 == 0) d4_str_free(x); \
     return result; \
@@ -281,34 +282,39 @@
     while (1) { \
       unsigned char b = 0; \
       for (size_t i = 1; i < self->len; i++) { \
-        int32_t c = comparator.func( \
-          comparator.ctx, \
-          d4_safe_calloc( \
-            &(d4_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) {state, line, col, self->data[i - 1], self->data[i]}, \
-            sizeof(d4_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) \
-          ) \
+        void *params = d4_safe_calloc( \
+          &(d4_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) {state, line, col, self->data[i - 1], self->data[i]}, \
+          sizeof(d4_fn_esFP3##element_type_name##FP3##element_type_name##FRintFE_params_t) \
         ); \
+        int32_t c = comparator.func(comparator.ctx, params); \
         if (c > 0) { \
           element_type t = self->data[i]; \
           self->data[i] = self->data[i - 1]; \
           self->data[i - 1] = t; \
           b = 1; \
         } \
+        d4_safe_free(params); \
       } \
       if (b == 0) return self; \
     } \
   } \
   \
   d4_str_t d4_arr_##element_type_name##_str (const d4_arr_##element_type_name##_t self) { \
+    d4_str_t t1; \
     d4_str_t b = d4_str_alloc(L"]"); \
     d4_str_t c = d4_str_alloc(L", "); \
     d4_str_t r = d4_str_alloc(L"["); \
     for (size_t i = 0; i < self.len; i++) { \
       const element_type element = self.data[i]; \
-      if (i != 0) r = d4_str_realloc(r, d4_str_concat(r, c)); \
-      r = d4_str_realloc(r, d4_str_concat(r, str_block)); \
+      if (i != 0) { \
+        r = d4_str_realloc(r, t1 = d4_str_concat(r, c)); \
+        d4_str_free(t1); \
+      } \
+      r = d4_str_realloc(r, t1 = d4_str_concat(r, str_block)); \
+      d4_str_free(t1); \
     } \
-    r = d4_str_realloc(r, d4_str_concat(r, b)); \
+    r = d4_str_realloc(r, t1 = d4_str_concat(r, b)); \
+    d4_str_free(t1); \
     d4_str_free(b); \
     d4_str_free(c); \
     return r; \

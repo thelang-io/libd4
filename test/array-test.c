@@ -856,6 +856,7 @@ static void test_array_remove (void) {
   d4_arr_str_free(a1);
   d4_arr_str_free(a2);
   d4_arr_str_free(a3);
+  d4_arr_str_free(a4);
 
   d4_str_free(v1);
   d4_str_free(v2);
