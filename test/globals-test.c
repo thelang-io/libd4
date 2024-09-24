@@ -37,10 +37,11 @@ static void test_globals_print (void) {
   d4_arr_any_t items2 = d4_arr_any_alloc(2, i1, i2);
 
   FILE *f = freopen(path, "w", stdout);
+  void *params;
 
   d4_print.func(
     d4_print.ctx,
-    d4_safe_calloc(
+    params = d4_safe_calloc(
       &(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t) {
         items1,
         0, s_e,
@@ -51,9 +52,11 @@ static void test_globals_print (void) {
     )
   );
 
+  d4_safe_free(params);
+
   d4_print.func(
     d4_print.ctx,
-    d4_safe_calloc(
+    params = d4_safe_calloc(
       &(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t) {
         items2,
         0, s_e,
@@ -64,9 +67,11 @@ static void test_globals_print (void) {
     )
   );
 
+  d4_safe_free(params);
+
   d4_print.func(
     d4_print.ctx,
-    d4_safe_calloc(
+    params = d4_safe_calloc(
       &(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t) {
         items2,
         1, s_comma,
@@ -76,6 +81,8 @@ static void test_globals_print (void) {
       sizeof(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t)
     )
   );
+
+  d4_safe_free(params);
 
   fclose(f);
   file_content = read_unicode_file(path);
@@ -87,7 +94,7 @@ static void test_globals_print (void) {
 
   d4_print.func(
     d4_print.ctx,
-    d4_safe_calloc(
+    params = d4_safe_calloc(
       &(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t) {
         items1,
         0, s_e,
@@ -98,9 +105,11 @@ static void test_globals_print (void) {
     )
   );
 
+  d4_safe_free(params);
+
   d4_print.func(
     d4_print.ctx,
-    d4_safe_calloc(
+    params = d4_safe_calloc(
       &(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t) {
         items2,
         0, s_e,
@@ -111,9 +120,11 @@ static void test_globals_print (void) {
     )
   );
 
+  d4_safe_free(params);
+
   d4_print.func(
     d4_print.ctx,
-    d4_safe_calloc(
+    params = d4_safe_calloc(
       &(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t) {
         items2,
         1, s_comma,
@@ -123,6 +134,8 @@ static void test_globals_print (void) {
       sizeof(d4_fn_sFP4arr_anyFP1strFP1strFP1strFRvoidFE_params_t)
     )
   );
+
+  d4_safe_free(params);
 
   fclose(f);
   file_content = read_unicode_file(path);
@@ -139,6 +152,7 @@ static void test_globals_print (void) {
   d4_str_free(s_comma);
   d4_str_free(s_stderr);
   d4_str_free(s_stdout);
+  d4_str_free(s_string);
   d4_str_free(s_e);
 
   d4_str_free(result);

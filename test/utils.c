@@ -57,5 +57,6 @@ d4_str_t read_unicode_file (const char *path) {
   }
 
   data[len] = L'\0';
+  d4_safe_free(buf);
   return (d4_str_t) {data, len, false};
 }
