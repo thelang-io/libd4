@@ -190,10 +190,13 @@ static void test_fn_exec (void) {
     (uint32_t (*) (void *, void *)) job4
   );
 
+  void *params1;
+  void *params2;
+
   assert(((void) "Function name is set without ctx and params", a.func(a.ctx, NULL) == 10));
-  assert(((void) "Function name is set without ctx", b.func(b.ctx, d4_safe_calloc(&(d4_fn_sFP3intFRu32FE_params_t) {5}, sizeof(d4_fn_sFP3intFRu32FE_params_t))) == 25));
+  assert(((void) "Function name is set without ctx", b.func(b.ctx, params1 = d4_safe_calloc(&(d4_fn_sFP3intFRu32FE_params_t) {5}, sizeof(d4_fn_sFP3intFRu32FE_params_t))) == 25));
   assert(((void) "Function name is set without params", c.func(c.ctx, NULL) == 35));
-  assert(((void) "Function name is set with ctx and params", d.func(d.ctx, d4_safe_calloc(&(d4_fn_sFP3intFRu32FE_params_t) {10}, sizeof(d4_fn_sFP3intFRu32FE_params_t))) == 55));
+  assert(((void) "Function name is set with ctx and params", d.func(d.ctx, params2 = d4_safe_calloc(&(d4_fn_sFP3intFRu32FE_params_t) {10}, sizeof(d4_fn_sFP3intFRu32FE_params_t))) == 55));
 
   d4_fn_sFRu32FE_free(a);
   d4_fn_sFP3intFRu32FE_free(b);
@@ -204,6 +207,9 @@ static void test_fn_exec (void) {
   d4_str_free(name2);
   d4_str_free(name3);
   d4_str_free(name4);
+
+  d4_safe_free(params1);
+  d4_safe_free(params2);
 }
 
 static void test_fn_free (void) {

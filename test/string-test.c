@@ -1272,6 +1272,7 @@ static void test_string_replace (void) {
   d4_str_free(s2);
   d4_str_free(s3);
   d4_str_free(s4);
+  d4_str_free(s5);
 
   d4_str_free(search1);
   d4_str_free(search2);

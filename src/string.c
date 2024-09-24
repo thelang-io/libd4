@@ -13,7 +13,7 @@
 
 D4_ARRAY_DEFINE(str, d4_str_t, d4_str_t, d4_str_copy(element), d4_str_eq(lhs_element, rhs_element), d4_str_free(element), d4_str_copy(element))
 
-d4_str_t d4_str_empty_val = {NULL, 0, false};
+d4_str_t d4_str_empty_val = {NULL, 0, true};
 
 int snwprintf (const wchar_t *fmt, ...) {
   va_list args;
@@ -54,9 +54,9 @@ int vsnwprintf (const wchar_t *fmt, va_list args) {
 d4_str_t d4_str_alloc (const wchar_t *fmt, ...) {
   wchar_t *d = NULL;
   size_t l = 0;
-  va_list args;
 
   if (fmt != NULL) {
+    va_list args;
     va_start(args, fmt);
     l = (size_t) vsnwprintf(fmt, args);
 
@@ -144,12 +144,14 @@ bool d4_str_eq (const d4_str_t self, const d4_str_t rhs) {
 }
 
 d4_str_t d4_str_escape (const d4_str_t self) {
-  wchar_t *d = d4_safe_alloc((self.len + 1) * sizeof(wchar_t));
+  wchar_t *d;
   size_t l = 0;
 
   if (self.len == 0) {
     return d4_str_empty_val;
   }
+
+  d = d4_safe_alloc((self.len + 1) * sizeof(wchar_t));
 
   for (size_t i = 0; i < self.len; i++) {
     wchar_t c = self.data[i];

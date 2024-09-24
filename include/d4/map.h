@@ -322,6 +322,7 @@
         r = d4_str_realloc(r, r_with_val); \
         d4_str_free(key_str); \
         d4_str_free(value_str); \
+        d4_str_free(key_quoted); \
         d4_str_free(r_with_key); \
         d4_str_free(r_with_colon); \
         d4_str_free(r_with_val); \

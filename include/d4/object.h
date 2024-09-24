@@ -45,12 +45,14 @@
   d4_str_t d4_obj_##type_name##_str (const d4_obj_##type_name##_t self) { \
     d4_str_t right_brace = d4_str_alloc(L"}"); \
     d4_str_t result = d4_str_empty_val; \
-    d4_str_t tmp; \
+    d4_str_t t1; \
+    d4_str_t t2; \
     str_block \
-    result = d4_str_realloc(result, tmp = d4_str_concat(d4_str_alloc(#display_name  L"{"), result)); \
-    d4_str_free(tmp); \
-    result = d4_str_realloc(result, tmp = d4_str_concat(result, right_brace)); \
-    d4_str_free(tmp); \
+    result = d4_str_realloc(result, t1 = d4_str_concat(t2 = d4_str_alloc(#display_name  L"{"), result)); \
+    d4_str_free(t1); \
+    d4_str_free(t2); \
+    result = d4_str_realloc(result, t1 = d4_str_concat(result, right_brace)); \
+    d4_str_free(t1); \
     d4_str_free(right_brace); \
     return result; \
   }
