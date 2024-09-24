@@ -158,14 +158,16 @@
     d4_str_t x = o1 == 0 ? d4_str_alloc(L",") : separator; \
     d4_str_t result = (d4_str_t) {NULL, 0, false}; \
     d4_str_t t1; \
+    d4_str_t t2; \
     for (size_t i = 0; i < self.len; i++) { \
       const element_type element = self.data[i]; \
       if (i != 0) { \
         result = d4_str_realloc(result, t1 = d4_str_concat(result, x)); \
         d4_str_free(t1); \
       } \
-      result = d4_str_realloc(result, t1 = d4_str_concat(result, str_block)); \
+      result = d4_str_realloc(result, t1 = d4_str_concat(result, t2 = str_block)); \
       d4_str_free(t1); \
+      d4_str_free(t2); \
     } \
     if (o1 == 0) d4_str_free(x); \
     return result; \
@@ -301,6 +303,7 @@
   \
   d4_str_t d4_arr_##element_type_name##_str (const d4_arr_##element_type_name##_t self) { \
     d4_str_t t1; \
+    d4_str_t t2; \
     d4_str_t b = d4_str_alloc(L"]"); \
     d4_str_t c = d4_str_alloc(L", "); \
     d4_str_t r = d4_str_alloc(L"["); \
@@ -310,8 +313,9 @@
         r = d4_str_realloc(r, t1 = d4_str_concat(r, c)); \
         d4_str_free(t1); \
       } \
-      r = d4_str_realloc(r, t1 = d4_str_concat(r, str_block)); \
+      r = d4_str_realloc(r, t1 = d4_str_concat(r, t2 = str_block)); \
       d4_str_free(t1); \
+      d4_str_free(t2); \
     } \
     r = d4_str_realloc(r, t1 = d4_str_concat(r, b)); \
     d4_str_free(t1); \
