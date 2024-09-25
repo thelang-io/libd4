@@ -25,6 +25,7 @@ jobs:
             install-prefix: sudo
           - os: ubuntu-22.04
             install-prefix: sudo
+          - os: windows-2019
           - os: windows-2022
     steps:
       - uses: actions/checkout@v4
