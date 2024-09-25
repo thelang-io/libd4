@@ -129,7 +129,7 @@ L1:
   }
 
   wide_buf[read_bytes] = L'\0';
-  result = d4_str_alloc(wide_buf);
+  result = d4_str_alloc(L"%ls", wide_buf);
 
   d4_safe_free(buf);
   d4_safe_free(wide_buf);
