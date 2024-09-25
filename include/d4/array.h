@@ -138,7 +138,7 @@
   void d4_arr_##element_type_name##_forEach (d4_err_state_t *state, int line, int col, const d4_arr_##element_type_name##_t self, const d4_fn_esFP3##element_type_name##FP3intFRvoidFE_t iterator) { \
     for (size_t i = 0; i < self.len; i++) { \
       void *params = d4_safe_calloc( \
-        &(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) {state, line, col, self.data[i], i}, \
+        &(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) {state, line, col, self.data[i], (int32_t) i}, \
         sizeof(d4_fn_esFP3##element_type_name##FP3intFRvoidFE_params_t) \
       ); \
       iterator.func(iterator.ctx, params); \
@@ -226,7 +226,7 @@
       d4_str_free(message); \
       longjmp(state->buf_last->buf, state->id); \
     } \
-    i = index < 0 ? (size_t) (index + (int32_t) self->len) : (size_t) index; \
+    i = index < 0 ? index + self->len : (size_t) index; \
     element = self->data[i]; \
     free_block; \
     if (i != self->len - 1) { \
