@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
+#include <d4/macro.h>
 #include "globals.h"
 #include <d4/array.h>
-#include <d4/macro.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "string.h"

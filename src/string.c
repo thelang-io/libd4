@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
+#include <d4/macro.h>
 #include "string.h"
 #include <d4/array.h>
-#include <d4/macro.h>
 #include <ctype.h>
 #include <float.h>
 #include <limits.h>

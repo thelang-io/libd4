@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/fn.h>
 #include <d4/macro.h>
+#include <d4/fn.h>
 #include <d4/number.h>
 #include <assert.h>
 

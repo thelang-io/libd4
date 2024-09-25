@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/fn.h>
 #include <d4/macro.h>
+#include <d4/fn.h>
 
 D4_FUNCTION_DECLARE(s, int, int32_t)
 

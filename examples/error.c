@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/error.h>
 #include <d4/macro.h>
+#include <d4/error.h>
 #include <d4/string.h>
 #include <stdio.h>
 #include <stdlib.h>
