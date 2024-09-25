@@ -8,6 +8,10 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
+#if defined(_MSC_VER)
+  #define _CRT_SECURE_NO_WARNINGS
+#endif
+
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32) || defined(__WIN32__)
   /** Whether current operating system is Windows. */
   #define D4_OS_WINDOWS
@@ -22,8 +26,10 @@
 /** Platform specific end of line. */
 #if defined(D4_OS_WINDOWS)
   #define D4_EOL L"\r\n"
+  #define D4_EOL_LEN 2
 #else
   #define D4_EOL L"\n"
+  #define D4_EOL_LEN 1
 #endif
 
 /** Platform specific path separator. */
