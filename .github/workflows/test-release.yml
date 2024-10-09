@@ -21,9 +21,13 @@ jobs:
           - os: macos-13
           - os: macos-14
             install-prefix: sudo
+          - os: macos-15
+            install-prefix: sudo
           - os: ubuntu-20.04
             install-prefix: sudo
           - os: ubuntu-22.04
+            install-prefix: sudo
+          - os: ubuntu-24.04
             install-prefix: sudo
           - os: windows-2019
           - os: windows-2022

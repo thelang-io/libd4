@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   test-coverage:
-    runs-on: macos-14
+    runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: thelang-io/setup-the@v1
@@ -22,7 +22,7 @@ jobs:
             coverage/openssl
             coverage/openssl-prefix
             coverage/openssl-src
-          key: coverage-cmake-openssl-macos-14-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
+          key: coverage-cmake-openssl-macos-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
       - run: brew install lcov
       - run: mkdir -p coverage
       - run: cmake . -B ./coverage -D LIBD4_BUILD_TESTS=ON -D LIBD4_COVERAGE=ON
