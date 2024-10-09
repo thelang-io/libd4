@@ -7,7 +7,7 @@ cmake_minimum_required(VERSION 3.14)
 
 project(
   libd4
-  VERSION 0.2.0
+  VERSION 0.3.0
   LANGUAGES C
   DESCRIPTION "A library specifically designed for The programming language"
 )
