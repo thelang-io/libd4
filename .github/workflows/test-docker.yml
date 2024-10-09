@@ -1,0 +1,19 @@
+name: Test Docker
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  cancel-in-progress: true
+  group: test-docker-${{ github.event.pull_request.number || github.sha }}
+
+jobs:
+  test-coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t libd4 .
+      - run: docker run libd4

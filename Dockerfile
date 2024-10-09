@@ -3,13 +3,14 @@
 # Licensed under the MIT License
 #
 
-FROM ubuntu
+FROM alpine
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-RUN apt-get update && \
-    apt-get install --no-install-recommends -y build-essential cmake ninja-build valgrind && \
-    rm -rf /var/lib/apt/lists/*
+RUN apk add build-base --no-cache
+RUN apk add cmake --no-cache
+RUN apk add linux-headers --no-cache
+RUN apk add perl --no-cache
+RUN apk add ninja --no-cache
+RUN apk add valgrind --no-cache
 
 WORKDIR /app
 COPY . .
