@@ -7,6 +7,10 @@
 #include <d4/object.h>
 #include <assert.h>
 
+D4_OBJECT_FORWARD_DECLARE(TestEmpty)
+D4_OBJECT_FORWARD_DECLARE(Test0)
+D4_OBJECT_FORWARD_DECLARE(Test)
+
 D4_OBJECT_DECLARE(TestEmpty, {
   void *_;
 }, void *_)

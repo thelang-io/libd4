@@ -6,6 +6,8 @@
 #include <d4/number.h>
 #include <d4/object.h>
 
+D4_OBJECT_FORWARD_DECLARE(Animal)
+
 D4_OBJECT_DECLARE(Animal, {
   d4_str_t name;
   int32_t age;

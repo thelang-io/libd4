@@ -11,14 +11,22 @@
 #include <d4/string.h>
 
 /**
+ * Macro used to forward declare object type.
+ * @param type_name Name of the object type.
+ */
+#define D4_OBJECT_FORWARD_DECLARE(type_name) \
+  /** Typedef representation of the object type. */ \
+  typedef struct d4_obj_##type_name##_t d4_obj_##type_name##_t;
+
+/**
  * Macro used to declare object type.
  * @param type_name Name of the object type.
  * @param definition Definition of the fields that are going to be declared as object type.
  * @param ... Allocation function parameters declaration for object type fields.
  */
 #define D4_OBJECT_DECLARE(type_name, definition, ...) \
-  /** Object representation of the object type. */ \
-  typedef struct definition d4_obj_##type_name##_t; \
+  /** Structure representation of the object type. */ \
+  struct d4_obj_##type_name##_t definition; \
   \
   /**
    * Allocates object type.
