@@ -188,12 +188,11 @@
   element_type d4_arr_##element_type_name##_pop (d4_arr_##element_type_name##_t *self); \
   \
   /**
-   * Adds new elements into array.
+   * Adds new elements into array from another array.
    * @param self Array to perform action on.
-   * @param length Amount of new elements.
-   * @param ... New elements to copy into array.
+   * @param other Array to perform actions from.
    */ \
-  void d4_arr_##element_type_name##_push (d4_arr_##element_type_name##_t *self, size_t length, ...); \
+  void d4_arr_##element_type_name##_push (d4_arr_##element_type_name##_t *self, const d4_arr_##element_type_name##_t other); \
   \
   /**
    * Reallocates first array object and returns copy of second array object.

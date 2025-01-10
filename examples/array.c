@@ -53,8 +53,8 @@ int main (void) {
   wprintf(L"length of a6 before merge %zu\n", a6.len);
   d4_arr_int_merge(&a6, a2);
   wprintf(L"length of a6 after merge %zu\n", a6.len);
-  d4_arr_int_push(&a6, 1, *d4_arr_int_at(&d4_err_state, 0, 0, a6, 0));
-  d4_arr_int_push(&a6, 2, *d4_arr_int_at(&d4_err_state, 0, 0, a6, 1), *d4_arr_int_at(&d4_err_state, 0, 0, a6, 2));
+  d4_arr_int_push(&a6, a2);
+  d4_arr_int_push(&a6, a3);
   wprintf(L"length of a6 after push %zu\n", a6.len);
   d4_arr_int_pop(&a6);
   wprintf(L"length of a6 after pop %zu\n", a6.len);

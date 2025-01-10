@@ -185,6 +185,7 @@
   \
   d4_arr_##element_type_name##_t *d4_arr_##element_type_name##_merge (d4_arr_##element_type_name##_t *self, const d4_arr_##element_type_name##_t other) { \
     size_t k = self->len; \
+    if (other.len == 0) return self; \
     self->len += other.len; \
     self->data = d4_safe_realloc(self->data, self->len * sizeof(element_type)); \
     for (size_t i = 0; i < other.len; i++) { \
@@ -199,17 +200,15 @@
     return self->data[self->len]; \
   } \
   \
-  void d4_arr_##element_type_name##_push (d4_arr_##element_type_name##_t *self, size_t length, ...) { \
-    va_list args; \
-    if (length == 0) return; \
-    self->len += length; \
+  void d4_arr_##element_type_name##_push (d4_arr_##element_type_name##_t *self, const d4_arr_##element_type_name##_t other) { \
+    size_t k = self->len; \
+    if (other.len == 0) return; \
+    self->len += other.len; \
     self->data = d4_safe_realloc(self->data, self->len * sizeof(element_type)); \
-    va_start(args, length); \
-    for (size_t i = self->len - length; i < self->len; i++) { \
-      const element_type element = va_arg(args, alloc_element_type); \
-      self->data[i] = copy_block; \
+    for (size_t i = 0; i < other.len; i++) { \
+      const element_type element = other.data[i]; \
+      self->data[k++] = copy_block; \
     } \
-    va_end(args); \
   } \
   \
   d4_arr_##element_type_name##_t d4_arr_##element_type_name##_realloc (d4_arr_##element_type_name##_t self, const d4_arr_##element_type_name##_t rhs) { \

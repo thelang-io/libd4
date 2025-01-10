@@ -687,7 +687,6 @@ static void test_array_last (void) {
 static void test_array_merge (void) {
   d4_str_t v1 = d4_str_alloc(L"element1");
   d4_str_t v2 = d4_str_alloc(L"element2");
-  d4_str_t v3 = d4_str_alloc(L"element3");
 
   d4_arr_str_t a1 = d4_arr_str_alloc(0);
   d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
@@ -728,7 +727,6 @@ static void test_array_merge (void) {
 
   d4_str_free(v1);
   d4_str_free(v2);
-  d4_str_free(v3);
 }
 
 static void test_array_pop (void) {
@@ -764,20 +762,36 @@ static void test_array_push (void) {
 
   d4_arr_str_t a1 = d4_arr_str_alloc(0);
   d4_arr_str_t a2 = d4_arr_str_alloc(1, v1);
-  d4_arr_str_t a3 = d4_arr_str_alloc(2, v1, v2);
+  d4_arr_str_t a3 = d4_arr_str_alloc(2, v2, v1);
 
-  d4_arr_str_push(&a1, 0);
-  assert(((void) "Pushes into empty array zero elements", a1.len == 0));
-  d4_arr_str_push(&a1, 1, v1);
-  assert(((void) "Pushes into empty array", a1.len == 1));
-  d4_arr_str_push(&a1, 1, v2);
-  assert(((void) "Pushes into previously empty array", a1.len == 2));
-  d4_arr_str_push(&a2, 1, v2);
-  assert(((void) "Pushes into array with one element", a2.len == 2));
-  d4_arr_str_push(&a3, 1, v2);
-  assert(((void) "Pushes into array with two elements", a3.len == 3));
-  d4_arr_str_push(&a3, 2, v1, v2);
-  assert(((void) "Pushes multiple into array with previously two elements", a3.len == 5));
+  d4_arr_str_t r1 = d4_arr_str_alloc(0);
+  d4_arr_str_t r2 = d4_arr_str_alloc(1, v1);
+  d4_arr_str_t r3 = d4_arr_str_alloc(2, v2, v1);
+
+  d4_arr_str_push(&r1, a1);
+  assert(((void) "Pushes zero elements into zero elements array", r1.len == 0));
+  d4_arr_str_push(&r1, a2);
+  assert(((void) "Pushes one element into zero elements array", r1.len == 1));
+  d4_arr_str_push(&r1, a3);
+  assert(((void) "Pushes two elements into one element array", r1.len == 3));
+
+  d4_arr_str_push(&r2, a1);
+  assert(((void) "Pushes zero elements into one element array", r2.len == 1));
+  d4_arr_str_push(&r2, a2);
+  assert(((void) "Pushes one element into one element array", r2.len == 2));
+  d4_arr_str_push(&r2, a3);
+  assert(((void) "Pushes two elements into two elements array", r2.len == 4));
+
+  d4_arr_str_push(&r3, a1);
+  assert(((void) "Pushes zero elements into two elements array", r3.len == 2));
+  d4_arr_str_push(&r3, a2);
+  assert(((void) "Pushes one element into two elements array", r3.len == 3));
+  d4_arr_str_push(&r3, a3);
+  assert(((void) "Pushes two elements into three elements array", r3.len == 5));
+
+  d4_arr_str_free(r1);
+  d4_arr_str_free(r2);
+  d4_arr_str_free(r3);
 
   d4_arr_str_free(a1);
   d4_arr_str_free(a2);
