@@ -20,6 +20,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_TESTS)
   set(
     tests
     any
+    arc
     array
     bool
     byte
