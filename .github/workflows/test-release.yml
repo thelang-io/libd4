@@ -17,7 +17,6 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - os: macos-12
           - os: macos-13
           - os: macos-14
             install-prefix: sudo
@@ -31,6 +30,7 @@ jobs:
             install-prefix: sudo
           - os: windows-2019
           - os: windows-2022
+          - os: windows-2025
     steps:
       - uses: actions/checkout@v4
       - if: runner.os == 'Windows'
