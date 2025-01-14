@@ -7,30 +7,16 @@
 #include <d4/string.h>
 #include <inttypes.h>
 
-static d4_str_t str_float_truncate (d4_str_t s) {
-  for (size_t i = s.len - 1; i >= 1; i--) {
-    if (s.data[i] == '0' && s.data[i - 1] != '.') {
-      s.data[i] = '\0';
-      s.len--;
-      continue;
-    }
-
-    break;
-  }
-
-  return s;
-}
-
 d4_str_t d4_f32_str (float self) {
-  return str_float_truncate(d4_str_alloc(L"%f", (double) self));
+  return d4_str_alloc(L"%.15g", (double) self);
 }
 
 d4_str_t d4_f64_str (double self) {
-  return str_float_truncate(d4_str_alloc(L"%f", self));
+  return d4_str_alloc(L"%.15g", self);
 }
 
 d4_str_t d4_float_str (double self) {
-  return str_float_truncate(d4_str_alloc(L"%f", self));
+  return d4_str_alloc(L"%.15g", self);
 }
 
 d4_str_t d4_i8_str (int8_t self) {

@@ -53,6 +53,12 @@ static void test_char_isUpper (void) {
 }
 
 static void test_char_isWhitespace (void) {
+  assert(((void) "Checks ' '", d4_char_isWhitespace(' ')));
+  assert(((void) "Checks '\\t'", d4_char_isWhitespace('\t')));
+  assert(((void) "Checks '\\n'", d4_char_isWhitespace('\n')));
+  assert(((void) "Checks '\\r'", d4_char_isWhitespace('\r')));
+  assert(((void) "Checks '\\v'", d4_char_isWhitespace('\v')));
+  assert(((void) "Checks '\\f'", d4_char_isWhitespace('\f')));
   assert(((void) "Checks 'A'", !d4_char_isWhitespace('A')));
   assert(((void) "Checks 'a'", !d4_char_isWhitespace('a')));
   assert(((void) "Checks '@'", !d4_char_isWhitespace('@')));

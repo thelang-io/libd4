@@ -5,6 +5,10 @@
 
 #include "map.h"
 
+/*
+ * Load factor of 0.75 provides a good balance between space efficiency
+ * and collision avoidance based on empirical testing.
+ */
 const double D4_MAP_LOAD_FACTOR = 0.75;
 
 size_t d4_map_calc_cap (size_t cap, size_t len) {

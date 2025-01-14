@@ -115,7 +115,7 @@
   d4_arr_##key_type_name##_t d4_map_##key_type_name##MS##value_type_name##ME_keys (const d4_map_##key_type_name##MS##value_type_name##ME_t self); \
   \
   /**
-   * Merges other map’s data into self map. When iterating, if key exists it will update pair with a new value.
+   * Merges other map’s data into self map. When iterating, if key exists it will update pair with a new value. Reallocates map object if load factor more than 75%.
    * @param self Map object to merge into.
    * @param other Map object to merge from.
    * @return Reference to itself.
@@ -157,7 +157,7 @@
   d4_map_##key_type_name##MS##value_type_name##ME_t *d4_map_##key_type_name##MS##value_type_name##ME_reserve (d4_map_##key_type_name##MS##value_type_name##ME_t *self, int32_t size); \
   \
   /**
-   * Sets a key inside map object, if key exists - updates its value.
+   * Sets a key inside map object, if key exists - updates its value. Reallocates map object if load factor more than 75%.
    * @param self Map object to set a pair for.
    * @param key Key of the pair.
    * @param value Value of the pair.

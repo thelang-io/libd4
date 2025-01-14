@@ -410,7 +410,7 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
   }
 
   if (d != NULL) {
-    d[l] = '\0';
+    d[l] = L'\0';
   }
 
   return (d4_str_t) {d, l, false};

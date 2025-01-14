@@ -53,6 +53,12 @@ static void test_rune_isUpper (void) {
 }
 
 static void test_rune_isWhitespace (void) {
+  assert(((void) "Checks ' '", d4_rune_isWhitespace(L' ')));
+  assert(((void) "Checks '\\t'", d4_rune_isWhitespace(L'\t')));
+  assert(((void) "Checks '\\n'", d4_rune_isWhitespace(L'\n')));
+  assert(((void) "Checks '\\r'", d4_rune_isWhitespace(L'\r')));
+  assert(((void) "Checks '\\v'", d4_rune_isWhitespace(L'\v')));
+  assert(((void) "Checks '\\f'", d4_rune_isWhitespace(L'\f')));
   assert(((void) "Checks 'A'", !d4_rune_isWhitespace(L'A')));
   assert(((void) "Checks 'a'", !d4_rune_isWhitespace(L'a')));
   assert(((void) "Checks '@'", !d4_rune_isWhitespace(L'@')));
