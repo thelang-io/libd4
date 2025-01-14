@@ -4,6 +4,7 @@
  */
 
 #include <assert.h>
+#include <stdio.h>
 #include "../src/number.h"
 #include "../src/string.h"
 
@@ -32,6 +33,7 @@ static void test_f64_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
 
   assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
+  printf("Value: %ls\n", a2.data);
   assert(((void) "Stringifies 12.34", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
