@@ -4,7 +4,6 @@
  */
 
 #include <assert.h>
-#include <stdio.h>
 #include "../src/number.h"
 #include "../src/string.h"
 
@@ -12,7 +11,7 @@ static void test_f32_str (void) {
   d4_str_t a1 = d4_f32_str(0.0f);
   d4_str_t a2 = d4_f32_str(12.34f);
 
-  d4_str_t s1_cmp = d4_str_alloc(L"0.0");
+  d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
 
   assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
@@ -29,7 +28,7 @@ static void test_f64_str (void) {
   d4_str_t a1 = d4_f64_str(0.0);
   d4_str_t a2 = d4_f64_str(12.34);
 
-  d4_str_t s1_cmp = d4_str_alloc(L"0.0");
+  d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
 
   assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
@@ -46,7 +45,7 @@ static void test_float_str (void) {
   d4_str_t a1 = d4_float_str(0.0);
   d4_str_t a2 = d4_float_str(12.34);
 
-  d4_str_t s1_cmp = d4_str_alloc(L"0.0");
+  d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
 
   assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
