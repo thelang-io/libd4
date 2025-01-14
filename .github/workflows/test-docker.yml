@@ -11,7 +11,7 @@ concurrency:
   group: test-docker-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
-  test-coverage:
+  test-docker:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

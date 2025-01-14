@@ -7,15 +7,20 @@
 #define TEST_UTILS_H
 
 #include "../src/error.h"
+#include <stdio.h>
 
 #define ASSERT_NO_THROW(error_id, block) \
   do { \
+    d4_Error_t *error; \
     d4_error_stack_push(&d4_err_state, L"test.c", L"main", 0, 0); \
     if (setjmp(d4_error_buf_increase(&d4_err_state)->buf) != 0) goto L##error_id; \
     block \
 L##error_id: \
     d4_error_buf_decrease(&d4_err_state); \
     d4_error_stack_pop(&d4_err_state); \
+    if (d4_err_state.id == -1) continue; \
+    error = d4_err_state.ctx; \
+    fprintf(stderr, "%ls\n", error->message.data); \
     assert(((void) "Throws no errors", d4_err_state.id == -1)); \
   } while (0)
 

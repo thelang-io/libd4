@@ -8,15 +8,15 @@
 #include <inttypes.h>
 
 d4_str_t d4_f32_str (float self) {
-  return d4_str_alloc(L"%g", (double) self);
+  return d4_str_alloc(L"%.15g", (double) self);
 }
 
 d4_str_t d4_f64_str (double self) {
-  return d4_str_alloc(L"%g", self);
+  return d4_str_alloc(L"%.15g", self);
 }
 
 d4_str_t d4_float_str (double self) {
-  return d4_str_alloc(L"%g", self);
+  return d4_str_alloc(L"%.15g", self);
 }
 
 d4_str_t d4_i8_str (int8_t self) {
