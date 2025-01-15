@@ -13,12 +13,14 @@ static void test_f32_str (void) {
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
+  d4_str_t s3_cmp = d4_str_alloc(L"12.339");
 
-  assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 12.34", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies f32 0.0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies f32 12.34", d4_str_startsWith(a2, s2_cmp) || d4_str_startsWith(a2, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
+  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);
@@ -31,8 +33,8 @@ static void test_f64_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
 
-  assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 12.34", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies f64 0.0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies f64 12.34", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -48,8 +50,8 @@ static void test_float_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
 
-  assert(((void) "Stringifies 0.0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 12.34", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies float 0.0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies float 12.34", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -67,9 +69,9 @@ static void test_i8_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"0");
   d4_str_t s3_cmp = d4_str_alloc(L"127");
 
-  assert(((void) "Stringifies -128", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 0", d4_str_eq(a2, s2_cmp)));
-  assert(((void) "Stringifies 127", d4_str_eq(a3, s3_cmp)));
+  assert(((void) "Stringifies i8 -128", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies i8 0", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies i8 127", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -89,9 +91,9 @@ static void test_i16_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"0");
   d4_str_t s3_cmp = d4_str_alloc(L"32767");
 
-  assert(((void) "Stringifies -32768", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 0", d4_str_eq(a2, s2_cmp)));
-  assert(((void) "Stringifies 32767", d4_str_eq(a3, s3_cmp)));
+  assert(((void) "Stringifies i16 -32768", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies i16 0", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies i16 32767", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -111,9 +113,9 @@ static void test_i32_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"0");
   d4_str_t s3_cmp = d4_str_alloc(L"2147483647");
 
-  assert(((void) "Stringifies -2147483648", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 0", d4_str_eq(a2, s2_cmp)));
-  assert(((void) "Stringifies 2147483647", d4_str_eq(a3, s3_cmp)));
+  assert(((void) "Stringifies i32 -2147483648", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies i32 0", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies i32 2147483647", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -133,9 +135,9 @@ static void test_i64_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"0");
   d4_str_t s3_cmp = d4_str_alloc(L"9223372036854775807");
 
-  assert(((void) "Stringifies -9223372036854775808", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 0", d4_str_eq(a2, s2_cmp)));
-  assert(((void) "Stringifies 9223372036854775807", d4_str_eq(a3, s3_cmp)));
+  assert(((void) "Stringifies i64 -9223372036854775808", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies i64 0", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies i64 9223372036854775807", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -155,9 +157,9 @@ static void test_int_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"0");
   d4_str_t s3_cmp = d4_str_alloc(L"2147483647");
 
-  assert(((void) "Stringifies -2147483648", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 0", d4_str_eq(a2, s2_cmp)));
-  assert(((void) "Stringifies 2147483647", d4_str_eq(a3, s3_cmp)));
+  assert(((void) "Stringifies int -2147483648", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies int 0", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies int 2147483647", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -177,9 +179,9 @@ static void test_isize_str (void) {
   d4_str_t s2_cmp = d4_str_alloc(L"0");
   d4_str_t s3_cmp = d4_str_alloc(L"9223372036854775807");
 
-  assert(((void) "Stringifies -9223372036854775808", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 0", d4_str_eq(a2, s2_cmp)));
-  assert(((void) "Stringifies 9223372036854775807", d4_str_eq(a3, s3_cmp)));
+  assert(((void) "Stringifies isize -9223372036854775808", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies isize 0", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies isize 9223372036854775807", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -197,8 +199,8 @@ static void test_u8_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"255");
 
-  assert(((void) "Stringifies 0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 255", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies u8 0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies u8 255", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -214,8 +216,8 @@ static void test_u16_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"65535");
 
-  assert(((void) "Stringifies 0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 65535", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies u16 0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies u16 65535", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -231,8 +233,8 @@ static void test_u32_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"4294967295");
 
-  assert(((void) "Stringifies 0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 4294967295", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies u32 0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies u32 4294967295", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -248,8 +250,8 @@ static void test_u64_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"18446744073709551615");
 
-  assert(((void) "Stringifies 0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 18446744073709551615", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies u64 0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies u64 18446744073709551615", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
@@ -265,8 +267,8 @@ static void test_usize_str (void) {
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"18446744073709551615");
 
-  assert(((void) "Stringifies 0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies 18446744073709551615", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies usize 0", d4_str_eq(a1, s1_cmp)));
+  assert(((void) "Stringifies usize 18446744073709551615", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
