@@ -139,6 +139,10 @@ bool d4_str_empty (const d4_str_t self) {
   return self.len == 0;
 }
 
+bool d4_str_endsWith (const d4_str_t self, const d4_str_t search) {
+  return search.len <= self.len && memcmp(&self.data[self.len - search.len], search.data, search.len * sizeof(wchar_t)) == 0;
+}
+
 bool d4_str_eq (const d4_str_t self, const d4_str_t rhs) {
   return self.len == rhs.len && memcmp(self.data, rhs.data, self.len * sizeof(wchar_t)) == 0;
 }

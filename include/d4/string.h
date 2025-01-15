@@ -73,6 +73,14 @@ d4_str_t d4_str_copy (const d4_str_t self);
 bool d4_str_empty (const d4_str_t self);
 
 /**
+ * Checks whether string ends with provided substring.
+ * @param self String to check.
+ * @param search Substring to search for.
+ * @return Whether string ends with provided substring.
+ */
+bool d4_str_endsWith (const d4_str_t self, const d4_str_t search);
+
+/**
  * Checks whether string is equal to other string.
  * @param self String to check.
  * @param rhs Other string to check.

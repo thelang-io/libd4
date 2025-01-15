@@ -173,6 +173,28 @@ static void test_string_empty (void) {
   d4_str_free(s2);
 }
 
+static void test_string_endsWith (void) {
+  d4_str_t s1 = d4_str_empty_val;
+  d4_str_t s2 = d4_str_alloc(L"World");
+  d4_str_t s3 = d4_str_alloc(L"Hello");
+  d4_str_t s4 = d4_str_alloc(L"Hello World");
+  d4_str_t s5 = d4_str_alloc(L"Hello World Extended");
+
+  assert(((void) "String ends with itself", d4_str_endsWith(s4, s4)));
+  assert(((void) "String ends with suffix", d4_str_endsWith(s4, s2)));
+  assert(((void) "String does not end with prefix", !d4_str_endsWith(s4, s3)));
+  assert(((void) "String ends with empty string", d4_str_endsWith(s4, s1)));
+  assert(((void) "String does not end with longer string", !d4_str_endsWith(s4, s5)));
+  assert(((void) "Empty string ends with empty string", d4_str_endsWith(s1, s1)));
+  assert(((void) "Empty string does not end with non-empty string", !d4_str_endsWith(s1, s4)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+}
+
 static void test_string_eq (void) {
   d4_str_t s1 = d4_str_empty_val;
   d4_str_t s2 = d4_str_empty_val;
@@ -3675,6 +3697,7 @@ int main (void) {
   test_string_contains();
   test_string_copy();
   test_string_empty();
+  test_string_endsWith();
   test_string_eq();
   test_string_escape();
   test_string_find();
