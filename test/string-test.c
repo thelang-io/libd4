@@ -2056,6 +2056,30 @@ static void test_string_split (void) {
   d4_arr_str_free(r44_cmp);
 }
 
+static void test_string_startsWith (void) {
+  d4_str_t s1 = d4_str_empty_val;
+  d4_str_t s2 = d4_str_alloc(L"t");
+  d4_str_t s3 = d4_str_alloc(L"test");
+  d4_str_t s4 = d4_str_alloc(L"te");
+  d4_str_t s5 = d4_str_alloc(L"est");
+  d4_str_t s6 = d4_str_alloc(L"testing");
+
+  assert(((void) "Empty starts with empty", d4_str_startsWith(s1, s1)));
+  assert(((void) "Empty doesn't start with non-empty", !d4_str_startsWith(s1, s2)));
+  assert(((void) "Non-empty starts with empty", d4_str_startsWith(s2, s1)));
+  assert(((void) "String starts with itself", d4_str_startsWith(s3, s3)));
+  assert(((void) "String starts with prefix", d4_str_startsWith(s3, s4)));
+  assert(((void) "String doesn't start with non-prefix", !d4_str_startsWith(s3, s5)));
+  assert(((void) "Shorter string doesn't start with longer string", !d4_str_startsWith(s3, s6)));
+
+  d4_str_free(s1);
+  d4_str_free(s2);
+  d4_str_free(s3);
+  d4_str_free(s4);
+  d4_str_free(s5);
+  d4_str_free(s6);
+}
+
 static void test_string_toFloat (void) {
   d4_str_t s1 = d4_str_alloc(L"0");
   d4_str_t s2 = d4_str_alloc(L"1");
@@ -3668,6 +3692,7 @@ int main (void) {
   test_string_replace();
   test_string_slice();
   test_string_split();
+  test_string_startsWith();
   test_string_toFloat();
   test_string_toF32();
   test_string_toF64();

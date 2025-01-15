@@ -44,6 +44,7 @@ int main (void) {
   }
 
   wprintf(L"position of 'lo' in a2 = %d" D4_EOL, (int) d4_str_find(a2, _7 = d4_str_alloc(L"lo")));
+  wprintf(L"does string a2 starts with a1? %ls" D4_EOL, d4_str_startsWith(a2, a1) ? L"true" : L"false");
 
   d4_str_free(a8);
   d4_str_free(_7);

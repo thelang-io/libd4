@@ -474,6 +474,10 @@ d4_arr_str_t d4_str_split (const d4_str_t self, D4_UNUSED unsigned char o1, cons
   return (d4_arr_str_t) {r, l};
 }
 
+bool d4_str_startsWith (const d4_str_t self, const d4_str_t search) {
+  return self.len >= search.len && memcmp(self.data, search.data, search.len * sizeof(wchar_t)) == 0;
+}
+
 double d4_str_toFloat (d4_err_state_t *state, int line, int col, const d4_str_t self) {
   wchar_t *e = NULL;
   double r;

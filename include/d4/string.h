@@ -210,6 +210,14 @@ d4_str_t d4_str_slice (const d4_str_t self, unsigned char o1, int32_t start, uns
 d4_arr_str_t d4_str_split (const d4_str_t self, unsigned char o1, const d4_str_t delimiter);
 
 /**
+ * Checks whether string starts with provided substring.
+ * @param self String to check.
+ * @param search Substring to search for.
+ * @return Whether string starts with provided substring.
+ */
+bool d4_str_startsWith (const d4_str_t self, const d4_str_t search);
+
+/**
  * Converts string into float representation.
  * @param state Error state to assign error to.
  * @param line Source line number.
