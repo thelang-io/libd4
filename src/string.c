@@ -193,6 +193,10 @@ int32_t d4_str_find (const d4_str_t self, const d4_str_t search) {
     return 0;
   }
 
+  if (search.len > self.len) {
+    return -1;
+  }
+
   for (size_t i = 0; i < self.len; i++) {
     if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0) {
       return (int32_t) i;
@@ -207,31 +211,39 @@ void d4_str_free (d4_str_t self) {
 }
 
 bool d4_str_ge (const d4_str_t self, const d4_str_t rhs) {
+  int cmp;
   if (self.len == 0 || rhs.len == 0) {
     return self.len >= rhs.len;
   }
-  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) >= 0;
+  cmp = memcmp(self.data, rhs.data, (self.len < rhs.len ? self.len : rhs.len) * sizeof(wchar_t));
+  return cmp == 0 ? self.len >= rhs.len : cmp >= 0;
 }
 
 bool d4_str_gt (const d4_str_t self, const d4_str_t rhs) {
+  int cmp;
   if (self.len == 0 || rhs.len == 0) {
     return self.len > rhs.len;
   }
-  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) > 0;
+  cmp = memcmp(self.data, rhs.data, (self.len < rhs.len ? self.len : rhs.len) * sizeof(wchar_t));
+  return cmp == 0 ? self.len > rhs.len : cmp > 0;
 }
 
 bool d4_str_le (const d4_str_t self, const d4_str_t rhs) {
+  int cmp;
   if (self.len == 0 || rhs.len == 0) {
     return self.len <= rhs.len;
   }
-  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) <= 0;
+  cmp = memcmp(self.data, rhs.data, (self.len < rhs.len ? self.len : rhs.len) * sizeof(wchar_t));
+  return cmp == 0 ? self.len <= rhs.len : cmp <= 0;
 }
 
 bool d4_str_lt (const d4_str_t self, const d4_str_t rhs) {
+  int cmp;
   if (self.len == 0 || rhs.len == 0) {
     return self.len < rhs.len;
   }
-  return memcmp(self.data, rhs.data, (self.len > rhs.len ? self.len : rhs.len) * sizeof(wchar_t)) < 0;
+  cmp = memcmp(self.data, rhs.data, (self.len < rhs.len ? self.len : rhs.len) * sizeof(wchar_t));
+  return cmp == 0 ? self.len < rhs.len : cmp < 0;
 }
 
 d4_str_t d4_str_quoted_escape (d4_str_t self) {

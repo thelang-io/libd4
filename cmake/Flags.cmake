@@ -36,7 +36,11 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_COVERAGE)
 endif ()
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_SANITIZER)
-  list(APPEND LIBD4_CMAKE_FLAGS "-fsanitize=address")
+  if (MSVC)
+    list(APPEND LIBD4_CMAKE_FLAGS "/fsanitize=address")
+  else ()
+    list(APPEND LIBD4_CMAKE_FLAGS "-fsanitize=address")
+  endif ()
 endif ()
 
 list(JOIN LIBD4_CMAKE_FLAGS " " LIBD4_CMAKE_FLAGS)
