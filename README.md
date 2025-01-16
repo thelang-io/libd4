@@ -67,18 +67,23 @@ target_link_libraries(target PUBLIC libd4)
 ## Testing
 To test your build with [CMake](https://cmake.org):
 
+### Without Checking Memory Leaks
+
 ```bash
 cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
 cmake --build build --config Debug
-
-# Without memcheck
 ctest --output-on-failure --test-dir build
-
-# With Valgrind memcheck
-ctest -T memcheck --output-on-failure --test-dir build
 ```
 
-To test your build with [Docker](https://www.docker.com):
+### With Checking Memory Leaks
+
+```bash
+cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON -D LIBD4_SANITIZER=ON
+cmake --build build --config Debug
+ctest --output-on-failure --test-dir build
+```
+
+### With Docker
 
 ```bash
 docker build -t libd4 .

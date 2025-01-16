@@ -15,6 +15,7 @@ project(
 option(LIBD4_BUILD_EXAMPLES "Build example programs" OFF)
 option(LIBD4_BUILD_TESTS "Build test programs" OFF)
 option(LIBD4_COVERAGE "Build programs with support for coverage" OFF)
+option(LIBD4_SANITIZER "Enable address sanitizer" OFF)
 
 include(cmake/Policies.cmake)
 set_policies()

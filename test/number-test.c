@@ -23,7 +23,7 @@ static void test_f32_str (void) {
   d4_str_free(s3_cmp);
 
   d4_str_free(a1);
-  d4_str_free(a2);
+  // d4_str_free(a2);
 }
 
 static void test_f64_str (void) {

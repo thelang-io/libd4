@@ -4,17 +4,6 @@
 #
 
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_TESTS)
-  list(APPEND LIBD4_MEMCHECK_FLAGS "--error-exitcode=255")
-  list(APPEND LIBD4_MEMCHECK_FLAGS "--errors-for-leak-kinds=all")
-  list(APPEND LIBD4_MEMCHECK_FLAGS "--leak-check=full")
-  list(APPEND LIBD4_MEMCHECK_FLAGS "--show-leak-kinds=all")
-  list(APPEND LIBD4_MEMCHECK_FLAGS "--tool=memcheck")
-  list(APPEND LIBD4_MEMCHECK_FLAGS "--track-origins=yes")
-  list(JOIN LIBD4_MEMCHECK_FLAGS " " LIBD4_MEMCHECK_FLAGS)
-
-  set(CTEST_MEMORYCHECK_COMMAND valgrind)
-  set(MEMORYCHECK_COMMAND_OPTIONS "${LIBD4_MEMCHECK_FLAGS}")
-
   include(CTest)
 
   set(
@@ -48,5 +37,41 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_TESTS)
     target_compile_options(${PROJECT_NAME}-test-${test} PRIVATE -g)
     target_link_libraries(${PROJECT_NAME}-test-${test} PUBLIC d4)
     add_test(${test} ${PROJECT_NAME}-test-${test})
+
+    if (LIBD4_SANITIZER)
+      target_link_options(${PROJECT_NAME}-test-${test} PRIVATE "-fsanitize=address")
+    endif ()
   endforeach ()
+
+  if (LIBD4_SANITIZER)
+    set(
+      LIBD4_ASAN_OPTIONS
+
+      "abort_on_error=1"
+      "alloc_dealloc_mismatch=1"
+      "detect_container_overflow=1"
+      "detect_invalid_pointer_pairs=2"
+      "detect_leaks=1"
+      "detect_odr_violation=2"
+      "detect_stack_use_after_return=1"
+      "check_initialization_order=1"
+      "fast_unwind_on_malloc=1"
+      "halt_on_error=1"
+      "intercept_tls_get_addr=1"
+      "leak_check_at_exit=1"
+      "strict_init_order=1"
+      "strict_memcmp=1"
+      "strict_string_checks=1"
+      "symbolize=1"
+      "track_origins=1"
+    )
+
+    list(JOIN LIBD4_ASAN_OPTIONS ":" LIBD4_ASAN_OPTIONS)
+
+    set_tests_properties(
+      ${tests}
+      PROPERTIES
+      ENVIRONMENT "ASAN_OPTIONS=${LIBD4_ASAN_OPTIONS}"
+    )
+  endif ()
 endif ()

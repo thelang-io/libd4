@@ -21,8 +21,11 @@ jobs:
           - os: macos-14
           - os: macos-15
           - os: ubuntu-20.04
+            cmake-args: -D LIBD4_SANITIZER=ON
           - os: ubuntu-22.04
+            cmake-args: -D LIBD4_SANITIZER=ON
           - os: ubuntu-24.04
+            cmake-args: -D LIBD4_SANITIZER=ON
           - os: windows-2019
           - os: windows-2022
           - os: windows-2025
@@ -39,15 +42,10 @@ jobs:
             build/openssl-prefix
             build/openssl-src
           key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
-      - if: runner.os == 'Linux'
-        run: sudo apt-get install valgrind
       - if: runner.os == 'Windows'
         run: New-Item -ItemType Directory -Force -Path build
       - if: runner.os != 'Windows'
         run: mkdir -p build
-      - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
+      - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON ${{ matrix.config['cmake-args'] }}
       - run: cmake --build build --config Debug
-      - if: runner.os == 'Linux'
-        run: scripts/docker-entrypoint.sh
-      - if: runner.os != 'Linux'
-        run: ctest --output-on-failure --test-dir build
+      - run: ctest --output-on-failure --test-dir build
