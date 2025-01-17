@@ -13,14 +13,12 @@ static void test_f32_str (void) {
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
-  d4_str_t s3_cmp = d4_str_alloc(L"12.339");
 
   assert(((void) "Stringifies f32 0.0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies f32 12.34", d4_str_startsWith(a2, s2_cmp) || d4_str_startsWith(a2, s3_cmp)));
+  assert(((void) "Stringifies f32 12.34", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
-  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);
@@ -32,14 +30,12 @@ static void test_f64_str (void) {
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
-  d4_str_t s3_cmp = d4_str_alloc(L"12.339");
 
   assert(((void) "Stringifies f64 0.0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies f64 12.34", d4_str_startsWith(a2, s2_cmp) || d4_str_startsWith(a2, s3_cmp)));
+  assert(((void) "Stringifies f64 12.34", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
-  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);
@@ -51,14 +47,12 @@ static void test_float_str (void) {
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
-  d4_str_t s3_cmp = d4_str_alloc(L"12.339");
 
   assert(((void) "Stringifies float 0.0", d4_str_eq(a1, s1_cmp)));
-  assert(((void) "Stringifies float 12.34", d4_str_startsWith(a2, s2_cmp) || d4_str_startsWith(a2, s3_cmp)));
+  assert(((void) "Stringifies float 12.34", d4_str_eq(a2, s2_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
-  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);

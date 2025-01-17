@@ -4,7 +4,6 @@
  */
 
 #include <assert.h>
-#include <math.h>
 #include "../src/string.h"
 #include "utils.h"
 
@@ -2121,14 +2120,14 @@ static void test_string_toFloat (void) {
   d4_str_t s15 = d4_str_alloc(L"test");
 
   ASSERT_NO_THROW(TO_FLOAT1, {
-    assert(((void) "Converts to float zero", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s1) - 0) < 0.01));
-    assert(((void) "Converts to float single digit", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s2) - 1) < 0.01));
-    assert(((void) "Converts to float with floating point", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s3) - 1.23) < 0.01));
-    assert(((void) "Converts to float max value", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s4) - 1.7976931348623157e+308) < 0.01));
-    assert(((void) "Converts to float only positive exponent", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s5) - 3e+38) < 0.01));
-    assert(((void) "Converts to float smallest value", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s6) - 2.2250738585072014e-308) < 0.01));
-    assert(((void) "Converts to float only negative exponent", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s7) - 1E-38) < 0.01));
-    assert(((void) "Converts to float min value", fabs(d4_str_toFloat(&d4_err_state, 0, 0, s8) - -1.7976931348623157e+308) < 0.01));
+    assert(((void) "Converts to float zero", d4_str_toFloat(&d4_err_state, 0, 0, s1) == 0));
+    assert(((void) "Converts to float single digit", d4_str_toFloat(&d4_err_state, 0, 0, s2) == 1));
+    assert(((void) "Converts to float with floating point", d4_str_toFloat(&d4_err_state, 0, 0, s3) == 1.23));
+    assert(((void) "Converts to float max value", d4_str_toFloat(&d4_err_state, 0, 0, s4) == 1.7976931348623157e+308));
+    assert(((void) "Converts to float only positive exponent", d4_str_toFloat(&d4_err_state, 0, 0, s5) == 3e+38));
+    assert(((void) "Converts to float smallest value", d4_str_toFloat(&d4_err_state, 0, 0, s6) == 2.2250738585072014e-308));
+    assert(((void) "Converts to float only negative exponent", d4_str_toFloat(&d4_err_state, 0, 0, s7) == 1E-38));
+    assert(((void) "Converts to float min value", d4_str_toFloat(&d4_err_state, 0, 0, s8) == -1.7976931348623157e+308));
   });
 
   ASSERT_THROW_WITH_MESSAGE(TO_FLOAT2, {
@@ -2189,14 +2188,14 @@ static void test_string_toF32 (void) {
   d4_str_t s15 = d4_str_alloc(L"test");
 
   ASSERT_NO_THROW(TO_FLOAT32_1, {
-    assert(((void) "Converts to f32 zero", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s1) - 0.0f) < 0.01f));
-    assert(((void) "Converts to f32 single digit", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s2) - 1.0f) < 0.01f));
-    assert(((void) "Converts to f32 with floating point", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s3) - 1.23f) < 0.01f));
-    assert(((void) "Converts to f32 max value", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s4) - 3.40282347e+38f) < 0.01f));
-    assert(((void) "Converts to f32 only positive exponent", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s5) - 3e+38f) < 0.01f));
-    assert(((void) "Converts to f32 smallest value", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s6) - 1.17549435e-38f) < 0.01f));
-    assert(((void) "Converts to f32 only negative exponent", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s7) - 1E-37f) < 0.01f));
-    assert(((void) "Converts to f32 min value", fabsf(d4_str_toF32(&d4_err_state, 0, 0, s8) - -3.40282347e+38f) < 0.01f));
+    assert(((void) "Converts to f32 zero", d4_str_toF32(&d4_err_state, 0, 0, s1) == 0.0f));
+    assert(((void) "Converts to f32 single digit", d4_str_toF32(&d4_err_state, 0, 0, s2) == 1.0f));
+    assert(((void) "Converts to f32 with floating point", d4_str_toF32(&d4_err_state, 0, 0, s3) == 1.23f));
+    assert(((void) "Converts to f32 max value", d4_str_toF32(&d4_err_state, 0, 0, s4) == 3.40282347e+38f));
+    assert(((void) "Converts to f32 only positive exponent", d4_str_toF32(&d4_err_state, 0, 0, s5) == 3e+38f));
+    assert(((void) "Converts to f32 smallest value", d4_str_toF32(&d4_err_state, 0, 0, s6) == 1.17549435e-38f));
+    assert(((void) "Converts to f32 only negative exponent", d4_str_toF32(&d4_err_state, 0, 0, s7) == 1E-37f));
+    assert(((void) "Converts to f32 min value", d4_str_toF32(&d4_err_state, 0, 0, s8) == -3.40282347e+38f));
   });
 
   ASSERT_THROW_WITH_MESSAGE(TO_FLOAT32_2, {
@@ -2257,14 +2256,14 @@ static void test_string_toF64 (void) {
   d4_str_t s15 = d4_str_alloc(L"test");
 
   ASSERT_NO_THROW(TO_FLOAT64_1, {
-    assert(((void) "Converts to f64 zero", fabs(d4_str_toF64(&d4_err_state, 0, 0, s1) - 0) < 0.01));
-    assert(((void) "Converts to f64 single digit", fabs(d4_str_toF64(&d4_err_state, 0, 0, s2) - 1) < 0.01));
-    assert(((void) "Converts to f64 with floating point", fabs(d4_str_toF64(&d4_err_state, 0, 0, s3) - 1.23) < 0.01));
-    assert(((void) "Converts to f64 max value", fabs(d4_str_toF64(&d4_err_state, 0, 0, s4) - 1.7976931348623157e+308) < 0.01));
-    assert(((void) "Converts to f64 only positive exponent", fabs(d4_str_toF64(&d4_err_state, 0, 0, s5) - 3e+38) < 0.01));
-    assert(((void) "Converts to f64 smallest value", fabs(d4_str_toF64(&d4_err_state, 0, 0, s6) - 2.2250738585072014e-308) < 0.01));
-    assert(((void) "Converts to f64 only negative exponent", fabs(d4_str_toF64(&d4_err_state, 0, 0, s7) - 1E-38) < 0.01));
-    assert(((void) "Converts to f64 min value", fabs(d4_str_toF64(&d4_err_state, 0, 0, s8) - -1.7976931348623157e+308) < 0.01));
+    assert(((void) "Converts to f64 zero", d4_str_toF64(&d4_err_state, 0, 0, s1) == 0));
+    assert(((void) "Converts to f64 single digit", d4_str_toF64(&d4_err_state, 0, 0, s2) == 1));
+    assert(((void) "Converts to f64 with floating point", d4_str_toF64(&d4_err_state, 0, 0, s3) == 1.23));
+    assert(((void) "Converts to f64 max value", d4_str_toF64(&d4_err_state, 0, 0, s4) == 1.7976931348623157e+308));
+    assert(((void) "Converts to f64 only positive exponent", d4_str_toF64(&d4_err_state, 0, 0, s5) == 3e+38));
+    assert(((void) "Converts to f64 smallest value", d4_str_toF64(&d4_err_state, 0, 0, s6) == 2.2250738585072014e-308));
+    assert(((void) "Converts to f64 only negative exponent", d4_str_toF64(&d4_err_state, 0, 0, s7) == 1E-38));
+    assert(((void) "Converts to f64 min value", d4_str_toF64(&d4_err_state, 0, 0, s8) == -1.7976931348623157e+308));
   });
 
   ASSERT_THROW_WITH_MESSAGE(TO_FLOAT64_2, {
