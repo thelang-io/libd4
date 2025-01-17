@@ -3,18 +3,18 @@
 # Licensed under the MIT License
 #
 
-FROM alpine
+FROM ubuntu:24.04
 
-RUN apk add build-base --no-cache
-RUN apk add cmake --no-cache
-RUN apk add linux-headers --no-cache
-RUN apk add perl --no-cache
-RUN apk add ninja --no-cache
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update
+RUN apt-get install -y build-essential
+RUN apt-get install -y cmake
+RUN apt-get install -y ninja-build
+RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY . .
-
-RUN mkdir -p build
 
 RUN cmake . -B ./build -G Ninja \
   -D LIBD4_BUILD_EXAMPLES=ON \
