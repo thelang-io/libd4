@@ -19,8 +19,9 @@ jobs:
         config:
           - os: macos-latest
           - os: ubuntu-latest
-          - os: windows-latest
     steps:
       - uses: actions/checkout@v4
+      - if: runner.os == 'macOS'
+        run: brew install docker && colima start
       - run: docker build -t libd4 .
       - run: docker run libd4
