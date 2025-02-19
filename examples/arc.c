@@ -8,31 +8,14 @@
 #include "../include/d4/number.h"
 #include "../include/d4/object.h"
 
-D4_OBJECT_FORWARD_DECLARE(Animal)
 D4_OBJECT_FORWARD_DECLARE(Person)
-D4_ARC_FORWARD_DECLARE(Person)
-
-D4_OBJECT_DECLARE(Animal, {
-  d4_arc_Person_t owner;
-}, const d4_arc_Person_t owner)
+D4_ARC_FORWARD_DECLARE(obj_Person)
 
 D4_OBJECT_DECLARE(Person, {
   int32_t age;
 }, const int32_t age)
 
-D4_ARC_DECLARE(Person, d4_obj_Person_t)
-
-D4_OBJECT_DEFINE(Animal, Animal, {
-  self.owner = d4_arc_Person_copy(owner);
-}, {
-  result.owner = d4_arc_Person_copy(self.owner);
-}, {
-  return d4_arc_Person_eq(self.owner, rhs.owner);
-}, {
-  d4_arc_Person_free(self.owner);
-}, {
-  result = d4_obj_str_append(result, d4_str_alloc(L"owner"), d4_arc_Person_str(self.owner));
-}, const d4_arc_Person_t owner)
+D4_ARC_DECLARE(obj_Person, d4_obj_Person_t)
 
 D4_OBJECT_DEFINE(Person, Person, {
   self.age = age;
@@ -46,16 +29,35 @@ D4_OBJECT_DEFINE(Person, Person, {
   result = d4_obj_str_append(result, d4_str_alloc(L"age"), d4_i32_str(self.age));
 }, const int32_t age)
 
-D4_ARC_DEFINE(Person, d4_obj_Person_t, d4_obj_Person_copy(ref), d4_obj_Person_copy(ref), d4_obj_Person_eq(*self->ref, *rhs->ref), d4_obj_Person_free(*self->ref), d4_obj_Person_str(*self->ref))
+D4_ARC_DEFINE(obj_Person, d4_obj_Person_t, d4_obj_Person_copy(ref), d4_obj_Person_eq(lhs_ref, rhs_ref), d4_obj_Person_free(ref), d4_obj_Person_str(ref))
 
 int main (void) {
-  d4_obj_Person_t __THE_1;
-  d4_arc_Person_t person_0 = d4_arc_Person_alloc(__THE_1 = d4_obj_Person_alloc(10));
-  d4_obj_Animal_t dog_0 = d4_obj_Animal_alloc(person_0);
+  d4_obj_Person_t __1;
+  d4_obj_Person_t __2;
+  d4_arc_obj_Person_t person_0 = d4_arc_obj_Person_alloc(__1 = d4_obj_Person_alloc(10));
+  d4_arc_obj_Person_t person_1 = d4_arc_obj_Person_alloc(__2 = d4_obj_Person_alloc(20));
+  d4_arc_obj_Person_t person_2 = d4_arc_obj_Person_copy(person_1);
 
-  // TODO: Add more examples
+  d4_obj_Person_t ref_person = d4_arc_obj_Person_get(person_0);
 
-  d4_arc_Person_free(person_0);
-  d4_obj_Animal_free(dog_0);
-  d4_obj_Person_free(__THE_1);
+  d4_str_t p0_str = d4_obj_Person_str(ref_person);
+  d4_str_t p1_str = d4_arc_obj_Person_str(person_0);
+  d4_str_t p2_str = d4_arc_obj_Person_str(person_1);
+
+  person_2 = d4_arc_obj_Person_realloc(person_2, person_0);
+
+  wprintf(L"ref_person: %ls\n", p0_str.data);
+  wprintf(L"person_0: %ls\n", p1_str.data);
+  wprintf(L"person_1: %ls\n", p2_str.data);
+
+  wprintf(L"person_0 eq person_1: %ls\n", d4_arc_obj_Person_eq(person_0, person_1) ? L"true" : L"false");
+  wprintf(L"person_0 eq person_2: %ls\n", d4_arc_obj_Person_eq(person_0, person_2) ? L"true" : L"false");
+
+  d4_str_free(p2_str);
+  d4_str_free(p1_str);
+  d4_arc_obj_Person_free(person_2);
+  d4_arc_obj_Person_free(person_1);
+  d4_arc_obj_Person_free(person_0);
+  d4_obj_Person_free(__2);
+  d4_obj_Person_free(__1);
 }

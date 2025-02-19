@@ -26,8 +26,11 @@
 #define D4_ARC_DECLARE(type_name, ref_type) \
   /** Structure representation of the automatic reference counter type. */ \
   struct d4_arc_##type_name##_t { \
+    /** Reference to automatic reference counter object. */ \
+    ref_type ref; \
+    \
+    /** Number of references to automatic reference counter object. */ \
     int count; \
-    ref_type *ref; \
   }; \
   \
   /**
@@ -57,6 +60,13 @@
    * @param self Automatic reference counter type to deallocate.
    */ \
   void d4_arc_##type_name##_free (d4_arc_##type_name##_t self); \
+  \
+  /**
+   * Acquires access to automatic reference counter object.
+   * @param self Automatic reference counter type to get access to.
+   * @return Reference to automatic reference counter object.
+   */ \
+  ref_type d4_arc_##type_name##_get (d4_arc_##type_name##_t self); \
   \
   /**
    * Reallocates first automatic reference counter type and returns a copy of second automatic reference counter type.
