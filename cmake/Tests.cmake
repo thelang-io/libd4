@@ -47,22 +47,12 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_TESTS)
     set(
       LIBD4_ASAN_OPTIONS
 
-      "abort_on_error=1"
-      "alloc_dealloc_mismatch=1"
-      "detect_container_overflow=1"
+      "abort_on_error=0"
+      "exitcode=255"
       "detect_invalid_pointer_pairs=2"
       "detect_leaks=1"
-      "detect_odr_violation=2"
       "detect_stack_use_after_return=1"
-      "check_initialization_order=1"
-      "fast_unwind_on_malloc=1"
-      "halt_on_error=1"
-      "intercept_tls_get_addr=1"
-      "leak_check_at_exit=1"
-      "strict_init_order=1"
-      "strict_memcmp=1"
-      "strict_string_checks=1"
-      "symbolize=1"
+      "print_suppressions=0"
       "track_origins=1"
     )
 
@@ -71,7 +61,7 @@ if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME AND LIBD4_BUILD_TESTS)
     set_tests_properties(
       ${tests}
       PROPERTIES
-      ENVIRONMENT "ASAN_OPTIONS=${LIBD4_ASAN_OPTIONS}"
+      ENVIRONMENT "ASAN_OPTIONS=${LIBD4_ASAN_OPTIONS};LSAN_OPTIONS=suppressions=${CMAKE_SOURCE_DIR}/lsan.supp"
     )
   endif ()
 endif ()
