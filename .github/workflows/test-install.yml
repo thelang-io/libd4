@@ -22,8 +22,6 @@ jobs:
             install-prefix: sudo
           - os: macos-15
             install-prefix: sudo
-          - os: ubuntu-20.04
-            install-prefix: sudo
           - os: ubuntu-22.04
             install-prefix: sudo
           - os: ubuntu-24.04
