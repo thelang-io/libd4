@@ -3,11 +3,11 @@
  * Licensed under the MIT License
  */
 
+#include <assert.h>
 #include "../src/any.h"
 #include "../src/number.h"
 #include "../src/safe.h"
 #include "../src/string.h"
-#include <assert.h>
 
 #define TYPE_u32 1
 #define TYPE_u64 2

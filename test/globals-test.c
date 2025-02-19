@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
-#include <d4/number.h>
 #include <assert.h>
 #include <stdio.h>
+#include "../include/d4/macro.h"
+#include "../include/d4/number.h"
 #include "../src/globals.h"
 #include "utils.h"
 

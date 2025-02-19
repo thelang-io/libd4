@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#include <d4/safe.h>
-#include <d4/string.h>
-#include <stdio.h>
 #include "utils.h"
+#include <stdio.h>
+#include "../include/d4/safe.h"
+#include "../include/d4/string.h"
 
 static int unicode_len (const unsigned char code) {
   if (code < 0x80) return 1;

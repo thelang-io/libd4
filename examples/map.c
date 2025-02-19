@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/map.h>
-#include <d4/number.h>
+#include "../include/d4/map.h"
+#include "../include/d4/number.h"
 
 D4_ARRAY_DECLARE(int, int32_t)
 D4_ARRAY_DEFINE(int, int32_t, int, element, lhs_element == rhs_element, (void) element, d4_i32_str(element))

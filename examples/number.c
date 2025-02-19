@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/number.h>
-#include <d4/string.h>
+#include "../include/d4/number.h"
+#include "../include/d4/string.h"
 
 int main (void) {
   d4_str_t a_str = d4_int_str(12345);

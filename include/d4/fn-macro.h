@@ -8,7 +8,7 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/string-type.h>
+#include "string-type.h"
 
 /**
  * Macro that should be used to generate function type entities.

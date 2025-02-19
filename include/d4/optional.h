@@ -8,9 +8,9 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/optional-macro.h>
-#include <d4/safe.h>
-#include <d4/string.h>
+#include "optional-macro.h"
+#include "safe.h"
+#include "string.h"
 
 /**
  * Macro that should be used to generate optional type.

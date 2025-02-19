@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/string-type.h>
 #include <stdint.h>
+#include "string-type.h"
 
 /**
  * Generates string representation of the object.

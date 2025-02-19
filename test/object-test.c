@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/number.h>
-#include <d4/object.h>
 #include <assert.h>
+#include "../include/d4/number.h"
+#include "../include/d4/object.h"
 
 D4_OBJECT_FORWARD_DECLARE(TestEmpty)
 D4_OBJECT_FORWARD_DECLARE(Test0)

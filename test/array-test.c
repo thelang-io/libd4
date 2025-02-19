@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/array.h>
-#include <d4/number.h>
 #include <assert.h>
+#include "../include/d4/array.h"
+#include "../include/d4/number.h"
 #include "./utils.h"
 
 D4_ARRAY_DECLARE(int, int32_t)

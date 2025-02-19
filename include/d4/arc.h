@@ -8,7 +8,6 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-// TODO: Implement same type of imports for all headers
 #include "safe.h"
 #include "arc-macro.h"
 

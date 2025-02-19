@@ -8,7 +8,7 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/object-macro.h>
+#include "object-macro.h"
 
 /**
  * Macro used to define object type.

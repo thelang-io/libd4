@@ -8,10 +8,10 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/error.h>
-#include <d4/fn.h>
 #include <inttypes.h>
 #include <string.h>
+#include "error.h"
+#include "fn.h"
 
 /**
  * Macro that can be used to define an array object.

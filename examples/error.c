@@ -3,12 +3,12 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
-#include <d4/error.h>
-#include <d4/string.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+#include "../include/d4/macro.h"
+#include "../include/d4/error.h"
+#include "../include/d4/string.h"
 
 const char GATE[5] = "GATE";
 

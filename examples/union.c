@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/number.h>
-#include <d4/string.h>
-#include <d4/union.h>
+#include "../include/d4/number.h"
+#include "../include/d4/string.h"
+#include "../include/d4/union.h"
 
 #define TYPE_int 1
 #define TYPE_str 2

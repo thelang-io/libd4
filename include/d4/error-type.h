@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/string-type.h>
 #include <setjmp.h>
+#include "string-type.h"
 
 /**
  * Callback that is used as a property of d4_err_state__t object to free the object.

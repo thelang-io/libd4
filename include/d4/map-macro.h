@@ -8,7 +8,7 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/array-macro.h>
+#include "array-macro.h"
 
 /**
  * Macro that should be used to generate map type.

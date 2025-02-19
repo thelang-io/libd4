@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#include <d4/reference.h>
 #include <assert.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "../include/d4/reference.h"
 
 D4_REFERENCE_DECLARE(u32, uint32_t)
 

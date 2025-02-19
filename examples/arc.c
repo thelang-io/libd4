@@ -3,7 +3,6 @@
  * Licensed under the MIT License
  */
 
-// TODO: Implement same type of imports for all examples
 #include "../include/d4/arc.h"
 #include "../include/d4/number.h"
 #include "../include/d4/object.h"

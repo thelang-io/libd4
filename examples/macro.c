@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
 #include <wchar.h>
+#include "../include/d4/macro.h"
 
 int main (void) {
   #if defined(D4_OS_WINDOWS)

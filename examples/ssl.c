@@ -3,8 +3,6 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
-#include <d4/ssl.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -20,6 +18,9 @@
   #include <sys/socket.h>
   #include <unistd.h>
 #endif
+
+#include "../include/d4/macro.h"
+#include "../include/d4/ssl.h"
 
 #if !defined(D4_OS_WINDOWS)
   #define INVALID_SOCKET (-1)

@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/safe.h>
-#include <d4/string-type.h>
+#include "safe.h"
+#include "string-type.h"
 
 /**
  * Callback that is used as a property of d4_any_t object to copy the object.

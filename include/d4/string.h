@@ -8,7 +8,7 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/array-macro.h>
+#include "array-macro.h"
 
 D4_ARRAY_DECLARE(str, d4_str_t)
 

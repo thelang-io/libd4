@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/reference.h>
 #include <stdint.h>
 #include <wchar.h>
+#include "../include/d4/reference.h"
 
 D4_REFERENCE_DECLARE(int, int32_t)
 

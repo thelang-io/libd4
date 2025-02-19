@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/rand.h>
 #include <assert.h>
+#include "../include/d4/rand.h"
 
 static int rand_int (void) {
   unsigned char d[4];

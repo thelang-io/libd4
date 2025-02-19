@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/any.h>
-#include <d4/fn.h>
+#include "any.h"
+#include "fn.h"
 
 D4_ARRAY_DECLARE(any, d4_any_t)
 

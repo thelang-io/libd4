@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/globals.h>
-#include <d4/number.h>
+#include "../include/d4/globals.h"
+#include "../include/d4/number.h"
 
 #define TYPE_int 1
 #define TYPE_str 2

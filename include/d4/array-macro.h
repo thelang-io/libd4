@@ -8,10 +8,10 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/error-type.h>
-#include <d4/fn-macro.h>
 #include <stdarg.h>
 #include <stdint.h>
+#include "error-type.h"
+#include "fn-macro.h"
 
 /**
  * Macro that should be used to generate array type.

@@ -8,7 +8,7 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/union-macro.h>
+#include "union-macro.h"
 
 /**
  * Macro that can be used to define an union object.

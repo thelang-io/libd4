@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#include <d4/crypto.h>
-#include <d4/safe.h>
 #include <assert.h>
 #include <string.h>
+#include "../include/d4/crypto.h"
+#include "../include/d4/safe.h"
 #include "../src/string.h"
 
 static d4_str_t convert_byte_array_to_str (const char *buf, unsigned int len) {

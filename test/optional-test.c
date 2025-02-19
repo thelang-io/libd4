@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/number.h>
-#include <d4/optional.h>
 #include <assert.h>
+#include "../include/d4/number.h"
+#include "../include/d4/optional.h"
 
 D4_OPTIONAL_DECLARE(u32, uint32_t)
 D4_OPTIONAL_DEFINE(u32, uint32_t, val, lhs_val == rhs_val, (void) val, d4_i32_str(val))

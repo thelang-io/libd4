@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/error.h>
-#include <d4/number.h>
 #include <assert.h>
+#include "../include/d4/error.h"
+#include "../include/d4/number.h"
 #include "../src/map.h"
 #include "utils.h"
 

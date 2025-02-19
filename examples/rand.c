@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/rand.h>
 #include <stdio.h>
 #include <wchar.h>
+#include "../include/d4/rand.h"
 
 int main (void) {
   unsigned char d[4];

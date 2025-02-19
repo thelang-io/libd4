@@ -3,8 +3,8 @@
  * Licensed under the MIT License
  */
 
-#include <d4/enum.h>
-#include <d4/string.h>
+#include "../include/d4/enum.h"
+#include "../include/d4/string.h"
 
 enum Color {
   Red = 10,

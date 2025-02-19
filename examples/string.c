@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
-#include <d4/error.h>
-#include <d4/string.h>
+#include "../include/d4/macro.h"
+#include "../include/d4/error.h"
+#include "../include/d4/string.h"
 
 int main (void) {
   d4_str_t a1 = d4_str_alloc(L"Hello");

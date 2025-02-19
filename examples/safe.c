@@ -3,7 +3,7 @@
  * Licensed under the MIT License
  */
 
-#include <d4/safe.h>
+#include "../include/d4/safe.h"
 
 int main (void) {
   size_t l = sizeof(int);

@@ -8,7 +8,7 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/string.h>
+#include "string.h"
 
 /**
  * Macro used to forward declare object type.

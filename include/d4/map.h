@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/map-macro.h>
-#include <d4/array.h>
+#include "map-macro.h"
+#include "array.h"
 
 /**
  * Macro that can be used to define a map object.

@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/any.h>
-#include <d4/number.h>
-#include <d4/string.h>
+#include "../include/d4/any.h"
+#include "../include/d4/number.h"
+#include "../include/d4/string.h"
 
 #define TYPE_u64 1
 

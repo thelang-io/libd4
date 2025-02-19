@@ -3,9 +3,9 @@
  * Licensed under the MIT License
  */
 
-#include <d4/crypto.h>
-#include <d4/safe.h>
 #include <wchar.h>
+#include "../include/d4/crypto.h"
+#include "../include/d4/safe.h"
 
 int main (void) {
   unsigned char *out_digest;

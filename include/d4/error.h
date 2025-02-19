@@ -8,8 +8,8 @@
 
 /* See https://github.com/thelang-io/libd4 for reference. */
 
-#include <d4/error-type.h>
 #include <errno.h>
+#include "error-type.h"
 
 /** Type id representing generic error. */
 #define TYPE_Error 0

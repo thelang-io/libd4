@@ -3,10 +3,10 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
-#include <d4/fn.h>
-#include <d4/number.h>
 #include <assert.h>
+#include "../include/d4/macro.h"
+#include "../include/d4/fn.h"
+#include "../include/d4/number.h"
 
 D4_FUNCTION_DECLARE(s, u32, uint32_t)
 D4_FUNCTION_DEFINE(s, u32, uint32_t)
