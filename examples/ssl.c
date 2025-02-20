@@ -3,6 +3,8 @@
  * Licensed under the MIT License
  */
 
+#include "../include/d4/macro.h"
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
@@ -19,7 +21,6 @@
   #include <unistd.h>
 #endif
 
-#include "../include/d4/macro.h"
 #include "../include/d4/ssl.h"
 
 #if !defined(D4_OS_WINDOWS)

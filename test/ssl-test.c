@@ -2,6 +2,9 @@
  * Copyright (c) Aaron Delasy
  * Licensed under the MIT License
  */
+
+#include "../include/d4/macro.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -17,7 +20,6 @@
   #include <unistd.h>
 #endif
 
-#include "../include/d4/macro.h"
 #include "../include/d4/safe.h"
 #include "../include/d4/ssl.h"
 #include "../src/string.h"
