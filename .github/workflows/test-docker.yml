@@ -22,6 +22,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - if: runner.os == 'macOS'
-        run: brew install docker && colima start
+        uses: douglascamata/setup-docker-macos-action@v1-alpha
       - run: docker build -t libd4 .
       - run: docker run libd4
