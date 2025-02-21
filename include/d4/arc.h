@@ -51,9 +51,13 @@
     return self->ref; \
   } \
   \
-  d4_arc_##type_name##_t d4_arc_##type_name##_realloc (d4_arc_##type_name##_t self, const d4_arc_##type_name##_t rhs) { \
-    d4_arc_##type_name##_free(self); \
-    return d4_arc_##type_name##_copy(rhs); \
+  d4_arc_##type_name##_t d4_arc_##type_name##_realloc (d4_arc_##type_name##_t self, const ref_type ref) { \
+    { \
+      ref_type ref = self->ref; \
+      free_block; \
+    } \
+    self->ref = copy_block; \
+    return self; \
   } \
   \
   d4_str_t d4_arc_##type_name##_str (const d4_arc_##type_name##_t self) { \

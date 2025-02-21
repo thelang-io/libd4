@@ -108,7 +108,7 @@ static void test_arc_realloc (void) {
   d4_arc_obj_Person_t arc1 = d4_arc_obj_Person_alloc(person1);
   d4_arc_obj_Person_t arc2 = d4_arc_obj_Person_alloc(person2);
 
-  arc1 = d4_arc_obj_Person_realloc(arc1, arc2);
+  arc1 = d4_arc_obj_Person_realloc(arc1, person2);
   assert(((void) "Reallocated ARC should be the same as second object", d4_arc_obj_Person_eq(arc1, arc2)));
 
   d4_arc_obj_Person_free(arc1);

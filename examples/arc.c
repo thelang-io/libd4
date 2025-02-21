@@ -43,7 +43,7 @@ int main (void) {
   d4_str_t p1_str = d4_arc_obj_Person_str(person_0);
   d4_str_t p2_str = d4_arc_obj_Person_str(person_1);
 
-  person_2 = d4_arc_obj_Person_realloc(person_2, person_0);
+  person_2 = d4_arc_obj_Person_realloc(person_2, ref_person);
 
   wprintf(L"ref_person: %ls\n", p0_str.data);
   wprintf(L"person_0: %ls\n", p1_str.data);

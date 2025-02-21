@@ -69,12 +69,12 @@
   ref_type d4_arc_##type_name##_get (d4_arc_##type_name##_t self); \
   \
   /**
-   * Reallocates first automatic reference counter type and returns a copy of second automatic reference counter type.
-   * @param self Automatic reference counter type to deallocate.
-   * @param rhs Automatic reference counter type to create a copy of.
-   * @return Copy of the second automatic reference counter type.
+   * Reallocates automatic reference counter type.
+   * @param self Automatic reference counter type to reallocate.
+   * @param ref Object to set for automatic reference counter type.
+   * @return Reallocated automatic reference counter type.
    */ \
-  d4_arc_##type_name##_t d4_arc_##type_name##_realloc (d4_arc_##type_name##_t self, const d4_arc_##type_name##_t rhs); \
+  d4_arc_##type_name##_t d4_arc_##type_name##_realloc (d4_arc_##type_name##_t self, const ref_type ref); \
   \
   /**
    * Generates string representation of the automatic reference counter type.
