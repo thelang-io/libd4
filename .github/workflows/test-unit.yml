@@ -31,12 +31,6 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
       - if: runner.os == 'Windows'
         uses: ilammy/setup-nasm@v1
-      - if: runner.os == 'macOS'
-        uses: KyleMayes/install-llvm-action@v2
-        with:
-          version: 18
-      - if: runner.os == 'macOS'
-        run: which clang
       - uses: actions/cache@v4
         with:
           path: |
