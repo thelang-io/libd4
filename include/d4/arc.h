@@ -22,7 +22,7 @@
  */
 #define D4_ARC_DEFINE(type_name, ref_type, copy_block, eq_block, free_block, str_block) \
   d4_arc_##type_name##_t d4_arc_##type_name##_alloc (const ref_type ref) { \
-    d4_arc_##type_name##_t self = d4_safe_alloc(sizeof(d4_arc_##type_name##_t)); \
+    d4_arc_##type_name##_t self = d4_safe_alloc(sizeof(struct d4_arc_##type_name##_t)); \
     self->count = 1; \
     self->ref = copy_block; \
     return self; \
