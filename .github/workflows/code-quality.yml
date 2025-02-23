@@ -1,4 +1,4 @@
-name: CodeQL
+name: Code Quality
 
 on:
   pull_request:
@@ -6,15 +6,19 @@ on:
   push:
     branches: [main]
 
+concurrency:
+  cancel-in-progress: true
+  group: codeql-${{ github.event.pull_request.number || github.sha }}
+
 jobs:
   analyze:
     name: Analyze (${{ matrix.language }})
     runs-on: ubuntu-latest
     permissions:
-      security-events: write
-      packages: read
       actions: read
       contents: read
+      packages: read
+      security-events: write
     strategy:
       fail-fast: false
       matrix:
@@ -28,14 +32,12 @@ jobs:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
           queries: security-and-quality
-
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
           mkdir -p build
           cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON -D LIBD4_SANITIZER=ON
           cmake --build build --config Debug
-
       - uses: github/codeql-action/analyze@v3
         with:
           category: /language:${{matrix.language}}

@@ -1,4 +1,4 @@
-name: Test Coverage
+name: Coverage
 
 on:
   pull_request:
@@ -8,11 +8,14 @@ on:
 
 concurrency:
   cancel-in-progress: true
-  group: test-coverage-${{ github.event.pull_request.number || github.sha }}
+  group: coverage-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
-  test-coverage:
+  coverage:
     runs-on: macos-latest
+    permissions:
+      actions: read
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: thelang-io/setup-the@v1

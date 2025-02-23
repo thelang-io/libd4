@@ -1,4 +1,4 @@
-name: Test Release
+name: Install
 
 on:
   pull_request:
@@ -8,11 +8,14 @@ on:
 
 concurrency:
   cancel-in-progress: true
-  group: test-release-${{ github.event.pull_request.number || github.sha }}
+  group: install-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
-  test-release:
+  install:
     runs-on: ${{ matrix.config.os }}
+    permissions:
+      actions: read
+      contents: read
     strategy:
       fail-fast: false
       matrix:
@@ -46,6 +49,6 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path build
       - if: runner.os != 'Windows'
         run: mkdir -p build
-      - run: cmake . -B ./build
-      - run: cmake --build build --config Release
+      - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
+      - run: cmake --build build --config Debug
       - run: ${{ matrix.config['install-prefix'] }} cmake --install build

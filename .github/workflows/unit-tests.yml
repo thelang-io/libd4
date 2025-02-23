@@ -1,4 +1,4 @@
-name: Test
+name: Unit Tests
 
 on:
   pull_request:
@@ -8,24 +8,23 @@ on:
 
 concurrency:
   cancel-in-progress: true
-  group: test-install-${{ github.event.pull_request.number || github.sha }}
+  group: unit-tests-${{ github.event.pull_request.number || github.sha }}
 
 jobs:
-  test-install:
+  test:
     runs-on: ${{ matrix.config.os }}
+    permissions:
+      actions: read
+      contents: read
     strategy:
       fail-fast: false
       matrix:
         config:
           - os: macos-13
           - os: macos-14
-            install-prefix: sudo
           - os: macos-15
-            install-prefix: sudo
           - os: ubuntu-22.04
-            install-prefix: sudo
           - os: ubuntu-24.04
-            install-prefix: sudo
           - os: windows-2019
           - os: windows-2022
           - os: windows-2025
@@ -46,6 +45,6 @@ jobs:
         run: New-Item -ItemType Directory -Force -Path build
       - if: runner.os != 'Windows'
         run: mkdir -p build
-      - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
+      - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON -D LIBD4_SANITIZER=ON
       - run: cmake --build build --config Debug
-      - run: ${{ matrix.config['install-prefix'] }} cmake --install build
+      - run: ctest --output-on-failure --test-dir build
