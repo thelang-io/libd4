@@ -55,8 +55,6 @@ int main (void) {
     }
   #endif
 
-  SSL_library_init();
-
   memset(&hints, 0, sizeof(hints));
   hints.ai_family = AF_INET;
   hints.ai_socktype = SOCK_STREAM;

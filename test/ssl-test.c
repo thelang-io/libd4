@@ -55,8 +55,6 @@ static d4_str_t request (char *hostname, const char *request, size_t request_len
     }
   #endif
 
-  SSL_library_init();
-
   memset(&hints, 0, sizeof(hints));
   hints.ai_family = AF_INET;
   hints.ai_socktype = SOCK_STREAM;
