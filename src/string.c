@@ -280,12 +280,13 @@ d4_arr_str_t d4_str_lines (const d4_str_t self, unsigned char o1, bool keepLineB
   d4_str_t *result = NULL;
   size_t len = 0;
   size_t start = 0;
+  size_t j = 0;
 
   if (self.len == 0) {
     return (d4_arr_str_t) {NULL, 0};
   }
 
-  for (size_t j = 0; j < self.len; j++) {
+  while (j < self.len) {
     wchar_t c = self.data[j];
 
     if (c == L'\r' || c == L'\n') {
@@ -300,6 +301,8 @@ d4_arr_str_t d4_str_lines (const d4_str_t self, unsigned char o1, bool keepLineB
 
       start = j + 1;
     }
+
+    j++;
   }
 
   if (start != self.len) {
@@ -370,9 +373,10 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
       wmemcpy(d, replacement.data, l);
     }
   } else if (self.len > search.len && search.len > 0 && replacement.len == 0) {
+    size_t i = 0;
     d = d4_safe_alloc((self.len + 1) * sizeof(wchar_t));
 
-    for (size_t i = 0; i < self.len; i++) {
+    while (i < self.len) {
       if (
         i <= self.len - search.len &&
         memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0 &&
@@ -382,6 +386,8 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
       } else {
         d[l++] = self.data[i];
       }
+
+      i++;
     }
 
     if (l == 0) {
@@ -391,10 +397,12 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
       d = d4_safe_realloc(d, (l + 1) * sizeof(wchar_t));
     }
   } else if (self.len > search.len && search.len > 0 && replacement.len > 0) {
+    size_t i = 0;
+
     l = self.len;
     d = d4_safe_alloc((l + 1) * sizeof(wchar_t));
 
-    for (size_t i = 0; i < self.len; i++) {
+    while (i < self.len) {
       if (
         i <= self.len - search.len &&
         memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0 &&
@@ -416,6 +424,8 @@ d4_str_t d4_str_replace (const d4_str_t self, const d4_str_t search, const d4_st
       } else {
         d[j++] = self.data[i];
       }
+
+      i++;
     }
 
     d = d4_safe_realloc(d, (l + 1) * sizeof(wchar_t));
@@ -473,14 +483,17 @@ d4_arr_str_t d4_str_split (const d4_str_t self, D4_UNUSED unsigned char o1, cons
     r[0] = d4_str_calloc(self.data, self.len);
   } else if (delimiter.len > 0) {
     size_t i = 0;
+    size_t j = 0;
 
-    for (size_t j = 0; j <= self.len - delimiter.len; j++) {
+    while (j <= self.len - delimiter.len) {
       if (memcmp(&self.data[j], delimiter.data, delimiter.len * sizeof(wchar_t)) == 0) {
         r = d4_safe_realloc(r, ++l * sizeof(d4_str_t));
         r[l - 1] = d4_str_calloc(&self.data[i], j - i);
         j += delimiter.len;
         i = j;
       }
+
+      j++;
     }
 
     r = d4_safe_realloc(r, ++l * sizeof(d4_str_t));
