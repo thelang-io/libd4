@@ -6,6 +6,6 @@
 #ifndef SRC_BYTE_H
 #define SRC_BYTE_H
 
-#include <d4/byte.h>
+#include "../include/d4/byte.h"
 
 #endif

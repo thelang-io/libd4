@@ -3,11 +3,11 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
+#include "../include/d4/macro.h"
 #include "globals.h"
-#include <d4/array.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/d4/array.h"
 #include "string.h"
 
 #if defined(D4_OS_WINDOWS)

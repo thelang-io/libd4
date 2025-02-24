@@ -6,6 +6,6 @@
 #ifndef SRC_ENUM_H
 #define SRC_ENUM_H
 
-#include <d4/enum.h>
+#include "../include/d4/enum.h"
 
 #endif

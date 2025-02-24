@@ -4,19 +4,20 @@
  */
 
 #include "number.h"
-#include <d4/string.h>
+#include <float.h>
 #include <inttypes.h>
+#include "../include/d4/string.h"
 
 d4_str_t d4_f32_str (float self) {
-  return d4_str_alloc(L"%.15g", (double) self);
+  return d4_str_alloc(L"%g", (double) self);
 }
 
 d4_str_t d4_f64_str (double self) {
-  return d4_str_alloc(L"%.15g", self);
+  return d4_str_alloc(L"%.16g", self);
 }
 
 d4_str_t d4_float_str (double self) {
-  return d4_str_alloc(L"%.15g", self);
+  return d4_str_alloc(L"%.16g", self);
 }
 
 d4_str_t d4_i8_str (int8_t self) {

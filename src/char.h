@@ -6,6 +6,6 @@
 #ifndef SRC_CHAR_H
 #define SRC_CHAR_H
 
-#include <d4/char.h>
+#include "../include/d4/char.h"
 
 #endif

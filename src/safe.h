@@ -6,6 +6,6 @@
 #ifndef SRC_SAFE_H
 #define SRC_SAFE_H
 
-#include <d4/safe.h>
+#include "../include/d4/safe.h"
 
 #endif

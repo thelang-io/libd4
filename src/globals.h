@@ -6,6 +6,6 @@
 #ifndef SRC_GLOBALS_H
 #define SRC_GLOBALS_H
 
-#include <d4/globals.h>
+#include "../include/d4/globals.h"
 
 #endif

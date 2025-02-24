@@ -4,8 +4,8 @@
  */
 
 #include "char.h"
-#include <d4/safe.h>
 #include <ctype.h>
+#include "../include/d4/safe.h"
 #include "string.h"
 
 unsigned char d4_char_byte (char self) {

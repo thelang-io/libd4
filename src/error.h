@@ -6,8 +6,8 @@
 #ifndef SRC_ERROR_H
 #define SRC_ERROR_H
 
-#include <d4/macro.h>
-#include <d4/error.h>
+#include "../include/d4/macro.h"
+#include "../include/d4/error.h"
 
 /**
  * Instantly reports error and quits the application. Used internally by safe_alloc, safe_realloc functions.

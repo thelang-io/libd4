@@ -3,13 +3,13 @@
  * Licensed under the MIT License
  */
 
-#include <d4/macro.h>
+#include "../include/d4/macro.h"
 #include "string.h"
-#include <d4/array.h>
 #include <ctype.h>
 #include <float.h>
 #include <limits.h>
 #include <string.h>
+#include "../include/d4/array.h"
 
 D4_ARRAY_DEFINE(str, d4_str_t, d4_str_t, d4_str_copy(element), d4_str_eq(lhs_element, rhs_element), d4_str_free(element), d4_str_copy(element))
 

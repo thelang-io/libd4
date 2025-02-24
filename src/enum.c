@@ -4,7 +4,7 @@
  */
 
 #include "enum.h"
-#include <d4/string.h>
+#include "../include/d4/string.h"
 
 d4_str_t d4_enum_str (int self) {
   return d4_str_alloc(L"%d", self);

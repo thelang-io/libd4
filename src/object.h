@@ -6,6 +6,6 @@
 #ifndef SRC_OBJECT_H
 #define SRC_OBJECT_H
 
-#include <d4/object.h>
+#include "../include/d4/object.h"
 
 #endif

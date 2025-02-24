@@ -6,6 +6,6 @@
 #ifndef SRC_MAP_H
 #define SRC_MAP_H
 
-#include <d4/map.h>
+#include "../include/d4/map.h"
 
 #endif

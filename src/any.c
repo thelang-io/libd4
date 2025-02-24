@@ -4,7 +4,7 @@
  */
 
 #include "any.h"
-#include <d4/string.h>
+#include "../include/d4/string.h"
 
 d4_any_t d4_any_copy (const d4_any_t self) {
   return self.ctx == NULL

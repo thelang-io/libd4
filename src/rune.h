@@ -6,6 +6,6 @@
 #ifndef SRC_RUNE_H
 #define SRC_RUNE_H
 
-#include <d4/rune.h>
+#include "../include/d4/rune.h"
 
 #endif

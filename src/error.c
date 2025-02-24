@@ -4,9 +4,9 @@
  */
 
 #include "error.h"
-#include <d4/safe.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "../include/d4/safe.h"
 #include "string.h"
 
 d4_err_state_t d4_err_state = {-1, NULL, NULL, NULL, NULL, NULL, NULL};

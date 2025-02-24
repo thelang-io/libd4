@@ -6,6 +6,6 @@
 #ifndef SRC_BOOL_H
 #define SRC_BOOL_H
 
-#include <d4/bool.h>
+#include "../include/d4/bool.h"
 
 #endif

@@ -6,6 +6,6 @@
 #ifndef SRC_NUMBER_H
 #define SRC_NUMBER_H
 
-#include <d4/number.h>
+#include "../include/d4/number.h"
 
 #endif
