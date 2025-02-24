@@ -4,58 +4,74 @@
  */
 
 #include <assert.h>
+#include <math.h>
 #include "../src/number.h"
 #include "../src/string.h"
 
 static void test_f32_str (void) {
   d4_str_t a1 = d4_f32_str(0.0f);
   d4_str_t a2 = d4_f32_str(12.34f);
+  d4_str_t a3 = d4_f32_str(M_PI);
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
+  d4_str_t s3_cmp = d4_str_alloc(L"3.14159");
 
   assert(((void) "Stringifies f32 0.0", d4_str_eq(a1, s1_cmp)));
   assert(((void) "Stringifies f32 12.34", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies f32 M_PI", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
+  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);
+  d4_str_free(a3);
 }
 
 static void test_f64_str (void) {
   d4_str_t a1 = d4_f64_str(0.0);
   d4_str_t a2 = d4_f64_str(12.34);
+  d4_str_t a3 = d4_f64_str(M_PI);
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
+  d4_str_t s3_cmp = d4_str_alloc(L"3.141592653589793");
 
   assert(((void) "Stringifies f64 0.0", d4_str_eq(a1, s1_cmp)));
   assert(((void) "Stringifies f64 12.34", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies f64 M_PI", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
+  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);
+  d4_str_free(a3);
 }
 
 static void test_float_str (void) {
   d4_str_t a1 = d4_float_str(0.0);
   d4_str_t a2 = d4_float_str(12.34);
+  d4_str_t a3 = d4_float_str(M_PI);
 
   d4_str_t s1_cmp = d4_str_alloc(L"0");
   d4_str_t s2_cmp = d4_str_alloc(L"12.34");
+  d4_str_t s3_cmp = d4_str_alloc(L"3.141592653589793");
 
   assert(((void) "Stringifies float 0.0", d4_str_eq(a1, s1_cmp)));
   assert(((void) "Stringifies float 12.34", d4_str_eq(a2, s2_cmp)));
+  assert(((void) "Stringifies float M_PI", d4_str_eq(a3, s3_cmp)));
 
   d4_str_free(s1_cmp);
   d4_str_free(s2_cmp);
+  d4_str_free(s3_cmp);
 
   d4_str_free(a1);
   d4_str_free(a2);
+  d4_str_free(a3);
 }
 
 static void test_i8_str (void) {
