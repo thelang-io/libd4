@@ -45,4 +45,4 @@ jobs:
           key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
       - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
       - run: cmake --build build --config Debug
-      - run: ${{ matrix.config['install-prefix'] }} cmake --install build
+      - run: ${{ matrix.config.install-prefix }} cmake --install build
