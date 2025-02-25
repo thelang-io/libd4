@@ -168,7 +168,6 @@ static void test_ssl (void) {
   d4_str_t s = request_data(a);
   d4_str_t s_cmp = d4_str_alloc(L"field1=value1&field2=value2");
 
-  printf("=====\n%ls\n=====", s.data);
   assert(((void) "SSL works", d4_str_eq(s, s_cmp)));
 
   d4_str_free(a);

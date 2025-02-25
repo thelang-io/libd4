@@ -197,7 +197,7 @@ int32_t d4_str_find (const d4_str_t self, const d4_str_t search) {
     return -1;
   }
 
-  for (size_t i = 0; i < self.len; i++) {
+  for (size_t i = 0; i < self.len - search.len + 1; i++) {
     if (memcmp(&self.data[i], search.data, search.len * sizeof(wchar_t)) == 0) {
       return (int32_t) i;
     }
