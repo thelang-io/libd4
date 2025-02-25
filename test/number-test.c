@@ -4,6 +4,7 @@
  */
 
 #include <assert.h>
+#define _USE_MATH_DEFINES // Needed for Windows to define M_PI
 #include <math.h>
 #include "../src/number.h"
 #include "../src/string.h"
