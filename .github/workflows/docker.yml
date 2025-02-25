@@ -18,7 +18,5 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v4
-      - if: runner.os == 'macOS'
-        uses: douglascamata/setup-docker-macos-action@v1-alpha
       - run: docker build -t libd4 .
       - run: docker run libd4
