@@ -270,6 +270,7 @@ static void test_string_find (void) {
   d4_str_t s5 = d4_str_alloc(L"tri");
   d4_str_t s6 = d4_str_alloc(L"ing");
   d4_str_t s7 = d4_str_alloc(L"g");
+  d4_str_t s8 = d4_str_alloc(L"xyz");
 
   assert(((void) "Finds empty in empty", d4_str_find(s1, s1) == 0));
   assert(((void) "Finds empty in string", d4_str_find(s3, s1) == 0));
@@ -282,6 +283,7 @@ static void test_string_find (void) {
   assert(((void) "Finds string in the middle in string", d4_str_find(s3, s5) == 1));
   assert(((void) "Finds string in the back in string", d4_str_find(s3, s6) == 3));
   assert(((void) "Finds single character string in the back in string", d4_str_find(s3, s7) == 5));
+  assert(((void) "Returns -1 when search string not found", d4_str_find(s3, s8) == -1));
 
   d4_str_free(s1);
   d4_str_free(s2);
@@ -290,6 +292,7 @@ static void test_string_find (void) {
   d4_str_free(s5);
   d4_str_free(s6);
   d4_str_free(s7);
+  d4_str_free(s8);
 }
 
 static void test_string_free (void) {
