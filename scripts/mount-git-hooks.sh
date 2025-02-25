@@ -10,7 +10,6 @@ set -e
 cat > .git/hooks/pre-commit << EOF
 #!/usr/bin/env bash
 
-mkdir -p build
 cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON
 cmake --build build --config Debug
 cmake --install build

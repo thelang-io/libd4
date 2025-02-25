@@ -7,7 +7,6 @@
 
 set -e
 
-mkdir -p coverage
 cmake . -B ./coverage -D LIBD4_BUILD_TESTS=ON -D LIBD4_COVERAGE=ON
 cmake --build coverage --config Debug
 ctest --output-on-failure --test-dir coverage

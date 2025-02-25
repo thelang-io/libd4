@@ -41,10 +41,6 @@ jobs:
             build/openssl-prefix
             build/openssl-src
           key: cmake-openssl-${{ matrix.config.os }}-${{ hashFiles('cmake/DownloadOpenSSL.cmake') }}
-      - if: runner.os == 'Windows'
-        run: New-Item -ItemType Directory -Force -Path build
-      - if: runner.os != 'Windows'
-        run: mkdir -p build
       - run: cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON -D LIBD4_SANITIZER=ON
       - run: cmake --build build --config Debug
       - run: ctest --output-on-failure --test-dir build

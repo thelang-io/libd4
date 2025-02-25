@@ -35,7 +35,6 @@ jobs:
       - if: matrix.build-mode == 'manual'
         shell: bash
         run: |
-          mkdir -p build
           cmake . -B ./build -D LIBD4_BUILD_EXAMPLES=ON -D LIBD4_BUILD_TESTS=ON -D LIBD4_SANITIZER=ON
           cmake --build build --config Debug
       - uses: github/codeql-action/analyze@v3

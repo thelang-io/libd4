@@ -5,7 +5,6 @@ A library specifically designed for The programming language.
 To build with [CMake](https://cmake.org):
 
 ```bash
-mkdir -p build
 cmake . -B ./build
 cmake --build build --config Debug
 ```
