@@ -90,17 +90,6 @@ static void test_arc_free (void) {
   d4_obj_Person_free(person);
 }
 
-static void test_arc_get (void) {
-  d4_obj_Person_t person = d4_obj_Person_alloc(50);
-  d4_arc_obj_Person_t arc = d4_arc_obj_Person_alloc(person);
-  d4_obj_Person_t ref = d4_arc_obj_Person_get(arc);
-
-  assert(((void) "Retrieved reference should be the same as input", d4_obj_Person_eq(person, ref)));
-
-  d4_arc_obj_Person_free(arc);
-  d4_obj_Person_free(person);
-}
-
 static void test_arc_realloc (void) {
   d4_obj_Person_t person1 = d4_obj_Person_alloc(55);
   d4_obj_Person_t person2 = d4_obj_Person_alloc(60);

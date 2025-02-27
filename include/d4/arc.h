@@ -47,10 +47,6 @@
     d4_safe_free(self); \
   } \
   \
-  ref_type d4_arc_##type_name##_get (d4_arc_##type_name##_t self) { \
-    return self->ref; \
-  } \
-  \
   d4_arc_##type_name##_t d4_arc_##type_name##_realloc (d4_arc_##type_name##_t self, const ref_type ref) { \
     { \
       ref_type ref = self->ref; \

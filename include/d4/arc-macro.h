@@ -62,13 +62,6 @@
   void d4_arc_##type_name##_free (d4_arc_##type_name##_t self); \
   \
   /**
-   * Acquires access to automatic reference counter object.
-   * @param self Automatic reference counter type to get access to.
-   * @return Reference to automatic reference counter object.
-   */ \
-  ref_type d4_arc_##type_name##_get (d4_arc_##type_name##_t self); \
-  \
-  /**
    * Reallocates automatic reference counter type.
    * @param self Automatic reference counter type to reallocate.
    * @param ref Object to set for automatic reference counter type.
