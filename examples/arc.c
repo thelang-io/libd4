@@ -37,15 +37,11 @@ int main (void) {
   d4_arc_obj_Person_t person_1 = d4_arc_obj_Person_alloc(__2 = d4_obj_Person_alloc(20));
   d4_arc_obj_Person_t person_2 = d4_arc_obj_Person_copy(person_1);
 
-  d4_obj_Person_t ref_person = d4_arc_obj_Person_get(person_0);
-
-  d4_str_t p0_str = d4_obj_Person_str(ref_person);
   d4_str_t p1_str = d4_arc_obj_Person_str(person_0);
   d4_str_t p2_str = d4_arc_obj_Person_str(person_1);
 
-  person_2 = d4_arc_obj_Person_realloc(person_2, ref_person);
+  person_2 = d4_arc_obj_Person_realloc(person_2, person_0->ref);
 
-  wprintf(L"ref_person: %ls\n", p0_str.data);
   wprintf(L"person_0: %ls\n", p1_str.data);
   wprintf(L"person_1: %ls\n", p2_str.data);
 

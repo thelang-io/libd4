@@ -129,7 +129,6 @@ int main (void) {
   test_arc_copy();
   test_arc_eq();
   test_arc_free();
-  test_arc_get();
   test_arc_realloc();
   test_arc_str();
 }
